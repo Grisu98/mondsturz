@@ -1,0 +1,5 @@
+node_modules
+/foundry.js
+/node_modules
+/old
+/.vscode

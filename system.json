@@ -1,0 +1,32 @@
+{
+  "id": "mondsturz",
+  "title": "Mondsturz",
+  "description": "Mondsturz System für FoundryVTT",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": 10,
+    "verified": "10.291",
+    "maximum": 10
+  },
+  "authors": [{
+    "name": "Grisu",
+    "dicscord": "Grisu#9889"
+  }],
+  "esmodules": ["module/mondsturz.mjs"],
+  "styles": ["css/mondsturz.css"],
+  "packs": [
+    {
+      "name": "macros",
+      "label": "Macros",
+      "system": "mondsturz",
+      "path": "packs/macros.db",
+      "type": "Macro"
+    }
+  ],
+  "gridDistance": 1,
+  "gridUnits": "m",
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "changelog": "CHANGELOG.md"
+}

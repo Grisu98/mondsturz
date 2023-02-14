@@ -1,0 +1,48 @@
+<table style="border-collapse: collapse; width: 100%;" border="1">
+    <tbody>
+        {{log "this is skill dialog" @root}}
+        <tr>
+            <td style="width: 33%; text-align:center;">
+                <label for="talent">
+                    <h3>{{tName}}:</h3>
+                </label>
+                <input id="talent" style="font-size: 2em;" type="number" value="{{tValue}}" />
+            </td>
+            <td style="width: 33%; text-align:center;">
+                <label for="skill">
+                    <h3>{{sName}}:</h3>
+                </label>
+                <input id="skill" style="font-size: 2em;" type="number" value="{{sValue}}" />
+            </td>
+            <td style="width: 33%; text-align:center;">
+                <label for="mod">
+                    <h3>Mod:</h3>
+                </label>
+                <input id="mod" style="font-size: 2em;" type="number" value="{{mod}}" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{{#if (eq item.type "waffe")}}
+<div id="other-options" style="text-align: center;">
+    <label for="res"> Munition verbrauchen?</label>
+    <input type="checkbox" id="res" checked="true" />
+</div>
+{{/if}}
+
+
+{{#if (eq item.type "zauber")}}
+<div id="other-options" style="text-align: center;">
+
+    <div style="display:inline-block">
+        <label for="res">Mana:</label>
+        <input style="width:2em" type="text" id="res" placeholder="{{i.mana}}"/>
+    </div>
+
+    <div style="display:inline-block">
+        <label for="use">verbrauchen?</label>
+        <input type="checkbox" id="use" checked="true" />
+    </div>
+</div>
+{{/if}}

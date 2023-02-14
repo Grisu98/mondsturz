@@ -1,0 +1,75 @@
+{{!-- This template is a fallback for when items don't have more specific templates. --}}
+{{!-- Generally, you'll want to make more specific templates when possible. --}}
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a data-tab="allgemein">Allgemein</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+
+    <div class="tab" data-group="primary" data-tab="allgemein">
+
+      <div>
+        <datalist id="prop-keys">
+          {{#each config.propertyKeys}}
+          <option value="system.{{this}}">{{this}}</option>
+          {{/each}}
+        </datalist>
+      </div>
+
+      <textarea name="system.description" cols="30" rows="10">{{item.system.description}}</textarea>
+      <hr>
+      <br>
+
+      <table>
+        <tr>
+          <th>Ziel</th>
+          <th style="width: 2em">Wert</th>
+          <th style="width: 10em">Art</th>
+          <th>
+            <a class="add-effect-part" title="hinzufügen"><i class="fas fa-plus"></i></a>
+          </th>
+        </tr>
+        {{#each data.effects.[0].changes as |v k|}}
+        <tr class="effect-part" data-part-index="{{@index}}">
+          <td>
+            <input class="change-effect-part" data-type="key" type="text" placeholder="{{v.key}}" autocomplete="on"
+              list="prop-keys">
+          </td>
+          <td>
+            <input style="text-align:center" class="change-effect-part" data-type="value" type="text"
+              placeholder="{{v.value}}">
+          </td>
+          <td>
+            {{!--<input class="change-effect-part" data-type="mode" type="text" placeholder="{{v.mode}}"> --}}
+            <select class="change-effect-part" data-type="mode" data-dtype="Number">
+              {{#select v.mode}}
+              <option value="2">Addieren</option>
+              <option value="1">Multiplizieren</option>
+              <option value="3">Downgrade</option>
+              <option value="4">Upgrade</option>
+              <option value="0">custom</option>
+              {{/select}}
+            </select>
+          </td>
+          <td>
+            <a class="delete-effect-part" title="Delete Item"><i class="fas fa-trash"></i></a>
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+
+    </div>
+
+  </section>
+</form>

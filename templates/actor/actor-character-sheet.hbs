@@ -1,0 +1,649 @@
+{{log @root}}
+{{#if @root.actor.system.misc.compact}}
+
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+  {{!-- Sheet Header --}}
+  <header class="row-2-8">
+    <div class="col-1">
+      <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
+    </div>
+    <div class="col-2">
+      <div class="header-info">
+        <h1>{{actor.name}}</h1>
+        <h4>XP: 140 LVL: 5
+        </h4>
+      </div>
+      <div class="row-4-6">
+        <div class="col-1">
+          <div class="bars">
+            {{#each actor.system.attribute.bars as |value key|}}
+            {{#unless (eq value.max 0)}}
+            <div class="bar-graph" data-bar-type="{{key}}">
+              <div>
+                <div>{{value.label}}{{value.wert}}/{{value.max}}</div>
+                <div class="hp-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
+                <div class="hp-control" data-control-type="add"><i class="fas fa-plus"></i></div>
+              </div>
+              <div id="{{value.cssId}}" style="width:{{math (math value.wert  "*" 100) "/" value.max}}%"></div>
+            </div>
+            {{/unless}}
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="col-2 grid-2col">
+
+          <div class="trape-table">
+            {{#each system.attribute.koerper as |value key|}}
+            {{#unless (lt @index 2)}}
+            <div class="trapezoid" data-hp-type="{{key}}">
+              <div class="label">{{value.label}}</div>
+              <div class="trape-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
+              <div class="trape-control" data-control-type="add"><i class="fas fa-plus"></i></div>
+              <div class="right">/{{value.max}}</div>
+              <div class="right">{{value.wert}}</div>
+
+            </div>
+            {{/unless}}
+            {{/each}}
+          </div>
+
+          <div class="trape-table">
+            {{#each system.attribute.koerper as |value key|}}
+            {{#unless (st @index 3)}}
+            <div class="trapezoid" data-hp-type="{{key}}">
+              <div class="label">{{value.label}}</div>
+              <div class="trape-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
+              <div class="trape-control" data-control-type="add"><i class="fas fa-plus"></i></div>
+              {{#if value.max}}<div class="right">/{{value.max}}</div>{{/if}}
+              <div class="right">{{value.wert}}</div>
+
+            </div>
+            {{/unless}}
+            {{/each}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="" data-tab="allgemein">Allgemein</a>
+    <a class="" data-tab="kampf">Kampf</a>
+    <a class="" data-tab="info">Info</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    <div class="tab allgemein row-3-7" data-group="primary" data-tab="allgemein">
+
+      {{!-- Skill accordion --}}
+      <div class="col-1">
+        {{#each system.talente as |talentValue talentKey|}}
+        {{#unless (isEmpty talentValue.skills)}}
+        <div class="accordion-header rollable-talent" data-t-value="{{talentValue.wert}}"
+          data-t-name="{{talentValue.label}}" data-mod="{{talentValue.mod}}">
+          {{talentValue.label}} {{#if talentValue.wert}}{{talentValue.wert}} {{/if}}{{#if
+          talentValue.mod}}+{{talentValue.mod}}{{/if}}
+        </div>
+        <div class="accordion-content" id="accordion-content-{{i}}">
+          <table>
+            {{#each skills as |skillValue skillKey|}}
+            <tr class="roll-div rollable-skill" data-t-value="{{talentValue.wert}}" data-t-name="{{talentValue.label}}"
+              data-s-name="{{skillValue.label}}" data-s-value="{{skillValue.wert}}" data-mod="{{math talentValue.mod "
+              +" skillValue.mod}}" data-skill-key="{{skillKey}}">
+              <td>{{skillValue.label}}</td>
+              <td>{{skillValue.wert}}{{#if skillValue.mod}}+{{skillValue.mod}}{{/if}}</td>
+            </tr>
+            {{/each}}
+          </table>
+        </div>
+        {{/unless}}
+        {{/each}}
+      </div>
+
+      {{!-- right of accordion --}}
+      <div class="col-2">
+        <div class="row-container">
+          <div class="row-1 eig-container grey-bg">
+            <table class="m-table">
+              <tr>
+                <th colspan="2">Merkmale</th>
+              </tr>
+              {{#each eigenschaften as |item index| }}
+              <tr class="item item-header" data-item-id="{{item._id}}">
+                <td class="img-td">
+                  <img src="{{item.img}}" width="24" height="24" />
+                </td>
+                <td>
+                  {{item.name}}
+                </td>
+              </tr>
+              <tr class="item-content">
+                <td colspan="2">{{item.system.description}}</td>
+              </tr>
+              {{/each}}
+            </table>
+
+
+          </div>
+
+          {{!-- allgemeines Inventar --}}
+          <div class="row-2">
+                        <h3 class="grey-bg ms-header">{{system.misc.inventar.wert}} / {{system.misc.inventar.max}} Inventar Slots</h3>
+            <table class="m-table grey-bg">
+              <tr>
+
+                <th colspan="2">Name</th>
+                <th>Art</th>
+                <th>Gewicht</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="gegenstand"><i class="fas fa-plus"></i></a>
+                </th>
+              </tr>
+              {{#each items as |item id| }}
+              {{#unless (isSame item.type "eigenschaft")}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td class="img-td">
+                  <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+                </td>
+                <td>
+                  {{item.name}}
+                </td>
+                <td class="type-td">
+                  {{item.type}}
+                </td>
+                <td class="weight-td">
+                  {{item.system.weight}}
+                </td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                </td>
+              </tr>
+              {{/unless}}
+
+              {{/each}}
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="kampf">
+      <div class="row-container">
+
+        {{!--upper things körper imunsys... --}}
+        <div class="row-1 grid-2col">
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="2">Körper</th>
+              </tr>
+              {{#each system.attribute.kampf as |value key|}}
+              <tr>
+                <td>{{value.label}}</td>
+                <td>{{value.wert}}</td>
+
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="2">Resistenzen</th>
+              </tr>
+              {{#each system.attribute.resistenzen as |value key|}}
+              <tr>
+                <td>{{value.label}}</td>
+                <td>{{value.wert}}</td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+        </div>
+
+        {{!-- inventar slots waffen/zauber --}}
+        <div class="row-2 grid-2col">
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="2">Name</th>
+                <th>Gewicht</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
+                </th>
+              </tr>
+              {{#each waffen as |item id|}}
+              <tr class="item rollable-item" data-item-id="{{item._id}}">
+                <td class="img-td">
+                  <img src="{{item.img}}" width="24" height="24" />
+                </td>
+                <td>{{item.name}}</td>
+                <td>{{item.system.weight}}</td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                </td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="7">Name</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="zauber"><i class="fas fa-plus"></i></a>
+                </th>
+              </tr>
+              {{#each zauber as |item id|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td class="img-td">
+                  <img src="{{item.img}}" width="24" height="24" />
+                </td>
+                <td class="" data-item-id="{{item._id}}">{{item.name}}</td>
+                <td class="zauber-level" data-target="zauber0-{{@index}}">0</td>
+                <td class="zauber-level" data-target="zauber1-{{@index}}">1</td>
+                <td class="zauber-level" data-target="zauber2-{{@index}}">2</td>
+                <td class="zauber-level" data-target="zauber3-{{@index}}">3</td>
+                <td class="zauber-level" data-target="zauber4-{{@index}}">4</td>
+                <td class="zauber-level" data-target="zauber5-{{@index}}">5</td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                </td>
+              </tr>
+              <tr class="zauber-texts" data-item-id="{{item._id}}">
+                <td colspan="8" class="zauber-text" id="zauber0-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelZero">
+                  <div>{{item.system.level.levelZero.text}}</div>
+                  <div>{{item.system.level.levelZero.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber1-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelOne">
+                  <div>{{item.system.level.levelOne.text}}</div>
+                  <div>{{item.system.level.levelOne.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber2-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelTwo">
+                  <div>{{item.system.level.levelTwo.text}}</div>
+                  <div>{{item.system.level.levelTwo.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber3-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelThree">
+                  <div>{{item.system.level.levelThree.text}}</div>
+                  <div>{{item.system.level.levelThree.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber4-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelFour">
+                  <div>{{item.system.level.levelFour.text}}</div>
+                  <div>{{item.system.level.levelFour.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber5-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelFive">
+                  <div>{{item.system.level.levelFive.text}}</div>
+                  <div>{{item.system.level.levelFive.formula}}</div>
+                </td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="info">
+
+      <table>
+        <tr>
+          <th colspan="2">Körper</th>
+        </tr>
+        {{#each system.attribute.kampf as |value key|}}
+        <tr class="trapezoid">
+          <td>{{value.label}}</td>
+          <td>{{value.wert}}</td>
+        </tr>
+        {{/each}}
+      </table>
+
+
+    </div>
+  </section>
+  {{!-- edit version --}}
+</form>
+{{else}}
+
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+  {{!-- Sheet Header --}}
+  <header class="row-2-8">
+    <div class="col-1">
+      <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
+    </div>
+    <div class="col-2">
+      <div class="header-info">
+        <h1><input name="name" type="text" value="{{actor.name}}" /></h1>
+        <h4>XP: 140 LVL: 5
+        </h4>
+      </div>
+      <div class="row-4-6">
+        <div class="col-1">
+          <div class="bars">
+            {{#each actor.system.attribute.bars as |value key|}}
+            {{#unless (eq value.max 0)}}
+            <div class="bar-graph" data-bar-type="{{key}}">
+              <div>
+                <div>{{value.label}}{{value.wert}}/{{value.max}}</div>
+                <div class="hp-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
+                <div class="hp-control" data-control-type="add"><i class="fas fa-plus"></i></div>
+              </div>
+              <div id="{{value.cssId}}" style="width:{{math (math value.wert  " *" 100) "/" value.max}}%"></div>
+            </div>
+            {{/unless}}
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="col-2 grid-2col">
+
+          <div class="trape-table">
+            {{#each system.attribute.koerper as |value key|}}
+            {{#unless (lt @index 2)}}
+            <div class="trapezoid" data-hp-type="{{key}}">
+              <div style="width:63px">{{value.label}}</div>
+              <div>{{value.wert}}/</div>
+              <input style="width:1.5em;display:inline-flex" name="system.attribute.koerper.{{key}}.max" type="text"
+                value="{{value.max}}" />
+            </div>
+            {{/unless}}
+            {{/each}}
+          </div>
+
+          <div class="trape-table">
+            {{#each system.attribute.koerper as |value key|}}
+            {{#unless (st @index 3)}}
+            <div class="trapezoid" data-hp-type="{{key}}">
+              <div style="width:63px">{{value.label}}</div>
+              <div>{{value.wert}}/</div>
+              <input style="width:1.5em;display:inline-flex" name="system.attribute.koerper.{{key}}.max" type="text"
+                value="{{value.max}}" />
+            </div>
+            {{/unless}}
+            {{/each}}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="" data-tab="allgemein">Allgemein</a>
+    <a class="" data-tab="kampf">Kampf</a>
+    <a class="" data-tab="info">Info</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    <div class="tab allgemein row-3-7" data-group="primary" data-tab="allgemein">
+
+      {{!-- Skill accordion --}}
+      <div class="col-1 editable">
+        {{#each system.talente as |talentValue talentKey|}}
+        {{#unless (isEmpty talentValue.skills)}}
+        <div style="text-align:right">
+          <div style="display:inline-block">{{talentValue.label}}</div>
+          <input style="display:inline-block;width:2em" type="text" name="system.talente.{{talentKey}}.wert"
+            value="{{talentValue.wert}}" data-dtype="Number" />
+        </div>
+        <div class="" id="accordion-content-{{i}}">
+          <table>
+            {{#each skills as |skillValue skillKey|}}
+            <tr>
+              <td>{{skillValue.label}}</td>
+              <td><input style="width: 1.5em;" type="text" name="system.talente.{{talentKey}}.skills.{{skillKey}}.wert"
+                  value="{{skillValue.wert}}" data-dtype="Number" /></td>
+              <td> <input class="beruf" type="checkbox" name="system.talente.{{talentKey}}.skills.{{skillKey}}.istBeruf"
+                  {{checked skillValue.istBeruf}} /></td>
+              <td> <input class="hobby" type="checkbox" name="system.talente.{{talentKey}}.skills.{{skillKey}}.istHobby"
+                  {{checked skillValue.istHobby}} /></td>
+            </tr>
+            {{/each}}
+          </table>
+        </div>
+        {{/unless}}
+        {{/each}}
+      </div>
+
+      {{!-- right of accordion --}}
+      <div class="col-2">
+        <div class="row-container">
+          <div class="row-1 eig-container grey-bg">
+            <table class="m-table">
+              <tr>
+                <th colspan="3">Merkmale</th>
+              </tr>
+              {{#each eigenschaften as |item index| }}
+              <tr class="item item-header" data-item-id="{{item._id}}">
+                <td>
+                  <img src="{{item.img}}" width="24" height="24" />
+                </td>
+                <td>
+                  {{item.name}}
+                </td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                </td>
+              </tr>
+              <tr class="item-content">
+                <td colspan="2">{{item.system.description}}</td>
+              </tr>
+              {{/each}}
+            </table>
+
+
+          </div>
+
+          {{!-- allgemeines Inventar --}}
+          <div class="row-2">
+            <div class="grey-bg"></div>
+            <table class="m-table grey-bg">
+
+              <tr>
+
+                <th colspan="2">Name</th>
+                <th>Art</th>
+                <th>Gewicht</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="gegenstand"><i class="fas fa-plus"></i></a>
+                </th>
+              </tr>
+              {{#each items as |item id| }}
+              {{#unless (isSame item.type "eigenschaft")}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td class="img-td">
+                  <a><img src="{{item.img}}" title="{{item.name}}" width="24" height="24" /></a>
+                </td>
+                <td>
+                  {{item.name}}
+                </td>
+                <td>
+                  {{item.type}}
+                </td>
+                <td>
+                  {{item.system.weight}}
+                </td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                </td>
+              </tr>
+              {{/unless}}
+
+              {{/each}}
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="kampf">
+      <div class="row-container">
+
+        {{!--upper things körper imunsys... --}}
+        <div class="row-1 grid-2col">
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="2">Körper</th>
+              </tr>
+              {{#each system.attribute.kampf as |value key|}}
+              <tr>
+                <td>{{value.label}}</td>
+                <td>{{value.wert}}</td>
+
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="2">Resistenzen</th>
+              </tr>
+              {{#each system.attribute.resistenzen as |value key|}}
+              <tr>
+                <td>{{value.label}}</td>
+                <td>{{value.wert}}</td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+        </div>
+
+        {{!-- inventar slots waffen/zauber --}}
+        <div class="row-2 grid-2col">
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th>Name</th>
+                <th>Gewicht</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
+                </th>
+              </tr>
+              {{#each waffen as |item id|}}
+              <tr class="item rollable-item" data-item-id="{{item._id}}">
+                <td>{{item.name}}</td>
+                <td>{{item.system.weight}}</td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                </td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="7">Name</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="zauber"><i class="fas fa-plus"></i></a>
+                </th>
+              </tr>
+              {{#each zauber as |item id|}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td class="" data-item-id="{{item._id}}">{{item.name}}</td>
+                <td class="zauber-level" data-target="zauber0-{{@index}}">0</td>
+                <td class="zauber-level" data-target="zauber1-{{@index}}">1</td>
+                <td class="zauber-level" data-target="zauber2-{{@index}}">2</td>
+                <td class="zauber-level" data-target="zauber3-{{@index}}">3</td>
+                <td class="zauber-level" data-target="zauber4-{{@index}}">4</td>
+                <td class="zauber-level" data-target="zauber5-{{@index}}">5</td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                </td>
+              </tr>
+              <tr class="zauber-texts">
+                <td colspan="8" class="zauber-text" id="zauber0-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelZero">
+                  <div>{{item.system.level.levelZero.text}}</div>
+                  <div>{{item.system.level.levelZero.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber1-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelOne">
+                  <div>{{item.system.level.levelOne.text}}</div>
+                  <div>{{item.system.level.levelOne.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber2-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelTwo">
+                  <div>{{item.system.level.levelTwo.text}}</div>
+                  <div>{{item.system.level.levelTwo.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber3-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelThree">
+                  <div>{{item.system.level.levelThree.text}}</div>
+                  <div>{{item.system.level.levelThree.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber4-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelFour">
+                  <div>{{item.system.level.levelFour.text}}</div>
+                  <div>{{item.system.level.levelFour.formula}}</div>
+                </td>
+                <td colspan="8" class="zauber-text" id="zauber5-{{@index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="levelFive">
+                  <div>{{item.system.level.levelFive.text}}</div>
+                  <div>{{item.system.level.levelFive.formula}}</div>
+                </td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tab" data-group="primary" data-tab="info">
+
+      <table>
+        <tr>
+          <th colspan="2">Körper</th>
+        </tr>
+        {{#each system.attribute.kampf as |value key|}}
+        <tr class="trapezoid">
+          <td>{{value.label}}</td>
+          <td>{{value.wert}}</td>
+        </tr>
+        {{/each}}
+      </table>
+
+
+    </div>
+
+  </section>
+</form>
+{{/if}}
