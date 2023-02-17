@@ -102,10 +102,44 @@ export const preloadHtmls = async function () {
 export function createEffectKeys() {
 
     const allKeys = Object.keys(foundry.utils.flattenObject(game.system.model.Actor.character));
-    let filteredKeys = allKeys.filter(str=>str.includes("mod")
+    let filteredKeys = allKeys.filter(str => str.includes("mod")
     );
     // let filteredKeys = allKeys.filter(str => {
     //     !str.includes("wert") &&  !str.includes("label")
     // });
     return filteredKeys
+}
+
+
+function parseEig() {
+
+    const text = ``;
+
+    const lines = text.split("\n");
+    let obj = {
+        levels: []
+    };
+    for (let i = 0; i < lines.length; i++) {
+        if (i === 0) {
+            obj.name = lines[i];
+        }
+        if (i === 1) {
+            obj.desc = lines[i];
+        }
+        if (i.length > 2) {
+            obj.levels.push(lines[i]);
+        }
+    }
+}
+
+
+async function parseTable() {
+
+    const lines = text.split("\n");
+    let rollT = await RollTable.create({name:"roll tab", formula: `1d${lines.length}`});
+    
+        lines.forEach(async (element,index) => {
+            await rollT.createEmbeddedDocuments("TableResult",[{text: element, range: [index++, index++]}])
+        })
+
 }
