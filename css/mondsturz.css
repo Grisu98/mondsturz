@@ -1,3 +1,7 @@
+.app.sidebar-popout .window-content {
+color: black;
+}
+
 .mondsturz section {
   background: none !important;
   background-color: #cecece !important;

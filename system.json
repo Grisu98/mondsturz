@@ -2,7 +2,7 @@
   "id": "mondsturz",
   "title": "Mondsturz",
   "description": "Mondsturz System für FoundryVTT",
-  "version": "1.0.0",
+  "version": "1.0",
   "compatibility": {
     "minimum": 10,
     "verified": "10.291",
@@ -16,17 +16,24 @@
   "styles": ["css/mondsturz.css"],
   "packs": [
     {
-      "name": "macros",
-      "label": "Macros",
-      "system": "mondsturz",
-      "path": "packs/macros.db",
-      "type": "Macro"
+      "label": "Journals",
+      "type": "JournalEntry",
+      "name": "journal",
+      "path": "packs/journal.db",
+      "system": "mondsturz"
+    },
+    {
+      "label": "RollTables",
+      "type": "RollTable",
+      "name": "rolltable",
+      "path": "packs/rolltable.db",
+      "system": "mondsturz"
     }
   ],
   "gridDistance": 1,
   "gridUnits": "m",
   "url": "",
   "manifest": "",
-  "download": "",
+  "download": "https://github.com/Grisu98/mondsturz/releases/latest/download",
   "changelog": "CHANGELOG.md"
 }

@@ -939,8 +939,10 @@
       "weight": 1
     },
     "eigenschaft": {
-      "art": "",
-      "description": ""
+      "type": "",
+      "description": "",
+      "attributes": [],
+      "rank": 0
     },
     "waffe": {
       "weight": 1,
