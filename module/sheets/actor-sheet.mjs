@@ -137,9 +137,9 @@ export class MondsturzActorSheet extends ActorSheet {
     const canConfigure = game.user.isGM || (this.actor.isOwner && game.user.can("TOKEN_CONFIGURE"));
     if (this.options.editable && canConfigure) {
       buttons.splice(1, 0, {
-        label: "bearbeiten",
+        label: "Bearbeiten",
         class: "configure-actor",
-        icon: "fas fa-dice",
+        icon: "fas fa-pen",
         onclick: ev => {
           ev.preventDefault();
           let curr = this.actor.system.misc.compact;

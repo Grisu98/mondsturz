@@ -111,35 +111,77 @@ export function createEffectKeys() {
 }
 
 
-function parseEig() {
+async function parseEig() {
 
-    const text = ``;
 
-    const lines = text.split("\n");
-    let obj = {
-        levels: []
-    };
-    for (let i = 0; i < lines.length; i++) {
-        if (i === 0) {
-            obj.name = lines[i];
+    new Promise(resolve => {
+        new Dialog({
+            title: "Input zu Eigenschaft",
+            content: `<textarea id="idat"></textarea>`,
+            default: "normal",
+            buttons: {
+                normal: {
+                    icon: '<i class="fas fa-pen"></i>',
+                    label: "erstellen",
+                    callback: html => resolve(createEig(html))
+                }
+            },
+            close: () => resolve(null)
+        }).render(true);
+    });
+    async function createEig(html) {
+        const t = html.find('[id=idat]')[0].value;
+
+        const lines = t.split("\n");
+        let obj = {
+            ranks: {}
+        };
+        for (let i = 0; i < lines.length; i++) {
+            if (i === 0) {
+                obj.name = lines[i];
+            }
+            if (i === 1) {
+                obj.desc = lines[i];
+            }
+            if (lines[i].length > 2 && i > 2) {
+                let key = `rank${Object.keys(obj.ranks).length + 1}`;
+
+                let a = obj.ranks[key] = {};
+                a.text = lines[i];
+            }
         }
-        if (i === 1) {
-            obj.desc = lines[i];
-        }
-        if (i.length > 2) {
-            obj.levels.push(lines[i]);
-        }
+        console.log(obj)
+        let i = await Item.create({ name: obj.name, type: "eigenschaft", system: { ranks: obj.ranks, description: obj.desc } })
     }
 }
 
 
 async function parseTable() {
 
-    const lines = text.split("\n");
-    let rollT = await RollTable.create({name:"roll tab", formula: `1d${lines.length}`});
-    
-        lines.forEach(async (element,index) => {
-            await rollT.createEmbeddedDocuments("TableResult",[{text: element, range: [index++, index++]}])
-        })
 
+    new Promise(resolve => {
+        new Dialog({
+            title: "Input zu RollTable",
+            content: `<label for="name">Name:</label><input id="name"/><textarea id="idat"></textarea>`,
+            default: "normal",
+            buttons: {
+                normal: {
+                    icon: '<i class="fas fa-pen"></i>',
+                    label: "erstellen",
+                    callback: html => resolve(createTable(html))
+                }
+            },
+            close: () => resolve(null)
+        }).render(true);
+    });
+
+    async function createTable(html) {
+        const text = html.find('[id=idat]')[0].value;
+        const lines = text.split("\n");
+        let rollT = await RollTable.create({ name: "roll tab", formula: `1d${lines.length}` });
+
+        lines.forEach(async (element, index) => {
+            await rollT.createEmbeddedDocuments("TableResult", [{ text: element, range: [index + 1, index + 1] }])
+        })
+    }
 }

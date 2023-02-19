@@ -124,7 +124,14 @@
                 </td>
               </tr>
               <tr class="item-content">
-                <td colspan="2">{{item.system.description}}</td>
+                  {{#each item.system.ranks as |value index|}}
+                  {{#if (eq ../system.rank index)}}
+                <td colspan="2">
+                  {{../system.description}}
+                  Level {{math index "+" 1}}: {{value}}
+                </td>
+                  {{/if}}
+                  {{/each}}
               </tr>
               {{/each}}
             </table>
@@ -134,7 +141,8 @@
 
           {{!-- allgemeines Inventar --}}
           <div class="row-2">
-                        <h3 class="grey-bg ms-header">{{system.misc.inventar.wert}} / {{system.misc.inventar.max}} Inventar Slots</h3>
+            <h3 class="grey-bg ms-header">{{system.misc.inventar.wert}} / {{system.misc.inventar.max}} Inventar Slots
+            </h3>
             <table class="m-table grey-bg">
               <tr>
 

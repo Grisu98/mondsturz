@@ -11,12 +11,12 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a data-tab="allgemein">Allgemein</a>
+    <a data-tab="effekte">Effekte</a>
   </nav>
 
   {{!-- Sheet Body --}}
   <section class="sheet-body">
-
-
+    {{#if item.system.compact}}
     <div class="tab" data-group="primary" data-tab="allgemein">
 
       <div>
@@ -27,9 +27,48 @@
         </datalist>
       </div>
 
-      <textarea name="system.description" cols="30" rows="10">{{item.system.description}}</textarea>
-      <hr>
+      <div>{{item.system.description}}</div>
       <br>
+      {{#each item.system.ranks as |value key|}}
+      {{#if value.text}}
+      <h3>
+        <input type="radio" data-dtype="Number" name="system.rank" value={{@index}} {{checked (eq @root.item.system.rank
+          @index)}}>
+        Level {{math @index "+" 1}}
+      </h3>
+      <div>{{value.text}}</div>
+      <br>
+      {{/if}}
+      {{/each}}
+    </div>
+
+    {{else}}
+    <div class="tab" data-group="primary" data-tab="allgemein">
+
+
+
+      <textarea name="system.description" cols="30" rows="5">{{item.system.description}}</textarea>
+      {{#each item.system.ranks as |value key|}}
+      <h3>
+        <input type="radio" data-dtype="Number" name="system.rank" value={{@index}} {{checked (eq @root.item.system.rank
+          @index)}}>
+        Level {{math @index "+" 1}}
+      </h3>
+      <textarea name="system.ranks.{{key}}.text" cols="30" rows="5">{{value.text}} </textarea>
+      <br>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    <div class="tab" data-group="primary" data-tab="effekte">
+
+      <div>
+        <datalist id="prop-keys">
+          {{#each config.propertyKeys}}
+          <option value="system.{{this}}">{{this}}</option>
+          {{/each}}
+        </datalist>
+      </div>
 
       <table>
         <tr>

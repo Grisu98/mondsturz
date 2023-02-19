@@ -932,16 +932,35 @@
         "tags": [],
         "level": 0,
         "skillKey": ""
-      }
+      },
+      "compact": true
     },
     "gegenstand": {
       "description": "",
-      "weight": 1
+      "weight": 1,
+      "compact": true
     },
     "eigenschaft": {
       "type": "",
       "description": "",
-      "attributes": [],
+      "ranks": {
+        "rank1": {
+          "text": ""
+        },
+        "rank2": {
+          "text": ""
+        },
+        "rank3": {
+          "text": ""
+        },
+        "rank4": {
+          "text": ""
+        },
+        "rank5": {
+          "text": ""
+        }
+      },
+      "compact": true,
       "rank": 0
     },
     "waffe": {
@@ -958,7 +977,8 @@
         "level": 0,
         "skillKey": ""
       },
-      "description": ""
+      "description": "",
+      "compact": true
     }
   }
 }
