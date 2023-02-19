@@ -16,17 +16,24 @@
   "styles": ["css/mondsturz.css"],
   "packs": [
     {
-      "label": "Journals",
+      "label": "MS Journals",
       "type": "JournalEntry",
-      "name": "journal",
-      "path": "packs/journals.db",
+      "name": "ms-journals",
+      "path": "packs/ms-journals.db",
       "system": "mondsturz"
     },
     {
-      "label": "RollTables",
+      "label": "MS RollTables",
       "type": "RollTable",
-      "name": "rolltable",
-      "path": "packs/rolltables.db",
+      "name": "ms-rolltable",
+      "path": "packs/ms-rolltables.db",
+      "system": "mondsturz"
+    },
+    {
+      "label": "MS Macros",
+      "type": "Macro",
+      "name": "ms-macros",
+      "path": "packs/ms-macros.db",
       "system": "mondsturz"
     }
   ],
