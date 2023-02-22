@@ -87,9 +87,8 @@
       {{!-- Skill accordion --}}
       <div class="col-1">
         {{#each system.talente as |talentValue talentKey|}}
-        {{!-- {{#unless (isEmpty talentValue.skills)}} --}}
         <div id="{{talentKey}}"
-          class="accordion-header rollabe-prop rollable {{#if (isSame talentKey @root.flags.mondsturz.activeId)}}active{{/if}}"
+          class="accordion-header rollable {{#if (isSame talentKey @root.flags.mondsturz.activeId)}}rollabe-prop{{/if}}"
           data-talent="{{talentKey}}" data-type="talent">
           {{talentValue.label}}
           {{#if talentValue.wert}}
@@ -112,7 +111,6 @@
             {{/each}}
           </table>
         </div>
-        {{!-- {{/unless}} --}}
         {{/each}}
       </div>
 

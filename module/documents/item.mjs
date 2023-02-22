@@ -101,8 +101,13 @@ export class MondsturzItem extends Item {
     const tKey = this.system.stats.talentKey;
     const sKey = this.system.stats.skillKey;
 
+    if (!sKey) {
+      ui.notifications.warn("Kein Talent bei der Waffe angegeben")
+      return
+    }
+
     const talent = actor.system?.talente[tKey] ? actor.system.stats.talente[tKey] : actor.system.talente.mysthkuenste.skills[tKey];
-    const skill= talent?.skills ? talent.skills[sKey] : actor.system.talente.magieschulen.skills[sKey];
+    const skill = talent?.skills ? talent.skills[sKey] : actor.system.talente.magieschulen.skills[sKey];
 
     dialogData.tValue = talent.wert || 0;
     dialogData.sValue = skill.wert || 0;
@@ -125,7 +130,8 @@ export class MondsturzItem extends Item {
 
 
   async _rollZauber(dialogData, actor, dataset) {
-    const zauberLevel = this.system.level[dataset.zauberLevel]
+    const zauberLevel = this.system.level[dataset.zauberLevel];
+    zauberLevel.key = dataset.zauberLevel;
     let dialog = new msRollDialog(dialogData);
     let rd = await dialog.createDialog();
 
@@ -133,7 +139,7 @@ export class MondsturzItem extends Item {
     let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.skill}+${rd.mod}`).evaluate({ async: false });
 
     // create the chat message
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/zauber-message.hbs", {item: this, misc: zauberLevel})
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/zauber-message.hbs", { item: this, misc: zauberLevel })
 
     let message = await new ChatMessage({
       rolls: [r],
@@ -169,19 +175,24 @@ export class MondsturzItem extends Item {
     ChatMessage.create(message)
   }
 
-  async rollDamage() {
+  async rollDamage(key) {
 
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/damage-message.hbs", this)
-
-    // create Roll
-    let r = await new Roll(`${this.system.stats.damage}`).evaluate({ async: false })
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/damage-message.hbs", this);
+    let rollFormula;
+    if (this.type === "waffe") {
+      rollFormula = this.system.stats.damage;
+    }
+    else {
+      rollFormula = this.system.level[key].formula;
+    }
+    let r = await new Roll(rollFormula).evaluate({ async: false })
 
     let message = await new ChatMessage({
       rolls: [r],
       content: r.total,
       flavor: flavor,
       type: 5,
-      speaker: ChatMessage.getSpeaker( this.actor)
+      speaker: ChatMessage.getSpeaker(this.actor)
     });
     ChatMessage.create(message)
   }

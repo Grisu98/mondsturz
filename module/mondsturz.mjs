@@ -246,8 +246,9 @@ Hooks.on("updateCombatant", ((combatant, update, diff, id) => { MsCombatHelper(c
 Hooks.on("renderChatMessage", ((_message, html)=>{
   html.on("click", ".item-roll-damage", async (event, html) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
+    const key = event.currentTarget.closest(".item-message").dataset.key;
     const item = await fromUuid(uuid);
-    item.rollDamage()
+    item.rollDamage(key);
   })
   
   html.on("click", ".damage-target", async(event)=>{

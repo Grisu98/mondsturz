@@ -216,14 +216,14 @@ export class MondsturzActorSheet extends ActorSheet {
     html.find(".edit-item-insheet").change(ev => this._onEditItemValue(ev))
 
     // Rollable abilities.
-    html.find('.rollable-skill').click(this._onRoll.bind(this));
+    //html.find('.rollable-skill').click(this._onRoll.bind(this));
 
     html.find('.rollabe-prop').click((event)=>{
       let dataset = event.currentTarget.dataset;
       this.actor.rollProp(dataset)
     })
 
-    html.find('.rollable-talent').click(this._onRollTalent.bind(this));
+    // html.find('.rollable-talent').click(this._onRollTalent.bind(this));
 
     html.find('.clear-input').click(async function (event) {
       await event.stopPropagation();
@@ -232,7 +232,7 @@ export class MondsturzActorSheet extends ActorSheet {
     html.find('.rollable-item').click(this._onRollItem.bind(this));
 
     // Rollable Misc,
-    html.find('.rollable-misc').click(this._onRoll.bind(this));
+    // html.find('.rollable-misc').click(this._onRoll.bind(this));
 
     html.find('.accordion-header').click(async (ev) => {
       let allHeaders = document.getElementsByClassName("accordion-header");

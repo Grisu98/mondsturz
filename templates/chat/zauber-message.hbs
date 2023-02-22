@@ -1,5 +1,4 @@
-{{log "waffe-message.hbs" @root}}
-<div class="item-message" data-item-id="{{uuid}}">
+<div class="item-message" data-item-id="{{item.uuid}}" data-key="{{misc.key}}">
     <h2
         title="Level: {{item.system.stats.level}}&#10;Talent: {{item.system.stats.talentKey}}&#10;Skill: {{item.system.stats.skillKey}}">
         {{item.name}} Wurf
