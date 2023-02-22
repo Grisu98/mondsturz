@@ -708,11 +708,11 @@
               "mod": 0,
               "label": "Adrenalin"
             },
-            "ruestzustand": {
+            "hyperarmor": {
               "wert": 0,
               "min": 0,
               "max": 20,
-              "label": "Rüstzustand"
+              "label": "Hyperarmor"
             },
             "physis": {
               "wert": 10,
@@ -786,26 +786,26 @@
             }
           },
           "bars": {
-            "hyperarmor": {
+            "armor": {
               "wert": 0,
               "min": 0,
               "max": 0,
-              "label": "Hyperarmor",
-              "cssId": "current-ruestung"
+              "label": "Rüstung",
+              "cssId": "armor-bar"
             },
             "leben": {
               "wert": 10,
               "min": 0,
               "max": 20,
               "label": "Leben",
-              "cssId": "current-leben"
+              "cssId": "health-bar"
             },
             "mana": {
               "wert": 0,
               "max": 20,
               "mod": 0,
-              "label": "mana",
-              "cssId": "current-mana"
+              "label": "Mana",
+              "cssId": "mana-bar"
             }
           }
         },
@@ -899,37 +899,37 @@
       "weight": 0,
       "description": "",
       "level": {
-        "levelZero": {
+        "level0": {
           "formula": "",
           "text": "",
           "mana": 0,
           "label": "Trick"
         },
-        "levelOne": {
+        "level1": {
           "formula": "",
           "text": "",
           "mana": 0,
           "label": "Stufe Eins"
         },
-        "levelTwo": {
+        "level2": {
           "formula": "",
           "text": "",
           "mana": 0,
           "label": "Stufe Zwei"
         },
-        "levelThree": {
+        "level3": {
           "formula": "",
           "text": "",
           "mana": 0,
           "label": "Stufe Drei"
         },
-        "levelFour": {
+        "level4": {
           "formula": "",
           "text": "",
           "mana": 0,
           "label": "Stufe Vier"
         },
-        "levelFive": {
+        "level5": {
           "formula": "",
           "text": "",
           "mana": 0,

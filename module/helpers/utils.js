@@ -156,6 +156,69 @@ async function parseEig() {
     }
 }
 
+export class msRollDialog {
+    constructor(options = {}) {
+        this.data = {
+            tValue: 0,
+            sValue: 0,
+            tName: "Talent",
+            sName: "Skill",
+            mod: 0,
+            create: true,
+            item: false
+        };
+        Object.assign(this.data, options)
+    }
+
+    async createDialog() {
+
+        const content = await renderTemplate("systems/mondsturz/templates/dialog/skill-dialog.hbs", this.data)
+
+        return new Promise(resolve => {
+            new Dialog({
+                title: `${this.data.tName}` + ' Wurf',
+                content: content,
+                default: "normal",
+                buttons: {
+                    disadvantage: {
+                        icon: '<i class="fas fa-arrow-down"></i>',
+                        label: "Nachteil",
+                        callback: html => resolve(this._returnData(html, "kl"))
+                    },
+                    normal: {
+                        icon: '<i class="fas fa-dice"></i>',
+                        label: "Normal",
+                        callback: html => resolve(this._returnData(html, ""))
+                    },
+                    advantage: {
+                        icon: '<i class="fas fa-arrow-up"></i>',
+                        label: "Vorteil",
+                        callback: html => resolve(this._returnData(html, "kh"))
+                    },
+                },
+                close: () => resolve(null)
+            }).render(true);
+        });
+    }
+
+    async _returnData(html, mode) {
+        let data = {};
+        data.mode = mode;
+        data.talent = (html.find('[id=talent]')[0].value);
+        data.skill = (html.find('[id=skill]')[0].value);
+        data.mod = (html.find('[id=mod]')[0].value);
+        data.options = {};
+        if (this.data.item) {
+            data.options.used = html.find('[id=use]')[0]?.checked;
+            let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
+            specialOptions.forEach(element => {
+                data.options[element.id] = element.value;
+            })
+        }
+        return data;
+    }
+
+}
 
 async function parseTable() {
 
@@ -192,8 +255,8 @@ async function redditTest() {
 
     let text = await new Promise((resolve) => {
         new Dialog({
-          title: "Create Post-It Note",
-          content: `
+            title: "Create Post-It Note",
+            content: `
             <form>
               <div class="form-group">
                 <label>Text:</label>
@@ -201,43 +264,43 @@ async function redditTest() {
               </div>
             </form>
           `,
-          buttons: {
-            ok: {
-              label: "Create",
-              callback: (html) => {
-                resolve(html.find('[name="text"]').val());
-              },
+            buttons: {
+                ok: {
+                    label: "Create",
+                    callback: (html) => {
+                        resolve(html.find('[name="text"]').val());
+                    },
+                },
+                cancel: {
+                    label: "Cancel",
+                },
             },
-            cancel: {
-              label: "Cancel",
-            },
-          },
-          default: "ok",
+            default: "ok",
         }).render(true);
-      });
-      console.log(text)
+    });
+    console.log(text)
 
-      if (text) {
+    if (text) {
         let data = {
-          author: game.user._id,
-          x: 0,
-          y: 0,
-          width: 183,
-          height: 200,
-          img: "tiles/note_yellow.webp",
-          text: text,
-          textAnchor: { x: 0.5, y: 0.5 },
-          fontFamily: "Courier New",
-          fontSize: 20,
-          locked: false,
-          visible: true,
-          zIndex: 100,
-          flags: { "core.controlledToken": true },
+            author: game.user._id,
+            x: 0,
+            y: 0,
+            width: 183,
+            height: 200,
+            img: "tiles/note_yellow.webp",
+            text: text,
+            textAnchor: { x: 0.5, y: 0.5 },
+            fontFamily: "Courier New",
+            fontSize: 20,
+            locked: false,
+            visible: true,
+            zIndex: 100,
+            flags: { "core.controlledToken": true },
         };
-      
+
         game.scenes.active.createEmbeddedDocuments("DrawingDocument", data)
 
-      }
+    }
 
 
 

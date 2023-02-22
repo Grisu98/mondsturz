@@ -1,0 +1,19 @@
+{{log "waffe-message.hbs" @root}}
+<div class="item-message" data-item-id="{{uuid}}">
+    <h2
+        title="Level: {{item.system.stats.level}}&#10;Talent: {{item.system.stats.talentKey}}&#10;Skill: {{item.system.stats.skillKey}}">
+        {{item.name}} Wurf
+    </h2>
+
+    <div>
+        {{misc.text}}
+        <br>
+        Mana: {{misc.mana}}
+    </div>
+
+    {{#if item.isOwner}}
+    <div >
+        <button class="item-roll-damage message-button">{{misc.formula}} <i class="fas fa-sword"></i></button>
+    </div>
+    {{/if}}
+</div>

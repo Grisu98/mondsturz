@@ -6,7 +6,6 @@ import { MondsturzCombat } from "./documents/combat.mjs"
 import { MondsturzActorSheet } from "./sheets/actor-sheet.mjs";
 import { MondsturzItemSheet } from "./sheets/item-sheet.mjs";
 import { MondsturzCombatTracker } from "./sheets/combat-tracker.mjs";
-import { MondsturzActiveEffectConfig } from "./sheets/effect-config.mjs";
 // Import helper/utility classes and constants.
 import { MS } from "./helpers/config.mjs";
 import { preloadHtmls, MsCombatHelper, createEffectKeys } from "./helpers/utils.js";
@@ -45,7 +44,6 @@ Hooks.once('init', async function () {
   Actors.registerSheet("mondsturz", MondsturzActorSheet, { makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("mondsturz", MondsturzItemSheet, { makeDefault: true });
-  DocumentSheetConfig.registerSheet(ActiveEffect, "mondsturz", MondsturzActiveEffectConfig, { makeDefault: true });
 
   // Preload Handlebars templates.
   // return preloadHtmls();
@@ -243,3 +241,18 @@ function rollItemMacro(itemUuid) {
 // Hooks.on("updateCombat", (MsCombatHelper(combat, round, diff, id)))
 
 Hooks.on("updateCombatant", ((combatant, update, diff, id) => { MsCombatHelper(combatant, update, diff, id) }))
+
+// add event listener 
+Hooks.on("renderChatMessage", ((_message, html)=>{
+  html.on("click", ".item-roll-damage", async (event, html) => {
+    const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
+    const item = await fromUuid(uuid);
+    item.rollDamage()
+  })
+  
+  html.on("click", ".damage-target", async(event)=>{
+    const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
+    const item = await fromUuid(uuid);
+    item.applyDamage();
+  })
+}))

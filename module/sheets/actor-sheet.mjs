@@ -149,8 +149,6 @@ export class MondsturzActorSheet extends ActorSheet {
 
   }
 
-
-
   /** @override */
   _getHeaderButtons() {
     let buttons = super._getHeaderButtons();
@@ -176,8 +174,8 @@ export class MondsturzActorSheet extends ActorSheet {
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).closest(".item");
-      const item = this.actor.items.get(li.data("item-id"));
+      const li = ev.currentTarget.closest(".item");
+      const item = this.actor.items.get(li.dataset.itemId);
       item.sheet.render(true);
     });
 
@@ -219,6 +217,11 @@ export class MondsturzActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.find('.rollable-skill').click(this._onRoll.bind(this));
+
+    html.find('.rollabe-prop').click((event)=>{
+      let dataset = event.currentTarget.dataset;
+      this.actor.rollProp(dataset)
+    })
 
     html.find('.rollable-talent').click(this._onRollTalent.bind(this));
 
@@ -376,7 +379,6 @@ export class MondsturzActorSheet extends ActorSheet {
     }
   }
 
-
   _onRoll(event) {
 
     event.preventDefault();
@@ -402,90 +404,12 @@ export class MondsturzActorSheet extends ActorSheet {
     msR.createDialog();
   }
 
-
-  /**
- * Handle clickable rolls.
- * @param {Event} event   The originating click event
- * @private
- */
-  _onRollItemOld(event) {
-    //** 
-    event.preventDefault();
-    let context = {};
-    let options = {};
-    const element = $(event.currentTarget).parents('.roll-div');
-    const dataset = element[0].dataset;
-
-    context.type = dataset.rollType;
-    context.actor = this.actor;
-    context.item = this.actor.items.get(dataset.itemId) ?? undefined;
-    context.talent = this.actor.system.talente[context.item.system.stats.talentKey] ??
-      this.actor.system.magie.kuenste[context.item.system.stats.talentKey];
-
-    context.skill = context.talent.skills?.[context.item.system.stats.skillKey] ??
-      this.actor.system.magie.schulen?.[context.item.system.stats.talentKey] ??
-      { wert: 0, label: "Skill", mod: 0 };
-
-    context.mod = { wert: context.item.system.stats.level };
-
-    if (context.type === "zauber") {
-      context.zauberLevel = event.currentTarget.dataset.zauberLevel
-    }
-    let msR = new MsRoll(context)
-    msR.createDialog();
-  }
-
   async _onRollItem(event) {
     event.preventDefault();
     const id = $(event.currentTarget)[0].dataset.itemId;
+    const dataset = $(event.currentTarget)[0].dataset;
     const item = this.actor.items.get(id);
-    let data = {};
-    let flavor;
-
-    if (item.type === "waffe") {
-      const talent = this.actor.system.talente[item.system.stats.talentKey]
-      data.tValue = talent.wert;
-      data.sValue = talent.skills[item.system.stats.skillKey].wert;
-      data.tName = talent.label;
-      data.sName = talent.skills[item.system.stats.skillKey].label;
-      data.mod = talent.skills[item.system.stats.skillKey].mod + talent.mod;
-      data.create = false;
-      data.item = item;
-      flavor = ` <h2>${item.name} Wurf</h2>
-      <h4>Qualität:${item.system.stats.quality} Level:${item.system.stats.level}
-      Schaden:${item.system.stats.damage} Element:${item.system.stats.element} Chance:${item.system.stats.chance}</h4>      
-      `
-    }
-    else {
-      const talent = this.actor.system.talente.mysthkuenste.skills[item.system.stats.talentKey]
-      const skill = this.actor.system.talente.magieschulen.skills[item.system.stats.skillKey];
-      let lvl = event.currentTarget.dataset.zauberLevel;
-      let i = item.system.level[lvl];
-      data.tValue = talent.wert;
-      data.sValue = skill.wert;
-      data.tName = talent.label;
-      data.sName = skill.label;
-      data.mod = skill.mod + talent.mod;
-      data.create = false;
-      data.item = item;
-      data.lvl = i;
-      flavor = ` <h2>${item.name} Wurf</h2>
-      <h4> ${i.text}</h4>
-      `
-    }
-
-    let msR = new MsRoll(data);
-    let [msg, options] = await msR.createDialog();
-    msg.flavor = flavor;
-
-    const cls = getDocumentClass("ChatMessage");
-    cls.create(msg)
-
-    // use up mana
-    if (options.used) {
-      let oldVal = this.actor.system.attribute.bars.mana.wert;
-      await this.actor.update({ "system.attribute.bars.mana.wert": oldVal - options.res })
-    }
+    await item.roll(this.actor, dataset);
   }
 
   async _onConfigureActor(event) {

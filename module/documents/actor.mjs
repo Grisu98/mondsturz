@@ -1,3 +1,5 @@
+import { msRollDialog } from "../helpers/utils.js"
+
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -49,20 +51,21 @@ export class MondsturzActor extends Actor {
     const systemData = actorData.system;
 
     const items = actorData.items.contents;
-    items.forEach((element)=> {
+    items.forEach((element) => {
       if (element.system.weight) {
-      systemData.misc.inventar.wert += element.system.weight;
-    }})
+        systemData.misc.inventar.wert += element.system.weight;
+      }
+    })
     // 
 
 
 
     // Loop through ability scores, and add their modifiers to our sheet output.
-  // 
-  //  for (let [name, props] of Object.entries(systemData.skills)) {
-  //      ability.derived = props.value + props.modifier;
-//  }
-}
+    // 
+    //  for (let [name, props] of Object.entries(systemData.skills)) {
+    //      ability.derived = props.value + props.modifier;
+    //  }
+  }
   /**
    * Prepare NPC type specific data.
    */
@@ -100,6 +103,51 @@ export class MondsturzActor extends Actor {
   _getNpcRollData(data) {
     if (this.type !== 'npc') return;
 
+  }
+
+  async rollProp(dataset) {
+    let talent;
+    let skill;
+    switch (dataset.type) {
+      case "talent":
+        talent = this.system.talente[dataset.talent];
+        skill = {label: talent.label};
+        break;
+      case "skill":
+        talent = this.system.talente[dataset.talent];
+        skill = talent.skills[dataset.skill];
+        break;
+      case "properties":
+
+        break;
+      default:
+        talent = this.system.attribute.resistenzen[dataset.talent];
+        skill = {label: talent.label};
+        break;
+    }
+
+    const data = {
+      tValue: talent.wert,
+      sValue: skill.wert || 0,
+      tName: talent.label,
+      sName: skill.label,
+      mod: (skill.mod || 0) + (talent.mod || 0),
+    }
+    let dialog = new msRollDialog(data);
+    let rd = await dialog.createDialog();
+
+    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.skill}+${rd.mod}`).evaluate({ async: false })
+
+    let flavor = `<h3>${data.sName} Wurf</h3>`
+
+    let message = await new ChatMessage({
+      rolls: [r],
+      content: r.total,
+      flavor: flavor,
+      type: 5,
+      speaker: ChatMessage.getSpeaker(this )
+    });
+    ChatMessage.create(message)
   }
 
 }

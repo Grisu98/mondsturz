@@ -7,7 +7,8 @@
     <div class="col-2">
       <div class="header-info">
         <h1><input class="clear-input" type="text" name="name" value="{{actor.name}}" /></h1>
-        <h4>XP: 140 LVL: 5
+        <h4>XP: <input class="clear-input" type="number" name="system.misc.xp" value="{{actor.system.misc.xp}}" /> LVL:
+          {{actor.system.misc.rang}}
         </h4>
       </div>
       <div class="row-4-6">
@@ -15,9 +16,9 @@
           <div class="bars">
             {{#each actor.system.attribute.bars as |value key|}}
             {{#unless (eq value.max 0)}}
-
             <div class="health-bar bar-graph" data-bar-type="{{key}}">
-              <div class="bar" style="width: {{math (math value.wert  "*" 100) "/" value.max}}%;"></div>
+              <div id="{{value.cssId}}" class="bar" style="width: {{math (math value.wert  " *" 100) "/" value.max}}%;">
+              </div>
               <div class="text">{{value.label}} <input class="clear-input" type="number"
                   name="system.attribute.bars.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /> /
                 {{value.max}}</div>
@@ -88,8 +89,8 @@
         {{#each system.talente as |talentValue talentKey|}}
         {{!-- {{#unless (isEmpty talentValue.skills)}} --}}
         <div id="{{talentKey}}"
-          class="accordion-header rollable-talent {{#if (isSame talentKey @root.flags.mondsturz.activeId)}}active{{/if}}"
-          data-t-value="{{talentValue.wert}}" data-t-name="{{talentValue.label}}" data-mod="{{talentValue.mod}}">
+          class="accordion-header rollabe-prop rollable {{#if (isSame talentKey @root.flags.mondsturz.activeId)}}active{{/if}}"
+          data-talent="{{talentKey}}" data-type="talent">
           {{talentValue.label}}
           {{#if talentValue.wert}}
           <input class="clear-input" type="number" name="system.talente.{{talentKey}}.wert" value="{{talentValue.wert}}"
@@ -101,9 +102,8 @@
           id="accordion-content-{{i}}">
           <table>
             {{#each skills as |skillValue skillKey|}}
-            <tr class="roll-div rollable-skill" data-t-value="{{talentValue.wert}}" data-t-name="{{talentValue.label}}"
-              data-s-name="{{skillValue.label}}" data-s-value="{{skillValue.wert}}" data-mod="{{math talentValue.mod "
-              +" skillValue.mod}}" data-skill-key="{{skillKey}}">
+            <tr class="roll-div rollabe-prop rollable" data-talent="{{talentKey}}" data-skill="{{skillKey}}"
+              data-type="skill">
               <td>{{skillValue.label}}</td>
               <td><input class="clear-input" type="number" name="system.talente.{{talentKey}}.skills.{{skillKey}}.wert"
                   value="{{skillValue.wert}}" data-dtype="Number" />{{#if skillValue.mod}}+{{skillValue.mod}}{{/if}}
@@ -123,15 +123,21 @@
             <table class="m-table">
               <tr>
                 <th colspan="2">Merkmale</th>
+                <th>
+                  <a class="item-create" title="Create item" data-type="eigenschaft"><i class="fas fa-plus"></i></a>
+                </th>
               </tr>
               {{#each sortedEig}}
-              <tr class="item item-header" data-item-id="{{tjhis.id}}">
+              <tr class="item item-header" data-item-id="{{this.id}}">
                 <td class="img-td">
                   <img src="{{this.img}}" width="24" height="24" />
                 </td>
                 <td>
-                  {{log "this is this" this}}
                   {{this.name}}
+                </td>
+                <td class="item-controls">
+                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
               <tr class="item-content">
@@ -139,6 +145,8 @@
                   {{this.descr}}
                   {{this.text}}
                 </td>
+
+
               </tr>
               {{/each}}
             </table>
@@ -221,7 +229,7 @@
                 <th colspan="2">Resistenzen</th>
               </tr>
               {{#each system.attribute.resistenzen as |value key|}}
-              <tr class="rollable-misc" data-s-value="{{value.wert}}" data-mod="{{value.mod}}">
+              <tr class="rollabe-prop rollable" data-talent="{{key}}">
                 <td>{{value.label}}</td>
                 <td style="width: 30px;"><input class="clear-input" type="number"
                     name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
@@ -246,9 +254,9 @@
                 </th>
               </tr>
               {{#each waffen as |item id|}}
-              <tr class="item rollable-item" data-item-id="{{item._id}}">
+              <tr class="item rollable-item " data-item-id="{{item._id}}">
                 <td class="img-td">
-                  <img src="{{item.img}}" width="24" height="24" />
+                  <img class="rollable" src="{{item.img}}" width="24" height="24" />
                 </td>
                 <td>{{item.name}}</td>
                 <td>{{item.system.weight}}</td>
@@ -272,7 +280,7 @@
               {{#each zauber as |item id|}}
               <tr class="item" data-item-id="{{item._id}}">
                 <td class="img-td">
-                  <img src="{{item.img}}" width="24" height="24" />
+                  <img class="rollable" src="{{item.img}}" width="24" height="24" />
                 </td>
                 <td class="" data-item-id="{{item._id}}">{{item.name}}</td>
                 <td class="zauber-level" data-target="zauber0-{{@index}}">0</td>
@@ -288,36 +296,13 @@
                 </td>
               </tr>
               <tr class="zauber-texts" data-item-id="{{item._id}}">
-                <td colspan="8" class="zauber-text" id="zauber0-{{@index}}" data-item-id="{{item._id}}"
-                  data-zauber-level="levelZero">
-                  <div>{{item.system.level.levelZero.text}}</div>
-                  <div>{{item.system.level.levelZero.formula}}</div>
+                {{#each item.system.level as |value key|}}
+                <td colspan="8" class="zauber-text" id="zauber{{@index}}-{{@../index}}" data-item-id="{{item._id}}"
+                  data-zauber-level="level{{@index}}">
+                  <div>{{value.text}}</div>
+                  <div>{{value.formula}}</div>
                 </td>
-                <td colspan="8" class="zauber-text" id="zauber1-{{@index}}" data-item-id="{{item._id}}"
-                  data-zauber-level="levelOne">
-                  <div>{{item.system.level.levelOne.text}}</div>
-                  <div>{{item.system.level.levelOne.formula}}</div>
-                </td>
-                <td colspan="8" class="zauber-text" id="zauber2-{{@index}}" data-item-id="{{item._id}}"
-                  data-zauber-level="levelTwo">
-                  <div>{{item.system.level.levelTwo.text}}</div>
-                  <div>{{item.system.level.levelTwo.formula}}</div>
-                </td>
-                <td colspan="8" class="zauber-text" id="zauber3-{{@index}}" data-item-id="{{item._id}}"
-                  data-zauber-level="levelThree">
-                  <div>{{item.system.level.levelThree.text}}</div>
-                  <div>{{item.system.level.levelThree.formula}}</div>
-                </td>
-                <td colspan="8" class="zauber-text" id="zauber4-{{@index}}" data-item-id="{{item._id}}"
-                  data-zauber-level="levelFour">
-                  <div>{{item.system.level.levelFour.text}}</div>
-                  <div>{{item.system.level.levelFour.formula}}</div>
-                </td>
-                <td colspan="8" class="zauber-text" id="zauber5-{{@index}}" data-item-id="{{item._id}}"
-                  data-zauber-level="levelFive">
-                  <div>{{item.system.level.levelFive.text}}</div>
-                  <div>{{item.system.level.levelFive.formula}}</div>
-                </td>
+                {{/each}}
               </tr>
               {{/each}}
             </table>
