@@ -853,13 +853,17 @@
           "inbrunst": {
             "wert": "",
             "label": "Inbrunst der Seele"
+          },
+          "familienstand": {
+            "wert": "",
+            "label": "Familienstand"
           }
         },
         "misc": {
           "advSetting": false,
           "compact": true,
-          "xp": "",
-          "rang": "",
+          "xp": 0,
+          "rang": 0,
           "inventar": {
             "wert": 0,
             "max": 10,
@@ -898,31 +902,37 @@
         "levelZero": {
           "formula": "",
           "text": "",
+          "mana": 0,
           "label": "Trick"
         },
         "levelOne": {
           "formula": "",
           "text": "",
+          "mana": 0,
           "label": "Stufe Eins"
         },
         "levelTwo": {
           "formula": "",
           "text": "",
+          "mana": 0,
           "label": "Stufe Zwei"
         },
         "levelThree": {
           "formula": "",
           "text": "",
+          "mana": 0,
           "label": "Stufe Drei"
         },
         "levelFour": {
           "formula": "",
           "text": "",
+          "mana": 0,
           "label": "Stufe Vier"
         },
         "levelFive": {
           "formula": "",
           "text": "",
+          "mana": 0,
           "label": "Stufe Fünf"
         }
       },

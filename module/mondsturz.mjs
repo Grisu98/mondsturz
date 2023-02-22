@@ -6,10 +6,10 @@ import { MondsturzCombat } from "./documents/combat.mjs"
 import { MondsturzActorSheet } from "./sheets/actor-sheet.mjs";
 import { MondsturzItemSheet } from "./sheets/item-sheet.mjs";
 import { MondsturzCombatTracker } from "./sheets/combat-tracker.mjs";
-import {MondsturzActiveEffectConfig} from "./sheets/effect-config.mjs";
+import { MondsturzActiveEffectConfig } from "./sheets/effect-config.mjs";
 // Import helper/utility classes and constants.
 import { MS } from "./helpers/config.mjs";
-import {  preloadHtmls, MsCombatHelper, createEffectKeys } from "./helpers/utils.js";
+import { preloadHtmls, MsCombatHelper, createEffectKeys } from "./helpers/utils.js";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -46,7 +46,7 @@ Hooks.once('init', async function () {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("mondsturz", MondsturzItemSheet, { makeDefault: true });
   DocumentSheetConfig.registerSheet(ActiveEffect, "mondsturz", MondsturzActiveEffectConfig, { makeDefault: true });
-   
+
   // Preload Handlebars templates.
   // return preloadHtmls();
 });
@@ -95,7 +95,8 @@ Handlebars.registerHelper('math', function (lvalue, operator, rvalue) {
     "-": lvalue - rvalue,
     "*": lvalue * rvalue,
     "/": lvalue / rvalue,
-    "%": lvalue % rvalue
+    "%": lvalue % rvalue,
+    "%0": (function(){if (lvalue){return lvalue % rvalue} else{ return 0}})()
   }[operator]
 });
 
@@ -155,6 +156,10 @@ Handlebars.registerHelper('lt', function (val1, val2) {
     return true;
   }
   return false;
+});
+
+Handlebars.registerHelper('modulus', function () {
+
 });
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
@@ -237,4 +242,4 @@ function rollItemMacro(itemUuid) {
 
 // Hooks.on("updateCombat", (MsCombatHelper(combat, round, diff, id)))
 
-Hooks.on("updateCombatant", ((combatant, update, diff, id) => {MsCombatHelper(combatant, update, diff, id)}))
+Hooks.on("updateCombatant", ((combatant, update, diff, id) => { MsCombatHelper(combatant, update, diff, id) }))

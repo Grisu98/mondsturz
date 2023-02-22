@@ -50,6 +50,7 @@ export class MsRoll {
         let mod = (html.find('[id=mod]')[0].value);
         let options = {};
         if (this.data.item) {
+            options.used = html.find('[id=use]')[0]?.checked;
             let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
             specialOptions.forEach(element => {
                 options[element.id] = element.value;
@@ -184,4 +185,61 @@ async function parseTable() {
             await rollT.createEmbeddedDocuments("TableResult", [{ text: element, range: [index + 1, index + 1] }])
         })
     }
+}
+
+
+async function redditTest() {
+
+    let text = await new Promise((resolve) => {
+        new Dialog({
+          title: "Create Post-It Note",
+          content: `
+            <form>
+              <div class="form-group">
+                <label>Text:</label>
+                <input type="text" name="text" placeholder="Enter your text here"/>
+              </div>
+            </form>
+          `,
+          buttons: {
+            ok: {
+              label: "Create",
+              callback: (html) => {
+                resolve(html.find('[name="text"]').val());
+              },
+            },
+            cancel: {
+              label: "Cancel",
+            },
+          },
+          default: "ok",
+        }).render(true);
+      });
+      console.log(text)
+
+      if (text) {
+        let data = {
+          author: game.user._id,
+          x: 0,
+          y: 0,
+          width: 183,
+          height: 200,
+          img: "tiles/note_yellow.webp",
+          text: text,
+          textAnchor: { x: 0.5, y: 0.5 },
+          fontFamily: "Courier New",
+          fontSize: 20,
+          locked: false,
+          visible: true,
+          zIndex: 100,
+          flags: { "core.controlledToken": true },
+        };
+      
+        game.scenes.active.createEmbeddedDocuments("DrawingDocument", data)
+
+      }
+
+
+
+
 }

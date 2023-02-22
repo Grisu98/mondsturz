@@ -22,6 +22,14 @@ MS.abilityAbbreviations = {
   "cha": "BOILERPLATE.AbilityChaAbbr"
 };
 
+MS.eigRanks = {
+"rank1": 0,
+"rank2": 1,
+"rank3": 2,
+"rank4": 3,
+"rank5": 4
+}
+
 MS.talents = {
   "handwerk": "Handwerk",
   "wissen": "Wissen",

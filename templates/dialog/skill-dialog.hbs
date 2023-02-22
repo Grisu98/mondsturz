@@ -27,7 +27,7 @@
 {{#if (eq item.type "waffe")}}
 <div id="other-options" style="text-align: center;">
     <label for="res"> Munition verbrauchen?</label>
-    <input type="checkbox" id="res" checked="true" />
+    <input type="checkbox" id="use" checked="true" />
 </div>
 {{/if}}
 
@@ -37,7 +37,7 @@
 
     <div style="display:inline-block">
         <label for="res">Mana:</label>
-        <input style="width:2em" type="text" id="res" placeholder="{{i.mana}}"/>
+        <input style="width:2em" type="text" id="res" value="{{lvl.mana}}"/>
     </div>
 
     <div style="display:inline-block">

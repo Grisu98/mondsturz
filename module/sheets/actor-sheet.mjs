@@ -1,5 +1,5 @@
-import {MsRoll} from "../helpers/utils.js";
-import {ActorSettings} from "../sheets/actor-settings.mjs"
+import { MsRoll } from "../helpers/utils.js";
+import { ActorSettings } from "../sheets/actor-settings.mjs"
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -83,6 +83,8 @@ export class MondsturzActorSheet extends ActorSheet {
     const eigenschaften = [];
     let invSpace = 0;
 
+
+
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
@@ -129,7 +131,25 @@ export class MondsturzActorSheet extends ActorSheet {
     context.gegenstande = gegenstande;
     context.usedInv = { used: invSpace };
     context.eigenschaften = eigenschaften;
+    context.config = CONFIG.ms;
+    context.sortedEig = [];
+
+    eigenschaften.forEach(element => {
+      let rankArray = Object.keys(element.system.ranks);
+      let textKey = rankArray[element.system.rank];
+      context.sortedEig.push({
+        text: element.system.ranks[textKey].text,
+        name: element.name,
+        descr: element.system.description,
+        id: element._id,
+        img: element.img
+      })
+    });
+
+
   }
+
+
 
   /** @override */
   _getHeaderButtons() {
@@ -170,10 +190,28 @@ export class MondsturzActorSheet extends ActorSheet {
 
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("item-id"));
-      item.delete();
-      li.slideUp(200, () => this.render(false));
+      new Promise(resolve => {
+        new Dialog({
+          content: "Item wirklich löschen?",
+          buttons: {
+            ja: {
+              label: "ja",
+              callback: _delItem.bind(this)
+            },
+            nein: {
+              label: "nein",
+              callback: resolve(null)
+            }
+          }
+        }).render(true)
+      })
+
+      function _delItem(){
+        const li = $(ev.currentTarget).parents(".item");
+        const item = this.actor.items.get(li.data("item-id"));
+        item.delete();
+        li.slideUp(200, () => this.render(false));
+      };
     });
 
     // In Sheet value edit of items
@@ -184,13 +222,16 @@ export class MondsturzActorSheet extends ActorSheet {
 
     html.find('.rollable-talent').click(this._onRollTalent.bind(this));
 
+    html.find('.clear-input').click(async function (event) {
+      await event.stopPropagation();
+    });
     // Rollable items,
     html.find('.rollable-item').click(this._onRollItem.bind(this));
 
     // Rollable Misc,
     html.find('.rollable-misc').click(this._onRoll.bind(this));
 
-    html.find('.accordion-header').click((ev) => {
+    html.find('.accordion-header').click(async (ev) => {
       let allHeaders = document.getElementsByClassName("accordion-header");
       let allContents = document.getElementsByClassName("accordion-content");
       for (let i = 0; i < allHeaders.length; i++) {
@@ -202,6 +243,7 @@ export class MondsturzActorSheet extends ActorSheet {
       let curr = ev.currentTarget;
       curr.classList.toggle("active");
       curr.nextElementSibling.classList.toggle("active")
+      await this.actor.setFlag("mondsturz", "activeId", curr.id)
     })
 
     html.find('.zauber-level').click((ev) => {
@@ -323,6 +365,7 @@ export class MondsturzActorSheet extends ActorSheet {
     let propKey = event.target.dataset.prop;
     let propValue = event.target.value;
     if (event.target.dataset.dtype === "Number") { propValue = parseInt(propValue) }
+    if (Number.isNaN(propValue)) { return }
     let update = { _id: id, [propKey]: propValue };
     this.actor.updateEmbeddedDocuments("Item", [update]);
   }
@@ -432,16 +475,16 @@ export class MondsturzActorSheet extends ActorSheet {
     }
 
     let msR = new MsRoll(data);
-    let [msg,options] = await msR.createDialog();
+    let [msg, options] = await msR.createDialog();
     msg.flavor = flavor;
 
     const cls = getDocumentClass("ChatMessage");
     cls.create(msg)
 
     // use up mana
-    if (options.use){
+    if (options.used) {
       let oldVal = this.actor.system.attribute.bars.mana.wert;
-      await this.actor.update({"system.attribute.bars.mana.wert": oldVal - options.res})
+      await this.actor.update({ "system.attribute.bars.mana.wert": oldVal - options.res })
     }
   }
 
