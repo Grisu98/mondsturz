@@ -1,0 +1,98 @@
+<form class="{{cssClass}}" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields">
+            <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+        </div>
+    </header>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="allgemein">Allgemein</a>
+        <a class="item" data-tab="description">Beschreibung</a>
+    </nav>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+
+        {{!-- allgemein tab --}}
+        <div class="tab allgemein" data-group="primary" data-tab="allgemein">
+            <div class="grid grid-2col">
+                <div>
+                    <label for="system.stats.talentKey">Talent wählen:</label>
+                    <select name="system.stats.talentKey" data-dtype="String">
+                        {{#select system.stats.talentKey}}
+                        {{#each config.kuenste as |talLabel talKey|}}
+                        <option value="{{talKey}}">{{talLabel}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+                {{#unless (isSame system.stats.talentKey "katalysator")}}
+                <div>
+                    <label for="system.stats.skillKey">Skill wählen:</label>
+                    <select name="system.stats.skillKey" data-dtype="String">
+                        {{#select system.stats.skillKey}}
+                        {{#each config.schulen as |skiLabel skiKey|}}
+                        <option value="{{skiKey}}">{{skiLabel}}</option>
+                        {{/each}}
+                        {{/select}}
+                    </select>
+                </div>
+                {{else}}
+                <div>
+                    <div>
+                        <label for="system.stats.level">Level: </label>
+                        <select name="system.stats.level" data-dtype="Number">
+                            {{#select system.stats.level}}
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            {{/select}}
+                        </select>
+
+                        <select name="system.stats.quality" data-dtype="Number">
+                            {{#select system.stats.quality}}
+                            <option value="4">Gehärtet</option>
+                            <option value="3">Verstärkt</option>
+                            <option value="2">Wie Neu</option>
+                            <option value="1">Abgenutzt</option>
+                            <option value="0">Brüchig</option>
+                            {{/select}}
+                        </select>
+                    </div>
+                </div>
+                {{/unless}}
+            </div>
+            <div class="grid grid-2col">
+                {{#each system.level as |value key|}}
+                <div>
+                    <label for="system.level.{{key}}.text" class="">{{value.label}}: </label>
+                    <textarea name="system.level.{{key}}.text" data-dtype="String">{{value.text}}</textarea>
+                    <div style="text-indent: 10px;">
+
+                        <label for="system.level.{{key}}.mana" class="">Mana: </label>
+                        <input type="text" name="system.level.{{key}}.mana" value="{{value.mana}}"
+                            data-dtype="Number" />
+
+                        <label for="system.level.{{key}}.formula" class="">Formel: </label>
+                        <input type="text" name="system.level.{{key}}.formula" value="{{value.formula}}"
+                            data-dtype="String" />
+                    </div>
+                    <hr>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        {{!-- sontige tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            <textarea name="item.system.misc.description" cols="30"
+                rows="10">{{item.system.misc.description}}</textarea>
+        </div>
+    </section>
+
+</form>

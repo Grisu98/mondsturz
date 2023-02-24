@@ -1,0 +1,11 @@
+<div class="item-message" data-item-id="{{uuid}}">
+    <h2
+        title="Level: {{system.stats.level}}&#10;Qualität: {{system.stats.quality}}&#10;Talent: {{system.stats.talentKey}}&#10;Skill: {{system.stats.skillKey}}">
+        {{name}} Wurf
+    </h2>
+    {{#if isOwner}}
+    <div >
+        <button class="item-roll-damage message-button">{{system.stats.damage}} <i class="fas fa-sword"></i></button>
+    </div>
+    {{/if}}
+</div>
