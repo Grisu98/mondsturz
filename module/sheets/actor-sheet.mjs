@@ -45,6 +45,8 @@ export class MondsturzActorSheet extends ActorSheet {
       this._prepareCharacterData(context);
     }
 
+    
+
     // Prepare NPC data and items.
     if (actorData.type == 'npc') {
       this._prepareItems(context);

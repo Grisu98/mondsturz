@@ -11,7 +11,7 @@ export class MondsturzCombat extends Combat {
 
     async nextRound() {
         await super.nextRound();
-        this.setFlag("mondsturz", "allSubmited", false);
+        this.setFlag("mondsturz", "allSubmited", false);  
     }
 
     async submitAll() {
