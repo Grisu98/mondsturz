@@ -196,8 +196,8 @@
               {{#each adrenalin as |stufe stufeKey|}}
               <tr>
                 <td>{{math @index "+" 1}}</td>
-                  <td>{{stufe.effekt}}</td>
-                  <td>{{stufe.kosten}}</td>
+                <td>{{stufe.effekt}}</td>
+                <td>{{stufe.kosten}}</td>
               </tr>
               {{/each}}
             </table>
@@ -206,16 +206,17 @@
           <div>
             <table class="m-table grey-bg">
               <tr>
-                <th colspan="2">Resistenzen</th>
+                <th colspan="2">Rüstwerte</th>
               </tr>
-              {{#each system.attribute.resistenzen as |value key|}}
-              <tr class="rollabe-prop rollable" data-talent="{{key}}">
+              {{#each system.attribute.ruestwert as |value key|}}
+              <tr class="" data-talent="{{key}}">
                 <td>{{value.label}}</td>
                 <td class="ruestwerte-td"><input class="clear-input" type="number"
-                    name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
+                    name="system.attribute.ruestwert.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
               {{/each}}
+              <tr><td style="height: 24px"></td></tr>
             </table>
           </div>
 

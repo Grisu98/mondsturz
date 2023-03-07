@@ -1,79 +1,3 @@
-export class MsRoll {
-    constructor(options = {}) {
-        this.data = {
-            tValue: 0,
-            sValue: 0,
-            tName: "Talent",
-            sName: "Skill",
-            mod: 0,
-            create: true,
-            item: false
-        };
-        Object.assign(this.data, options)
-    }
-
-    async createDialog() {
-
-        const content = await renderTemplate("systems/mondsturz/templates/dialog/skill-dialog.hbs", this.data)
-
-        return new Promise(resolve => {
-            new Dialog({
-                title: `${this.data.tName}` + ' Wurf',
-                content: content,
-                default: "normal",
-                buttons: {
-                    disadvantage: {
-                        icon: '<i class="fas fa-arrow-down"></i>',
-                        label: "Nachteil",
-                        callback: html => resolve(this.createRoll(html, "kl"))
-                    },
-                    normal: {
-                        icon: '<i class="fas fa-dice"></i>',
-                        label: "Normal",
-                        callback: html => resolve(this.createRoll(html, "normal"))
-                    },
-                    advantage: {
-                        icon: '<i class="fas fa-arrow-up"></i>',
-                        label: "Vorteil",
-                        callback: html => resolve(this.createRoll(html, "kh"))
-                    },
-                },
-                close: () => resolve(null)
-            }).render(true);
-        });
-    }
-
-    async createRoll(html, mode) {
-
-        let talent = (html.find('[id=talent]')[0].value);
-        let skill = (html.find('[id=skill]')[0].value);
-        let mod = (html.find('[id=mod]')[0].value);
-        let options = {};
-        if (this.data.item) {
-            options.used = html.find('[id=use]')[0]?.checked;
-            let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
-            specialOptions.forEach(element => {
-                options[element.id] = element.value;
-            })
-        }
-        let r;
-        if (mode === "normal") {
-            r = await new Roll(`2d6 + ${talent} + ${skill} + ${mod}`).evaluate({ async: false });
-            r = await r.toMessage({ flavor: this.data.tName }, { create: this.data.create });
-            if (!this.data.create) { return [r, options] }
-        }
-        else {
-            r = await new Roll(`3d6${mode}2 + ${talent} + ${skill} + ${mod}`).evaluate({ async: false });
-            // r = await r.toMessage({ flavor: `<h2> ${item.name} Wurf</h2> [[/roll ${item.system.stats.damage}]]` });
-            r = await r.toMessage({ flavor: `${this.data.tName} Wurf` }, { create: this.data.create });
-            if (!this.data.create) { return [r, options] }
-        }
-    }
-
-}
-// adding MsRoll to global scope so it can be used in macros
-globalThis.MsRoll = MsRoll;
-
 export function MsCombatHelper(combatant, round, diff, id) {
 
     // only gm can update combat
@@ -94,11 +18,16 @@ export function MsCombatHelper(combatant, round, diff, id) {
     }
 }
 
-export const preloadHtmls = async function () {
+export const preloadTemplates = async function() {
     return loadTemplates([
-        "systems/mondsturz/templates/actor/parts/actor-character.sheet.hbs",
+  
+      // Actor partials.
+      "systems/mondsturz/templates/actor/parts/actor-features.hbs",
+      "systems/mondsturz/templates/actor/parts/actor-items.hbs",
+      "systems/mondsturz/templates/actor/parts/actor-spells.hbs",
+      "systems/mondsturz/templates/actor/parts/actor-effects.hbs",
     ]);
-};
+  };
 
 export function createEffectKeys() {
 
@@ -109,51 +38,6 @@ export function createEffectKeys() {
     //     !str.includes("wert") &&  !str.includes("label")
     // });
     return filteredKeys
-}
-
-
-async function parseEig() {
-
-
-    new Promise(resolve => {
-        new Dialog({
-            title: "Input zu Eigenschaft",
-            content: `<textarea id="idat"></textarea>`,
-            default: "normal",
-            buttons: {
-                normal: {
-                    icon: '<i class="fas fa-pen"></i>',
-                    label: "erstellen",
-                    callback: html => resolve(createEig(html))
-                }
-            },
-            close: () => resolve(null)
-        }).render(true);
-    });
-    async function createEig(html) {
-        const t = html.find('[id=idat]')[0].value;
-
-        const lines = t.split("\n");
-        let obj = {
-            ranks: {}
-        };
-        for (let i = 0; i < lines.length; i++) {
-            if (i === 0) {
-                obj.name = lines[i];
-            }
-            if (i === 1) {
-                obj.desc = lines[i];
-            }
-            if (lines[i].length > 2 && i > 2) {
-                let key = `rank${Object.keys(obj.ranks).length + 1}`;
-
-                let a = obj.ranks[key] = {};
-                a.text = lines[i];
-            }
-        }
-        console.log(obj)
-        let i = await Item.create({ name: obj.name, type: "eigenschaft", system: { ranks: obj.ranks, description: obj.desc } })
-    }
 }
 
 export class msRollDialog {

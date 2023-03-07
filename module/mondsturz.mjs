@@ -8,7 +8,7 @@ import { MondsturzItemSheet } from "./sheets/item-sheet.mjs";
 import { MondsturzCombatTracker } from "./sheets/combat-tracker.mjs";
 // Import helper/utility classes and constants.
 import { MS } from "./helpers/config.mjs";
-import { preloadHtmls, MsCombatHelper, createEffectKeys } from "./helpers/utils.js";
+import { preloadTemplates, MsCombatHelper, createEffectKeys } from "./helpers/utils.js";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -23,6 +23,8 @@ Hooks.once('init', async function () {
     MondsturzItem,
     rollItemMacro
   };
+
+ preloadTemplates()
 
   // CONFIG.debug.hooks = true
   CONFIG.ms = MS;

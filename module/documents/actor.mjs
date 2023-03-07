@@ -50,43 +50,42 @@ export class MondsturzActor extends Actor {
       }
     }
 
+    // deactivated for now 
+    // // calucalte how many points each talentgruppe has 6 18 36
+    // for (let tGruppe in systemData.talentGruppen) {
+    //   let invested = systemData.talentGruppen[tGruppe].invested;
+    //   if (invested < 6) {
+    //     systemData.talentGruppen[tGruppe].wert = 1;
+    //     systemData.talentGruppen[tGruppe].maxTalent = 3;
+    //   }
+    //   else if (invested < 18) {
+    //     systemData.talentGruppen[tGruppe].wert = 2;
+    //     systemData.talentGruppen[tGruppe].maxTalent = 6;
+    //   }
+    //   else if (invested < 36) {
+    //     systemData.talentGruppen[tGruppe].wert = 3;
+    //     systemData.talentGruppen[tGruppe].maxTalent = 9;
+    //   }
+    //   else {
+    //     systemData.talentGruppen[tGruppe].wert = 4;
+    //     systemData.talentGruppen[tGruppe].maxTalent = 12;
+    //   }
+    // }
 
-    // calucalte how many points each talentgruppe has 6 18 36
-    for (let tGruppe in systemData.talentGruppen) {
-      let invested = systemData.talentGruppen[tGruppe].invested;
-      if (invested < 6) {
-        systemData.talentGruppen[tGruppe].wert = 1;
-        systemData.talentGruppen[tGruppe].maxTalent = 3;
-      }
-      else if (invested < 18) {
-        systemData.talentGruppen[tGruppe].wert = 2;
-        systemData.talentGruppen[tGruppe].maxTalent = 6;
-      }
-      else if (invested < 36) {
-        systemData.talentGruppen[tGruppe].wert = 3;
-        systemData.talentGruppen[tGruppe].maxTalent = 9;
-      }
-      else {
-        systemData.talentGruppen[tGruppe].wert = 4;
-        systemData.talentGruppen[tGruppe].maxTalent = 12;
-      }
-    }
+    // // fix diverse to zeropoints and magic to 0/12
+    // systemData.talentGruppen.diverse1.wert = 0;
+    // systemData.talentGruppen.diverse1.maxTalent = 12;
 
-    // fix diverse to zeropoints and magic to 0/12
-    systemData.talentGruppen.diverse1.wert = 0;
-    systemData.talentGruppen.diverse1.maxTalent = 12;
+    // systemData.talentGruppen.diverse2.wert = 0;
+    // systemData.talentGruppen.diverse2.maxTalent = 12;
 
-    systemData.talentGruppen.diverse2.wert = 0;
-    systemData.talentGruppen.diverse2.maxTalent = 12;
+    // systemData.talentGruppen.magieschulen.wert = 0;
+    // systemData.talentGruppen.magieschulen.maxTalent = 12;
 
-    systemData.talentGruppen.magieschulen.wert = 0;
-    systemData.talentGruppen.magieschulen.maxTalent = 12;
+    // systemData.talentGruppen.mysthkuenste.wert = 0;
+    // systemData.talentGruppen.mysthkuenste.maxTalent = 12;
 
-    systemData.talentGruppen.mysthkuenste.wert = 0;
-    systemData.talentGruppen.mysthkuenste.maxTalent = 12;
 
-    // Make separate methods for each Actor type (character, npc, etc.) to keep
-    // things organized.
     this._prepareCharacterData(actorData);
     this._prepareNpcData(actorData);
   }
@@ -106,13 +105,7 @@ export class MondsturzActor extends Actor {
         systemData.misc.inventar.wert += element.system.weight;
       }
     })
-    // 
 
-    // Loop through ability scores, and add their modifiers to our sheet output.
-    // 
-    //  for (let [name, props] of Object.entries(systemData.skills)) {
-    //      ability.derived = props.value + props.modifier;
-    //  }
   }
   /**
    * Prepare NPC type specific data.
@@ -198,32 +191,23 @@ export class MondsturzActor extends Actor {
     ChatMessage.create(message)
   }
 
-  _onCreateEmbeddedDocuments(embeddedName, ...args) {
-    super._onCreateEmbeddedDocuments(embeddedName, ...args);
+  // _onCreateEmbeddedDocuments(embeddedName, ...args) {
+  //   super._onCreateEmbeddedDocuments(embeddedName, ...args);
 
-    if (args[1][0].type === "merkmal") {
-      this._handleMerkmal(args[1][0]);
-    }
-  }
+  //   if (args[1][0].type === "merkmal") {
+  //     this._handleMerkmal(args[1][0]);
+  //   }
+  // }
 
-  /** @inheritdoc */
-  _onDeleteEmbeddedDocuments(embeddedName, ...args) {
-    super._onDeleteEmbeddedDocuments(embeddedName, ...args);
-    let barear = args[0][0].type;
-    if (args[0][0].type === "merkmal") {
-      this._handleMerkmal(args[0][0], false);
-    }
-  }
-
+  // _onDeleteEmbeddedDocuments(embeddedName, ...args) {
+  //   super._onDeleteEmbeddedDocuments(embeddedName, ...args);
+  //   let barear = args[0][0].type;
+  //   if (args[0][0].type === "merkmal") {
+  //     this._handleMerkmal(args[0][0], false);
+  //   }
+  // }
 
   _handleMerkmal(merkmal, add = true) {
-    // let changes = merkmal.system.changes;
-    // for (let element of changes) {
-    //   let updateKey = `system.${element.key}`;
-    //   let oldValue = updateKey.split(".").reduce((obj, prop) => obj[prop], this);
-    //   let newValue = add ? oldValue + element.value : oldValue - element.value;
-    //   this.update(updateKey, newValue);
-    // }
 
     let sysData = merkmal.system
     let updateKey = `system.${sysData.key}`;

@@ -78,25 +78,6 @@ export class MondsturzItemSheet extends ItemSheet {
     html.find(".delete-effect-part").click(ev => this.deleteEffectPart(ev, this.object.effects.contents[0]))
   }
 
-  /** @override */
-  _getHeaderButtons() {
-    let buttons = super._getHeaderButtons();
-    const canConfigure = game.user.isGM || (this.actor.isOwner && game.user.can("TOKEN_CONFIGURE"));
-    if (this.options.editable && canConfigure) {
-      buttons.splice(1, 0, {
-        label: "Bearbeiten",
-        class: "configure-actor",
-        icon: "fas fa-pen",
-        onclick: ev => {
-          ev.preventDefault();
-          let curr = this.item.system.compact;
-          this.item.update({ "system.compact": !curr })
-        }
-      });
-    }
-    return buttons
-  }
-
 
   async _updateObject(_event, formData) {
     if (!this.object.id) return;

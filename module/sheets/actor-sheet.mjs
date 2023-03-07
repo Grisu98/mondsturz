@@ -1,5 +1,3 @@
-import { MsRoll } from "../helpers/utils.js";
-import { ActorSettings } from "../sheets/actor-settings.mjs"
 import { AdrenalinSheet } from "../sheets/adrenalin-sheet.mjs"
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -157,7 +155,6 @@ export class MondsturzActorSheet extends ActorSheet {
     const zauber = [];
     const gegenstande = [];
     const equipments = [];
-    const eigenschaften = [];
     const merkmale = [];
     let invSpace = 0;
 
@@ -189,21 +186,13 @@ export class MondsturzActorSheet extends ActorSheet {
           equipments.push(i)
           break;
 
-        case "eigenschaft":
-          eigenschaften.push(i)
-          break;
-
         case "merkmal":
           merkmale.push(i)
           break;
         default:
           break;
       }
-
-
     }
-
-
 
     // Assign and return
     context.waffen = waffen;
@@ -211,27 +200,11 @@ export class MondsturzActorSheet extends ActorSheet {
     context.equipments = equipments;
     context.gegenstande = gegenstande;
     context.usedInv = { used: invSpace };
-    context.eigenschaften = eigenschaften;
     context.config = CONFIG.ms;
     context.sortedEig = [];
     context.merkmale = merkmale;
 
-
     this._prepareMerkmale(context);
-
-    // eigenschaften.forEach(element => {
-    //   let rankArray = Object.keys(element.system.ranks);
-    //   let textKey = rankArray[element.system.rank];
-    //   context.sortedEig.push({
-    //     text: element.system.ranks[textKey].text,
-    //     name: element.name,
-    //     descr: element.system.description,
-    //     id: element._id,
-    //     img: element.img
-    //   })
-    // });
-
-
   }
 
   _prepareMerkmale(context) {
@@ -240,10 +213,6 @@ export class MondsturzActorSheet extends ActorSheet {
     }
     let merkmale = foundry.utils.deepClone(context.merkmale);
 
-    // convert ranks to array so i dont have to rewrite this whole thing
-
-
-    // maybe implement differnt things for volk?
     merkmale.forEach(element => {
       if (element.system.type === "charakterklasse") {
 
@@ -330,16 +299,13 @@ export class MondsturzActorSheet extends ActorSheet {
       this.actor.rollProp(dataset)
     })
 
-    // html.find('.rollable-talent').click(this._onRollTalent.bind(this));
-
     html.find('.clear-input').click(async function (event) {
       await event.stopPropagation();
     });
+    
     // Rollable items,
     html.find('.rollable-item').click(this._onRollItem.bind(this));
 
-    // Rollable Misc,
-    // html.find('.rollable-misc').click(this._onRoll.bind(this));
 
     html.find('.accordion-header').click(async (ev) => {
       let allHeaders = document.getElementsByClassName("accordion-header");
@@ -424,21 +390,6 @@ export class MondsturzActorSheet extends ActorSheet {
       curr.nextElementSibling.classList.toggle("active")
     })
 
-    // Drag events for macros.
-    // if (this.actor.isOwner) {
-    //   let handler = ev => this._onDragStart(ev);
-    //   let allItems = html.find(".item");
-    //   for (let item of allItems) {
-    //     item.setAttribute("draggable", true)
-    //     item.addEventListener("dragstart", handler, false)
-    //   }
-
-    //   //html.find('.item').forEach((i) => {
-    //   //  if (li.classList.contains("inventory-header")) return;
-    //   //  li.setAttribute("draggable", true);
-    //   //  li.addEventListener("dragstart", handler, false);
-    //   // });
-    // }
   }
 
   /**
@@ -484,31 +435,6 @@ export class MondsturzActorSheet extends ActorSheet {
     if (event.currentTarget.classList.contains('active')) {
       this._onRoll(event)
     }
-  }
-
-  _onRoll(event) {
-
-    event.preventDefault();
-    let data = event.currentTarget.dataset;
-    if (data?.itemType) {
-      data.create = false
-    }
-    let msR = new MsRoll(data);
-    return msR.createDialog();
-  }
-
-  _onRollMisc(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    let context = {
-      actor: this.actor,
-      talent: {
-        label: element.dataset.rollLabel,
-        wert: element.dataset.rollValue
-      }
-    }
-    let msR = new MsRoll(context)
-    msR.createDialog();
   }
 
   async _onRollItem(event) {
