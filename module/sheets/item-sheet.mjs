@@ -28,8 +28,6 @@ export class MondsturzItemSheet extends ItemSheet {
     return `${path}/item-${this.item.type}-sheet.hbs`;
   }
 
-  /* -------------------------------------------- */
-
   /** @override */
   getData() {
     // Retrieve base data structure.
@@ -77,7 +75,6 @@ export class MondsturzItemSheet extends ItemSheet {
 
     html.find(".delete-effect-part").click(ev => this.deleteEffectPart(ev, this.object.effects.contents[0]))
   }
-
 
   async _updateObject(_event, formData) {
     if (!this.object.id) return;

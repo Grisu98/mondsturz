@@ -18,21 +18,8 @@ export class MondsturzActor extends Actor {
     // prepareDerivedData().
     super.prepareData();
   }
-
-  /** @override */
-  prepareBaseData() {
-    // Data modifications in this step occur before processing embedded
-    // documents or derived data.
-  }
-
   /**
    * @override
-   * Augment the basic actor data with additional dynamic data. Typically,
-   * you'll want to handle most of your calculated/derived data in this step.
-   * Data calculated in this step should generally not exist in template.json
-   * (such as ability modifiers rather than ability scores) and should be
-   * available both inside and outside of character sheets (such as if an actor
-   * is queried and has a roll executed directly from it).
    */
   prepareDerivedData() {
     const actorData = this;
@@ -40,9 +27,6 @@ export class MondsturzActor extends Actor {
     const flags = actorData.flags.mondsturz || {};
 
 
-    // calculate talentgruppe
-
-    // find out how many points have been invested in each talentgruppe
     for (let talentKey in systemData.talente) {
       let talent = systemData.talente[talentKey];
       if (talent.talentKey) {
@@ -85,14 +69,11 @@ export class MondsturzActor extends Actor {
     // systemData.talentGruppen.mysthkuenste.wert = 0;
     // systemData.talentGruppen.mysthkuenste.maxTalent = 12;
 
-
     this._prepareCharacterData(actorData);
     this._prepareNpcData(actorData);
   }
 
-  /**
-   * Prepare Character type specific data
-   */
+
   _prepareCharacterData(actorData) {
     if (actorData.type !== 'character') return;
 
@@ -107,9 +88,8 @@ export class MondsturzActor extends Actor {
     })
 
   }
-  /**
-   * Prepare NPC type specific data.
-   */
+
+
   _prepareNpcData(actorData) {
     if (actorData.type !== 'npc') return;
 
@@ -130,20 +110,12 @@ export class MondsturzActor extends Actor {
     return data;
   }
 
-  /**
-   * Prepare character roll data.
-   */
   _getCharacterRollData(data) {
     if (this.type !== 'character') return;
-
   }
 
-  /**
-   * Prepare NPC roll data.
-   */
   _getNpcRollData(data) {
     if (this.type !== 'npc') return;
-
   }
 
   async rollProp(dataset) {

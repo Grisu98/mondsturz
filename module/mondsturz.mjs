@@ -24,7 +24,7 @@ Hooks.once('init', async function () {
     rollItemMacro
   };
 
- preloadTemplates()
+
 
   // CONFIG.debug.hooks = true
   CONFIG.ms = MS;
@@ -47,8 +47,7 @@ Hooks.once('init', async function () {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("mondsturz", MondsturzItemSheet, { makeDefault: true });
 
-  // Preload Handlebars templates.
-  // return preloadHtmls();
+  return  preloadTemplates();
 });
 
 // using this hook as early the journalEntry object is not inizialised 
@@ -237,12 +236,8 @@ function rollItemMacro(itemUuid) {
 }
 
 /* -------------------------------------------- */
-/*  Combat Hooks                                */
+/* Hooks                                        */
 /* -------------------------------------------- */
-
-// Hooks.on("combatStart", msCombatStart)
-
-// Hooks.on("updateCombat", (MsCombatHelper(combat, round, diff, id)))
 
 Hooks.on("updateCombatant", ((combatant, update, diff, id) => { MsCombatHelper(combatant, update, diff, id) }))
 
