@@ -5,9 +5,13 @@ import { msRollDialog } from "../helpers/utils.js"
  * @extends {Actor}
  */
 export class MondsturzActor extends Actor {
+  constructor(data, context) {
+    super(data, context);
 
+    this.merkmale = {}
+  }
   /** @override */
-  prepareData() {
+  prepareData(data) {
     // Prepare data for the actor. Calling the super version of this executes
     // the following, in order: data reset (to clear active effects),
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
@@ -35,6 +39,52 @@ export class MondsturzActor extends Actor {
     const systemData = actorData.system;
     const flags = actorData.flags.mondsturz || {};
 
+
+    // calculate talentgruppe
+
+    // find out how many points have been invested in each talentgruppe
+    for (let talentKey in systemData.talente) {
+      let talent = systemData.talente[talentKey];
+      if (talent.talentKey) {
+        systemData.talentGruppen[talent.talentKey].invested += talent.wert;
+      }
+    }
+
+
+    // calucalte how many points each talentgruppe has 6 18 36
+    for (let tGruppe in systemData.talentGruppen) {
+      let invested = systemData.talentGruppen[tGruppe].invested;
+      if (invested < 6) {
+        systemData.talentGruppen[tGruppe].wert = 1;
+        systemData.talentGruppen[tGruppe].maxTalent = 3;
+      }
+      else if (invested < 18) {
+        systemData.talentGruppen[tGruppe].wert = 2;
+        systemData.talentGruppen[tGruppe].maxTalent = 6;
+      }
+      else if (invested < 36) {
+        systemData.talentGruppen[tGruppe].wert = 3;
+        systemData.talentGruppen[tGruppe].maxTalent = 9;
+      }
+      else {
+        systemData.talentGruppen[tGruppe].wert = 4;
+        systemData.talentGruppen[tGruppe].maxTalent = 12;
+      }
+    }
+
+    // fix diverse to zeropoints and magic to 0/12
+    systemData.talentGruppen.diverse1.wert = 0;
+    systemData.talentGruppen.diverse1.maxTalent = 12;
+
+    systemData.talentGruppen.diverse2.wert = 0;
+    systemData.talentGruppen.diverse2.maxTalent = 12;
+
+    systemData.talentGruppen.magieschulen.wert = 0;
+    systemData.talentGruppen.magieschulen.maxTalent = 12;
+
+    systemData.talentGruppen.mysthkuenste.wert = 0;
+    systemData.talentGruppen.mysthkuenste.maxTalent = 12;
+
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     this._prepareCharacterData(actorData);
@@ -57,8 +107,6 @@ export class MondsturzActor extends Actor {
       }
     })
     // 
-
-
 
     // Loop through ability scores, and add their modifiers to our sheet output.
     // 
@@ -110,19 +158,19 @@ export class MondsturzActor extends Actor {
     let skill;
     switch (dataset.type) {
       case "talent":
-        talent = this.system.talente[dataset.talent];
-        skill = {label: talent.label};
+        talent = this.system.talentGruppen[dataset.talent];
+        skill = { label: talent.label };
         break;
       case "skill":
-        talent = this.system.talente[dataset.talent];
-        skill = talent.skills[dataset.skill];
+        talent = this.system.talentGruppen[dataset.talent];
+        skill = this.system.talente[dataset.skill];
         break;
       case "properties":
 
         break;
       default:
         talent = this.system.attribute.resistenzen[dataset.talent];
-        skill = {label: talent.label};
+        skill = { label: talent.label };
         break;
     }
 
@@ -145,9 +193,45 @@ export class MondsturzActor extends Actor {
       content: r.total,
       flavor: flavor,
       type: 5,
-      speaker: ChatMessage.getSpeaker(this )
+      speaker: ChatMessage.getSpeaker(this)
     });
     ChatMessage.create(message)
   }
 
+  _onCreateEmbeddedDocuments(embeddedName, ...args) {
+    super._onCreateEmbeddedDocuments(embeddedName, ...args);
+
+    if (args[1][0].type === "merkmal") {
+      this._handleMerkmal(args[1][0]);
+    }
+  }
+
+  /** @inheritdoc */
+  _onDeleteEmbeddedDocuments(embeddedName, ...args) {
+    super._onDeleteEmbeddedDocuments(embeddedName, ...args);
+    let barear = args[0][0].type;
+    if (args[0][0].type === "merkmal") {
+      this._handleMerkmal(args[0][0], false);
+    }
+  }
+
+
+  _handleMerkmal(merkmal, add = true) {
+    // let changes = merkmal.system.changes;
+    // for (let element of changes) {
+    //   let updateKey = `system.${element.key}`;
+    //   let oldValue = updateKey.split(".").reduce((obj, prop) => obj[prop], this);
+    //   let newValue = add ? oldValue + element.value : oldValue - element.value;
+    //   this.update(updateKey, newValue);
+    // }
+
+    let sysData = merkmal.system
+    let updateKey = `system.${sysData.key}`;
+    let oldValueString = updateKey.split(".").reduce((obj, prop) => obj[prop], this);
+    let oldValue = parseInt(oldValueString);
+    let newValue = add ? oldValue + sysData.value : oldValue - sysData.value;
+    let update = {};
+    update[updateKey] = newValue;
+    this.update(update);
+  }
 }

@@ -1,5 +1,6 @@
 import { MsRoll } from "../helpers/utils.js";
 import { ActorSettings } from "../sheets/actor-settings.mjs"
+import { AdrenalinSheet } from "../sheets/adrenalin-sheet.mjs"
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -45,7 +46,7 @@ export class MondsturzActorSheet extends ActorSheet {
       this._prepareCharacterData(context);
     }
 
-    
+
 
     // Prepare NPC data and items.
     if (actorData.type == 'npc') {
@@ -67,6 +68,80 @@ export class MondsturzActorSheet extends ActorSheet {
    */
   _prepareCharacterData(context) {
 
+    // this is a mess
+
+
+    // context.system
+    // handle talent and talentgruppen splitting
+
+    // shallow copy as only primitives inside
+    // only do this if not exting already
+    context.talentGruppen = { ...context.system.talentGruppen };
+    for (let tg in context.talentGruppen) {
+      if (!context.talentGruppen[tg].talente)
+        context.talentGruppen[tg].talente = {};
+    }
+
+    for (let key in context.system.talente) {
+      let talent = context.system.talente[key];
+      if (talent.talentKey) {
+        let gKey = talent.talentKey;
+        context.talentGruppen[gKey].talente[key] = talent;
+      }
+    }
+
+    for (let i in context.talentGruppen) {
+      let length = Object.keys(context.talentGruppen[i].talente).length
+      if (!length) {
+        delete context.talentGruppen[i];
+      }
+    }
+
+
+    // handle the mana/life bar
+    const koerper = context.system.attribute.koerper;
+    context.bars = {
+      leben: { ...koerper.leben, css: "leben-bar" },
+      mana: { ...koerper.mana, css: "mana-bar" },
+      ruestwert: { ...koerper.ruestwert, css: "ruestwert-bar" }
+    }
+
+    for (let key in context.bars) {
+      let bar = context.bars[key];
+      let newVal = (100 * bar.wert) / bar.max
+      if (Number.isInteger(newVal)) {
+        bar.percentage = newVal;
+      }
+      else {
+        bar.percentage = 0;
+      }
+    }
+
+
+    // handle other koerper attributes
+    context.koerper = {};
+
+    for (let key in context.system.attribute.koerper) {
+      if (key === "mana" || key === "ruestwert" || key === "leben") {
+      }
+      else {
+        let attr = context.system.attribute.koerper[key];
+        context.koerper[key] = attr;
+      }
+    }
+
+
+    // prepare Adrenalin
+    context.adrenalin = {}
+
+    for (let pKey in context.system.misc.adrenalin) {
+      for (let cKey in context.system.misc.adrenalin[pKey]) {
+        if (context.system.misc.adrenalin[pKey][cKey]) {
+          context.adrenalin[pKey] = CONFIG.ms.adrenalin[pKey][cKey]
+        }
+      }
+    }
+
   }
 
   /**
@@ -83,6 +158,7 @@ export class MondsturzActorSheet extends ActorSheet {
     const gegenstande = [];
     const equipments = [];
     const eigenschaften = [];
+    const merkmale = [];
     let invSpace = 0;
 
 
@@ -117,6 +193,9 @@ export class MondsturzActorSheet extends ActorSheet {
           eigenschaften.push(i)
           break;
 
+        case "merkmal":
+          merkmale.push(i)
+          break;
         default:
           break;
       }
@@ -135,20 +214,45 @@ export class MondsturzActorSheet extends ActorSheet {
     context.eigenschaften = eigenschaften;
     context.config = CONFIG.ms;
     context.sortedEig = [];
+    context.merkmale = merkmale;
 
-    eigenschaften.forEach(element => {
-      let rankArray = Object.keys(element.system.ranks);
-      let textKey = rankArray[element.system.rank];
-      context.sortedEig.push({
-        text: element.system.ranks[textKey].text,
-        name: element.name,
-        descr: element.system.description,
-        id: element._id,
-        img: element.img
-      })
+
+    this._prepareMerkmale(context);
+
+    // eigenschaften.forEach(element => {
+    //   let rankArray = Object.keys(element.system.ranks);
+    //   let textKey = rankArray[element.system.rank];
+    //   context.sortedEig.push({
+    //     text: element.system.ranks[textKey].text,
+    //     name: element.name,
+    //     descr: element.system.description,
+    //     id: element._id,
+    //     img: element.img
+    //   })
+    // });
+
+
+  }
+
+  _prepareMerkmale(context) {
+    if (!context.merkmale.length) {
+      return
+    }
+    let merkmale = foundry.utils.deepClone(context.merkmale);
+
+    // convert ranks to array so i dont have to rewrite this whole thing
+
+
+    // maybe implement differnt things for volk?
+    merkmale.forEach(element => {
+      if (element.system.type === "charakterklasse") {
+
+        const filteredArr = Object.values(element.system.ranks).filter((_ele, index) => index >= 0 && index <= element.system.rank)
+        element.system.description = filteredArr.join('\n');
+      }
     });
 
-
+    context.merkmale = merkmale;
   }
 
   /** @override */
@@ -157,13 +261,12 @@ export class MondsturzActorSheet extends ActorSheet {
     const canConfigure = game.user.isGM || (this.actor.isOwner && game.user.can("TOKEN_CONFIGURE"));
     if (this.options.editable && canConfigure) {
       buttons.splice(1, 0, {
-        label: "Bearbeiten",
+        label: "Adrenalin",
         class: "configure-actor",
-        icon: "fas fa-pen",
+        icon: "fas fa-syringe",
         onclick: ev => {
           ev.preventDefault();
-          let curr = this.actor.system.misc.compact;
-          this.actor.update({ "system.misc.compact": !curr })
+          new AdrenalinSheet(this.actor).render(true);
         }
       });
     }
@@ -176,6 +279,7 @@ export class MondsturzActorSheet extends ActorSheet {
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.item-edit').click(ev => {
+      ev.stopPropagation();
       const li = ev.currentTarget.closest(".item");
       const item = this.actor.items.get(li.dataset.itemId);
       item.sheet.render(true);
@@ -190,6 +294,7 @@ export class MondsturzActorSheet extends ActorSheet {
 
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
+      ev.stopPropagation();
       new Promise(resolve => {
         new Dialog({
           content: "Item wirklich löschen?",
@@ -206,7 +311,7 @@ export class MondsturzActorSheet extends ActorSheet {
         }).render(true)
       })
 
-      function _delItem(){
+      function _delItem() {
         const li = $(ev.currentTarget).parents(".item");
         const item = this.actor.items.get(li.data("item-id"));
         item.delete();
@@ -220,7 +325,7 @@ export class MondsturzActorSheet extends ActorSheet {
     // Rollable abilities.
     //html.find('.rollable-skill').click(this._onRoll.bind(this));
 
-    html.find('.rollabe-prop').click((event)=>{
+    html.find('.rollabe-prop').click((event) => {
       let dataset = event.currentTarget.dataset;
       this.actor.rollProp(dataset)
     })
@@ -299,17 +404,17 @@ export class MondsturzActorSheet extends ActorSheet {
       ev.preventDefault();
       let kind = ev.currentTarget.dataset.controlType;
       let type = ev.currentTarget.closest(".bar-graph").dataset.barType;
-      let val = this.actor.system.attribute.bars[type].wert;
+      let val = this.actor.system.attribute.koerper[type].wert;
       if (kind === "add") {
         let newVal = val + 1;
         let update = {};
-        update[`system.attribute.bars.${type}.wert`] = newVal;
+        update[`system.attribute.koerper.${type}.wert`] = newVal;
         await this.actor.update(update);
       }
       else {
         let newVal = val - 1;
         let update = {};
-        update[`system.attribute.bars.${type}.wert`] = newVal;
+        update[`system.attribute.koerper.${type}.wert`] = newVal;
         await this.actor.update(update);
       }
     })
@@ -320,20 +425,20 @@ export class MondsturzActorSheet extends ActorSheet {
     })
 
     // Drag events for macros.
-    if (this.actor.isOwner) {
-      let handler = ev => this._onDragStart(ev);
-      let allItems = html.find(".item");
-      for (let item of allItems) {
-        item.setAttribute("draggable", true)
-        item.addEventListener("dragstart", handler, false)
-      }
+    // if (this.actor.isOwner) {
+    //   let handler = ev => this._onDragStart(ev);
+    //   let allItems = html.find(".item");
+    //   for (let item of allItems) {
+    //     item.setAttribute("draggable", true)
+    //     item.addEventListener("dragstart", handler, false)
+    //   }
 
-      //html.find('.item').forEach((i) => {
-      //  if (li.classList.contains("inventory-header")) return;
-      //  li.setAttribute("draggable", true);
-      //  li.addEventListener("dragstart", handler, false);
-      // });
-    }
+    //   //html.find('.item').forEach((i) => {
+    //   //  if (li.classList.contains("inventory-header")) return;
+    //   //  li.setAttribute("draggable", true);
+    //   //  li.addEventListener("dragstart", handler, false);
+    //   // });
+    // }
   }
 
   /**

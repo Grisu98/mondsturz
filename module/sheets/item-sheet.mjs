@@ -68,6 +68,8 @@ export class MondsturzItemSheet extends ItemSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
+    html.find(".add-change").click( ev => this.item.createNewChange(ev));
+
 
     html.find(".add-effect-part").click(ev => this.addEffectPart(ev, this.object.effects.contents[0], this.item));
 

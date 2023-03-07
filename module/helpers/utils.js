@@ -250,59 +250,151 @@ async function parseTable() {
     }
 }
 
+async function _tester() {
+    let ac = game.user.character || game.user.selected[0];
 
-async function redditTest() {
+    const content = `
+    Talentname:<input id="talentname" type="text" />
+    Wert: <input  id="talentwert " type="number" value="0" />
 
-    let text = await new Promise((resolve) => {
+    ${ac.name}
+    `
+
+    new Promise(resolve => {
         new Dialog({
-            title: "Create Post-It Note",
-            content: `
-            <form>
-              <div class="form-group">
-                <label>Text:</label>
-                <input type="text" name="text" placeholder="Enter your text here"/>
-              </div>
-            </form>
-          `,
+            title: "Diverses Talent hinzufügen",
+            content: content,
+            default: "normal",
             buttons: {
-                ok: {
-                    label: "Create",
-                    callback: (html) => {
-                        resolve(html.find('[name="text"]').val());
-                    },
-                },
-                cancel: {
-                    label: "Cancel",
-                },
+                normal: {
+                    icon: '<i class="fas fa-pen"></i>',
+                    label: "erstellen",
+                    callback: html => resolve(addTalent(html))
+                }
             },
-            default: "ok",
+            close: () => resolve(null)
         }).render(true);
     });
-    console.log(text)
 
-    if (text) {
-        let data = {
-            author: game.user._id,
-            x: 0,
-            y: 0,
-            width: 183,
-            height: 200,
-            img: "tiles/note_yellow.webp",
-            text: text,
-            textAnchor: { x: 0.5, y: 0.5 },
-            fontFamily: "Courier New",
-            fontSize: 20,
-            locked: false,
-            visible: true,
-            zIndex: 100,
-            flags: { "core.controlledToken": true },
-        };
+    async function addTalent(html) {
+        let talentName = html.find('[id="talentname"]')[0].value;
+        let talentWert = html.find('[id="talentwert "]')[0].value;
+        console.log(talentName, talentWert)
+    }
+}
 
-        game.scenes.active.createEmbeddedDocuments("DrawingDocument", data)
+async function _charKlassimporter() {
 
+
+    new Promise(resolve => {
+        new Dialog({
+            title: "Input zu Eigenschaft",
+            content: `<textarea id="idat"></textarea>`,
+            default: "normal",
+            buttons: {
+                normal: {
+                    icon: '<i class="fas fa-pen"></i>',
+                    label: "erstellen",
+                    callback: html => resolve(createEig(html))
+                }
+            },
+            close: () => resolve(null)
+        }).render(true);
+    });
+
+    async function createEig(html) {
+
+
+        const entriesString = html.find('[id=idat]')[0].value;
+
+        const entriesArray = [];
+
+        let rawLines = entriesString.trim().split("\n");
+        rawLines.forEach((ele, _index) => {
+            ele.trim();
+        })
+        let rawArray = rawLines.reduce((acc, curr, index) => {
+            if (curr && curr.length > 2) {
+                acc.push(curr);
+            }
+            return acc
+        }, [])
+
+        for (let i = 0; i < rawArray.length; i += 7) {
+            let subArr = rawArray.slice(i, i + 7);
+            entriesArray.push(subArr)
+        }
+
+        entriesArray.forEach(async (ele, index) => {
+            let itemData = {
+                "type": "eigenschaft",
+                "system.type": "charakterklasse",
+                "name": ele[0],
+                "system.description": ele[1],
+                "system.ranks.0": ele[2],
+                "system.ranks.1": ele[3],
+                "system.ranks.2": ele[4],
+                "system.ranks.3": ele[5],
+                "system.ranks.4": ele[6]
+            };
+            await Item.create(itemData)
+        })
     }
 
 
+}
 
+async function _eigschaftImporter() {
+
+    new Promise(resolve => {
+        new Dialog({
+            title: "Input zu negative Eigenschaft",
+            content: `<label for="extradesc">Wird hinzugefügt bei jeder Beschreibung:</label><input id="extradescr"/><textarea id="idat"></textarea>`,
+            default: "normal",
+            buttons: {
+                normal: {
+                    icon: '<i class="fas fa-pen"></i>',
+                    label: "erstellen",
+                    callback: html => resolve(createEig(html))
+                }
+            },
+            close: () => resolve(null)
+        }).render(true);
+    });
+
+    async function createEig(html) {
+
+
+        const entriesString = html.find('[id=idat]')[0].value;
+        const extraDescr = html.find('[id=extradescr]')[0].value;
+
+        const entriesArray = [];
+
+        let rawLines = entriesString.trim().split("\n");
+        rawLines.forEach((ele, _index) => {
+            ele.trim();
+        })
+        let rawArray = rawLines.reduce((acc, curr, index) => {
+            if (curr && curr.length > 2) {
+                acc.push(curr);
+            }
+            return acc
+        }, [])
+
+        for (let i = 0; i < rawArray.length; i += 2) {
+            let subArr = rawArray.slice(i, i + 2);
+            entriesArray.push(subArr)
+        }
+
+        entriesArray.forEach(async (ele, index) => {
+            let itemData = {
+                "type": "merkmal",
+                "system.type": "eigenschaft",
+                "name": ele[0],
+                "system.description": ele[1] + "\n\n" + extraDescr
+            };
+            await Item.create(itemData)
+        })
+    }
 
 }

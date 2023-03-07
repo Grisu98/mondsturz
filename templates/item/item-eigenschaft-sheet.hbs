@@ -3,6 +3,9 @@
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
     <div class="header-fields">
       <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name" /></h1>
+      <select name="system.type">
+        {{selectOptions config.merkmalTypes selected=system.type}}
+      </select>
     </div>
   </header>
 
@@ -42,8 +45,6 @@
 
     {{else}}
     <div class="tab" data-group="primary" data-tab="allgemein">
-
-
 
       <textarea name="system.description" cols="30" rows="5">{{item.system.description}}</textarea>
       {{#each item.system.ranks as |value key|}}

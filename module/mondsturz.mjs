@@ -94,7 +94,7 @@ Handlebars.registerHelper('math', function (lvalue, operator, rvalue) {
     "*": lvalue * rvalue,
     "/": lvalue / rvalue,
     "%": lvalue % rvalue,
-    "%0": (function(){if (lvalue){return lvalue % rvalue} else{ return 0}})()
+    "%0": (function () { if (lvalue) { return lvalue % rvalue } else { return 0 } })()
   }[operator]
 });
 
@@ -156,8 +156,10 @@ Handlebars.registerHelper('lt', function (val1, val2) {
   return false;
 });
 
-Handlebars.registerHelper('modulus', function () {
-
+Handlebars.registerHelper('dumb', function (pKey, cKey, obj) {
+  if (Object.keys(obj).length !== 0) {
+    return obj[pKey][cKey]
+  }
 });
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
@@ -243,15 +245,15 @@ function rollItemMacro(itemUuid) {
 Hooks.on("updateCombatant", ((combatant, update, diff, id) => { MsCombatHelper(combatant, update, diff, id) }))
 
 // add event listener 
-Hooks.on("renderChatMessage", ((_message, html)=>{
+Hooks.on("renderChatMessage", ((_message, html) => {
   html.on("click", ".item-roll-damage", async (event, html) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
     const key = event.currentTarget.closest(".item-message").dataset.key;
     const item = await fromUuid(uuid);
     item.rollDamage(key);
   })
-  
-  html.on("click", ".damage-target", async(event)=>{
+
+  html.on("click", ".damage-target", async (event) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
     const item = await fromUuid(uuid);
     item.applyDamage();

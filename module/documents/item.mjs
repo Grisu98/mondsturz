@@ -105,9 +105,8 @@ export class MondsturzItem extends Item {
       ui.notifications.warn("Kein Talent bei der Waffe angegeben")
       return
     }
-
-    const talent = actor.system?.talente[tKey] ? actor.system.stats.talente[tKey] : actor.system.talente.mysthkuenste.skills[tKey];
-    const skill = talent?.skills ? talent.skills[sKey] : actor.system.talente.magieschulen.skills[sKey];
+    const talent = actor.system.talentGruppen[tKey];
+    const skill = actor.system.talente[sKey];
 
     dialogData.tValue = talent.wert || 0;
     dialogData.sValue = skill.wert || 0;
@@ -200,5 +199,19 @@ export class MondsturzItem extends Item {
   async applyDamage() {
     ui.notifications.warn("Schaden über Chatnachricht zufügen ist noch nicht möglich")
     return
+  }
+
+
+  createNewChange(_ev){
+    
+    // only continue if merkmal item
+    if (!this.system.type) {
+     return
+    }
+
+    // let emptyChange = {key: "", value:0};
+    // let changes = this.system.changes;
+    // changes.push({key: "", value:0})
+    // this.update({"system.changes": changes});
   }
 }

@@ -1,5 +1,6 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
   {{!-- Sheet Header --}}
+  {{log "actor-sheet-root" @root}}
   <header class="row-2-8">
     <div class="col-1">
       <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
@@ -14,55 +15,39 @@
       <div class="row-4-6">
         <div class="col-1">
           <div class="bars">
-            {{#each actor.system.attribute.bars as |value key|}}
-            {{#unless (eq value.max 0)}}
+            {{#each bars as |value key|}}
             <div class="health-bar bar-graph" data-bar-type="{{key}}">
-              <div id="{{value.cssId}}" class="bar" style="width: {{math (math value.wert  " *" 100) "/" value.max}}%;">
+              <div class="bar" id="{{value.css}}" style="width: {{percentage}}%;">
               </div>
-              <div class="text">{{value.label}} <input class="clear-input" type="number"
-                  name="system.attribute.bars.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /> /
-                {{value.max}}</div>
+              <div class="bar-text">{{value.label}}<input class="clear-input" type="number"
+                  name="system.attribute.koerper.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /> /<input
+                  class="clear-input" type="number" name="system.attribute.koerper.{{key}}.max" value="{{value.max}}"
+                  data-dtype="Number" />
+              </div>
               <div class="adjust">
                 <span class="minus hp-control" data-control-type="subtract"><i class="fas fa-minus"></i></span>
                 <span class="plus hp-control" data-control-type="add"><i class="fas fa-plus"></i></span>
               </div>
             </div>
-            {{/unless}}
             {{/each}}
           </div>
         </div>
 
-        <div class="col-2 grid-2col">
+        <div class="col-2">
 
           <div class="trape-table">
-            {{#each system.attribute.koerper as |value key|}}
-            {{#unless (lt @index 2)}}
+            {{#each koerper as |value key|}}
             <div class="trapezoid" data-hp-type="{{key}}">
               <div class="label">{{value.label}}</div>
               <div class="trape-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
               <div class="trape-control" data-control-type="add"><i class="fas fa-plus"></i></div>
-              <div class="right">/{{value.max}}</div>
+              {{#if value.max}}
+              <div class="right">/<input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.max"
+                  value="{{value.max}}" data-dtype="Number" /></div>
+              {{/if}}
               <div class="right"><input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.wert"
                   value="{{value.wert}}" data-dtype="Number" /></div>
-
             </div>
-            {{/unless}}
-            {{/each}}
-          </div>
-
-          <div class="trape-table">
-            {{#each system.attribute.koerper as |value key|}}
-            {{#unless (st @index 3)}}
-            <div class="trapezoid" data-hp-type="{{key}}">
-              <div class="label">{{value.label}}</div>
-              <div class="trape-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
-              <div class="trape-control" data-control-type="add"><i class="fas fa-plus"></i></div>
-              {{#if value.max}}<div class="right">/{{value.max}}</div>{{/if}}
-              <div class="right"><input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.wert"
-                  value="{{value.wert}}" data-dtype="Number" /></div>
-
-            </div>
-            {{/unless}}
             {{/each}}
           </div>
 
@@ -86,25 +71,24 @@
 
       {{!-- Skill accordion --}}
       <div class="col-1">
-        {{#each system.talente as |talentValue talentKey|}}
+        {{#each talentGruppen as |talentValue talentKey|}}
         <div id="{{talentKey}}"
           class="accordion-header rollable {{#if (isSame talentKey @root.flags.mondsturz.activeId)}}rollabe-prop{{/if}}"
           data-talent="{{talentKey}}" data-type="talent">
           {{talentValue.label}}
           {{#if talentValue.wert}}
-          <input class="clear-input" type="number" name="system.talente.{{talentKey}}.wert" value="{{talentValue.wert}}"
-            data-dtype="Number" />
+          {{talentValue.wert}}
           {{/if}}
           {{#if talentValue.mod}}+{{talentValue.mod}}{{/if}}
         </div>
         <div class="accordion-content  {{#if (eq talentKey @root.flags.mondsturz.activeId)}}active{{/if}}"
           id="accordion-content-{{i}}">
           <table>
-            {{#each skills as |skillValue skillKey|}}
+            {{#each talente as |skillValue skillKey|}}
             <tr class="roll-div rollabe-prop rollable" data-talent="{{talentKey}}" data-skill="{{skillKey}}"
               data-type="skill">
               <td>{{skillValue.label}}</td>
-              <td><input class="clear-input" type="number" name="system.talente.{{talentKey}}.skills.{{skillKey}}.wert"
+              <td><input class="clear-input" type="number" name="system.talente.{{skillKey}}.wert"
                   value="{{skillValue.wert}}" data-dtype="Number" />{{#if skillValue.mod}}+{{skillValue.mod}}{{/if}}
               </td>
             </tr>
@@ -122,11 +106,11 @@
               <tr>
                 <th colspan="2">Merkmale</th>
                 <th>
-                  <a class="item-create" title="Create item" data-type="eigenschaft"><i class="fas fa-plus"></i></a>
+                  <a class="item-create" title="Create item" data-type="merkmal"><i class="fas fa-plus"></i></a>
                 </th>
               </tr>
-              {{#each sortedEig}}
-              <tr class="item item-header" data-item-id="{{this.id}}">
+              {{#each merkmale}}
+              <tr class="item item-header" data-item-id="{{this._id}}">
                 <td class="img-td">
                   <img src="{{this.img}}" width="24" height="24" />
                 </td>
@@ -139,9 +123,8 @@
                 </td>
               </tr>
               <tr class="item-content">
-                <td colspan="2">
-                  {{this.descr}}
-                  {{this.text}}
+                <td colspan="3">
+                  {{this.system.description}}
                 </td>
 
 
@@ -154,7 +137,7 @@
 
           {{!-- allgemeines Inventar --}}
           <div class="row-2">
-            <h3 class="grey-bg ms-header">{{system.misc.inventar.wert}} / <input class="clear-input" type="number"
+            <h3 class="grey-bg ms-header">{{usedInv.used}} / <input class="clear-input" type="number"
                 name="system.misc.inventar.max" value="{{system.misc.inventar.max}}" data-dtype="Number" /> Inventar
               Slots
             </h3>
@@ -169,7 +152,7 @@
                 </th>
               </tr>
               {{#each items as |item id| }}
-              {{#unless (isSame item.type "eigenschaft")}}
+              {{#unless (isSame item.type "merkmal")}}
               <tr class="item" data-item-id="{{item._id}}">
                 <td class="img-td">
                   <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
@@ -200,21 +183,36 @@
     </div>
 
     <div class="tab" data-group="primary" data-tab="kampf">
-      <div class="row-container">
+      <div class="">
 
         {{!--upper things körper imunsys... --}}
-        <div class="row-1 grid-2col">
+        <div class="grid-3col">
 
           <div>
             <table class="m-table grey-bg">
               <tr>
-                <th colspan="2">Körper</th>
+                <th colspan="3">Adrenalin</th>
               </tr>
-              {{#each system.attribute.kampf as |value key|}}
+              {{#each adrenalin as |stufe stufeKey|}}
               <tr>
+                <td>{{math @index "+" 1}}</td>
+                  <td>{{stufe.effekt}}</td>
+                  <td>{{stufe.kosten}}</td>
+              </tr>
+              {{/each}}
+            </table>
+          </div>
+
+          <div>
+            <table class="m-table grey-bg">
+              <tr>
+                <th colspan="2">Resistenzen</th>
+              </tr>
+              {{#each system.attribute.resistenzen as |value key|}}
+              <tr class="rollabe-prop rollable" data-talent="{{key}}">
                 <td>{{value.label}}</td>
-                <td style="width: 30px;"><input class="clear-input" type="number"
-                    name="system.attribute.kampf.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
+                <td class="ruestwerte-td"><input class="clear-input" type="number"
+                    name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
               {{/each}}
@@ -229,7 +227,7 @@
               {{#each system.attribute.resistenzen as |value key|}}
               <tr class="rollabe-prop rollable" data-talent="{{key}}">
                 <td>{{value.label}}</td>
-                <td style="width: 30px;"><input class="clear-input" type="number"
+                <td class="ruestwerte-td"><input class="clear-input" type="number"
                     name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
@@ -240,7 +238,7 @@
         </div>
 
         {{!-- inventar slots waffen/zauber --}}
-        <div class="row-2 grid-2col">
+        <div class="grid-2col">
 
           <div>
             <table class="m-table grey-bg">
@@ -308,27 +306,29 @@
 
         </div>
 
+
       </div>
     </div>
 
     <div class="tab" data-group="primary" data-tab="info">
 
       <div>
-        <table class="m-table grey-bg">
+        <table class="m-table grey-bg info-table">
           <tr>
-            <th colspan="4">Körper</th>
+            <th colspan="4">Allgemeines</th>
           </tr>
-          <tr>
-            {{#each system.details as |value key|}}
-            <td>{{value.label}}</td>
-            <td><input class="clear-input" type="text" name="system.details{{key}}.wert" value="{{value.wert}}"
-                data-dtype="Number" /></td>
-            {{#if (math @index "%" 2)}}
-          </tr>
+          {{#each system.details as |value key|}}
+          {{#if (eq (math @index "%" 2) 0)}}
           <tr>
             {{/if}}
-            {{/each}}
+            <td>{{value.label}}</td>
+            <td class="">
+              <input type="text" name="system.details.{{key}}.wert" value="{{value.wert}}" />
+            </td>
+            {{#if (eq (math @index "%" 2) 1)}}
           </tr>
+          {{/if}}
+          {{/each}}
         </table>
       </div>
       <div>
