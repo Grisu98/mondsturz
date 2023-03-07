@@ -28,8 +28,6 @@ export class MondsturzItemSheet extends ItemSheet {
     return `${path}/item-${this.item.type}-sheet.hbs`;
   }
 
-  /* -------------------------------------------- */
-
   /** @override */
   getData() {
     // Retrieve base data structure.
@@ -68,6 +66,8 @@ export class MondsturzItemSheet extends ItemSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
+    html.find(".add-change").click( ev => this.item.createNewChange(ev));
+
 
     html.find(".add-effect-part").click(ev => this.addEffectPart(ev, this.object.effects.contents[0], this.item));
 
@@ -75,26 +75,6 @@ export class MondsturzItemSheet extends ItemSheet {
 
     html.find(".delete-effect-part").click(ev => this.deleteEffectPart(ev, this.object.effects.contents[0]))
   }
-
-  /** @override */
-  _getHeaderButtons() {
-    let buttons = super._getHeaderButtons();
-    const canConfigure = game.user.isGM || (this.actor.isOwner && game.user.can("TOKEN_CONFIGURE"));
-    if (this.options.editable && canConfigure) {
-      buttons.splice(1, 0, {
-        label: "Bearbeiten",
-        class: "configure-actor",
-        icon: "fas fa-pen",
-        onclick: ev => {
-          ev.preventDefault();
-          let curr = this.item.system.compact;
-          this.item.update({ "system.compact": !curr })
-        }
-      });
-    }
-    return buttons
-  }
-
 
   async _updateObject(_event, formData) {
     if (!this.object.id) return;

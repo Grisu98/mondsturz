@@ -1,29 +1,34 @@
-export class ActorSettings extends FormApplication {
+export class AdrenalinSheet extends FormApplication {
     constructor(object, options = {}) {
         super(object, options);
     }
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['actor-tweaks'],
-            id: 'sheet-actor-tweaks',
-            template: 'systems/mondsturz/templates/actor/parts/tweak-dialog.hbs',
-            width: 380,
-            height: 400
+            classes: ['adrenalin-sheet'],
+            id: 'sheet-adrenalin-sheet',
+            template: 'systems/mondsturz/templates/actor/adrenalin-sheet.hbs',
+            width: 500,
+            height: 800,
+            submitOnClose: true,
+            submitOnChange: false
         });
+    
     }
+
+    
     /* -------------------------------------------- */
     /**
      * Add the Entity name into the window title
      * @type {String}
      */
     get title() {
-        return `${this.object.actor.name}: Charakter Settings`;
+        return `${this.object.name}: Adrenalin`;
     }
     /**
      * @override
      */
     get template() {
-        return 'systems/mondsturz/templates/actor/parts/tweak-dialog.hbs';
+        return 'systems/mondsturz/templates/actor/adrenalin-sheet.hbs';
     }
 
     /* -------------------------------------------- */
@@ -32,13 +37,13 @@ export class ActorSettings extends FormApplication {
      * @return {Object}
      */
     getData() {
-        // return this.object
         const context = super.getData();
         console.log(this);
-        const actorData = this.object.actor.toObject(false);
+        const actorData = this.object.toObject(false);
 
         context.system = actorData.system;
         context.actor = actorData.flags;
+        context.adrenalin = CONFIG.ms.adrenalin;
 
         return context;
     }
@@ -46,6 +51,6 @@ export class ActorSettings extends FormApplication {
 
     async _updateObject(_event, formData) {
         if (!this.object.id) return;
-        return this.object.actor.update(formData);
+        return this.object.update(formData);
     }
 }

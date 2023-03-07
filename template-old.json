@@ -1,0 +1,1006 @@
+{
+  "Actor": {
+    "types": [
+      "character",
+      "npc"
+    ],
+    "templates": {
+      "common": {
+        "talente": {
+          "handwerk": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Handwerk",
+            "skills": {
+              "bauen": {
+                "wert": 0,
+                "talentKey": "handwerk",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Bauen"
+              },
+              "hacken": {
+                "wert": 0,
+                "talentKey": "handwerk",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Hacken"
+              },
+              "heilkunst": {
+                "wert": 0,
+                "talentKey": "handwerk",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Heilkunst"
+              },
+              "ingenieurwesen": {
+                "wert": 0,
+                "talentKey": "handwerk",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Ingenieurwesen"
+              },
+              "kochen": {
+                "wert": 0,
+                "talentKey": "handwerk",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Kochen"
+              },
+              "reperatur": {
+                "wert": 0,
+                "talentKey": "handwerk",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Reperatur"
+              }
+            }
+          },
+          "wissen": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Wissen",
+            "skills": {
+              "sprachen": {
+                "wert": 0,
+                "talentKey": "wissen",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Sprachen"
+              },
+              "trivia": {
+                "wert": 0,
+                "talentKey": "wissen",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Trivia"
+              },
+              "geschichte": {
+                "wert": 0,
+                "talentKey": "wissen",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Geschichte"
+              },
+              "kriegskunst": {
+                "wert": 0,
+                "talentKey": "wissen",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Kriegskunst"
+              },
+              "relegion": {
+                "wert": 0,
+                "talentKey": "wissen",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Relegion"
+              },
+              "waffenkunde": {
+                "wert": 0,
+                "talentKey": "wissen",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Waffenkunde"
+              }
+            }
+          },
+          "wildnisleben": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Wildnisleben",
+            "skills": {
+              "fallenstellen": {
+                "wert": 0,
+                "talentKey": "wildnisleben",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Fallen stellen"
+              },
+              "fischerei": {
+                "wert": 0,
+                "talentKey": "wildnisleben",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Fischerei"
+              },
+              "lager": {
+                "wert": 0,
+                "talentKey": "wildnisleben",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Lager bauen"
+              },
+              "orientierung": {
+                "wert": 0,
+                "talentKey": "wildnisleben",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Orientierung"
+              },
+              "spurenlesen": {
+                "wert": 0,
+                "talentKey": "wildnisleben",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Spurenlesen"
+              },
+              "zaehmen": {
+                "wert": 0,
+                "talentKey": "wildnisleben",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Zähmen"
+              }
+            }
+          },
+          "naturwissenschaften": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Naturwissenschaften",
+            "skills": {
+              "astrologie": {
+                "wert": 0,
+                "talentKey": "naturwissenschaften",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Astrologie"
+              },
+              "geowissenschaften": {
+                "wert": 0,
+                "talentKey": "naturwissenschaften",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Geowissenschaften"
+              },
+              "biologie": {
+                "wert": 0,
+                "talentKey": "naturwissenschaften",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Biologie und Pharmazie"
+              },
+              "chemie": {
+                "wert": 0,
+                "talentKey": "naturwissenschaften",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Chemie"
+              },
+              "mathe": {
+                "wert": 0,
+                "talentKey": "naturwissenschaften",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Mathe und Physik"
+              },
+              "mythstaub": {
+                "wert": 0,
+                "talentKey": "naturwissenschaften",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Mythstaub"
+              }
+            }
+          },
+          "soziale": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Soziale Künste",
+            "skills": {
+              "beruhigen": {
+                "wert": 0,
+                "talentKey": "soziale",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Beruhigen und Ansporen"
+              },
+              "betoeren": {
+                "wert": 0,
+                "talentKey": "soziale",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Betören"
+              },
+              "betteln": {
+                "wert": 0,
+                "talentKey": "soziale",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Betteln und Mitleid erzeugen"
+              },
+              "feilschen": {
+                "wert": 0,
+                "talentKey": "soziale",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Feilschen"
+              },
+              "luegen": {
+                "wert": 0,
+                "talentKey": "soziale",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Lügen"
+              },
+              "ueberreden": {
+                "wert": 0,
+                "talentKey": "soziale",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Überreden"
+              }
+            }
+          },
+          "zwielichtiges": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Zwielichtiges",
+            "skills": {
+              "recherche": {
+                "wert": 0,
+                "talentKey": "zwielichtiges",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Recherche"
+              },
+              "diebeskunst": {
+                "wert": 0,
+                "talentKey": "zwielichtiges",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Diebeskunst"
+              },
+              "fesseln": {
+                "wert": 0,
+                "talentKey": "zwielichtiges",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Fesseln"
+              },
+              "gassenwissen": {
+                "wert": 0,
+                "talentKey": "zwielichtiges",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Gassenwissen"
+              },
+              "gesellschaftsspiele": {
+                "wert": 0,
+                "talentKey": "zwielichtiges",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Gesellschaftsspiele"
+              },
+              "verbergen": {
+                "wert": 0,
+                "talentKey": "zwielichtiges",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Verbergen"
+              }
+            }
+          },
+          "koerper": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Körper",
+            "skills": {
+              "akrobatik": {
+                "wert": 0,
+                "talentKey": "koerper",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Akrobatik"
+              },
+              "klettern": {
+                "wert": 0,
+                "talentKey": "koerper",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Klettern"
+              },
+              "kraftakt": {
+                "wert": 0,
+                "talentKey": "koerper",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Kraftakt"
+              },
+              "laufen": {
+                "wert": 0,
+                "talentKey": "koerper",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Laufen"
+              },
+              "schwimmen": {
+                "wert": 0,
+                "talentKey": "koerper",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Schwimmen"
+              },
+              "sinnesschaerfe": {
+                "wert": 0,
+                "talentKey": "koerper",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Sinnesschärfe"
+              }
+            }
+          },
+          "fortbewegung": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Fortbewegung",
+            "skills": {
+              "dronen": {
+                "wert": 0,
+                "talentKey": "fortbewegung",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Dronen"
+              },
+              "einspurige": {
+                "wert": 0,
+                "talentKey": "fortbewegung",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Einspurige"
+              },
+              "luftfahrt": {
+                "wert": 0,
+                "talentKey": "fortbewegung",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Luftfahrt"
+              },
+              "reiten": {
+                "wert": 0,
+                "talentKey": "fortbewegung",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Reiten"
+              },
+              "schiffsfahrt": {
+                "wert": 0,
+                "talentKey": "fortbewegung",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Schiffsfahrt"
+              },
+              "zweispurig": {
+                "wert": 0,
+                "talentKey": "fortbewegung",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Zweispurig"
+              }
+            }
+          },
+          "nahkampf": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Nahkampf",
+            "skills": {
+              "nahexoten": {
+                "wert": 0,
+                "talentKey": "nahkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Exoten"
+              },
+              "faustkampf": {
+                "wert": 0,
+                "talentKey": "nahkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Faustkampf"
+              },
+              "klingenwaffen": {
+                "wert": 0,
+                "talentKey": "nahkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Klingenwaffen"
+              },
+              "schildkunst": {
+                "wert": 0,
+                "talentKey": "nahkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Schildkunst"
+              },
+              "stangenwaffen": {
+                "wert": 0,
+                "talentKey": "nahkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Stangenwaffen"
+              },
+              "wuchtwaffen": {
+                "wert": 0,
+                "talentKey": "nahkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Wuchtwaffen"
+              }
+            }
+          },
+          "fernkampf": {
+            "wert": 1,
+            "mod": 0,
+            "label": "Fernkampf",
+            "skills": {
+              "bogenwaffen": {
+                "wert": 0,
+                "talentKey": "fernkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Bogenwaffen"
+              },
+              "fernexoten": {
+                "wert": 0,
+                "talentKey": "fernkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Exoten"
+              },
+              "kurzwaffen": {
+                "wert": 0,
+                "talentKey": "fernkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Kurzwaffen"
+              },
+              "langwaffen": {
+                "wert": 0,
+                "talentKey": "fernkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Langwaffen"
+              },
+              "schweres": {
+                "wert": 0,
+                "talentKey": "fernkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Schweres Gerät"
+              },
+              "wurfwaffen": {
+                "wert": 0,
+                "talentKey": "fernkampf",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Wurfwaffen"
+              }
+            }
+          },
+          "mysthkuenste": {
+            "wert": 0,
+            "mod": 0,
+            "label": "Mysthkünste",
+            "skills": {
+              "ausruf": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Ausruf"
+              },
+              "katalysator": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Katalysator"
+              },
+              "fingerzeichen": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Fingerzeichen"
+              },
+              "runenschrift": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Runenschrift"
+              },
+              "ritual": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Ritual"
+              }
+            }
+          },
+          "magieschulen": {
+            "wert": 0,
+            "mod": 0,
+            "label": "Magieschulen",
+            "skills": {
+              "mengatis": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Mengatis"
+              },
+              "mengatis2": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Mengatis2"
+              },
+              "arcadus": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Arcadus"
+              },
+              "persopec": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Persopec"
+              },
+              "teldora": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Teldora"
+              },
+              "eigna": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Eigna"
+              },
+              "aurores": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Aurores"
+              },
+              "avalon": {
+                "wert": 0,
+                "talentKey": "",
+                "mod": 0,
+                "istHobby": false,
+                "istBeruf": false,
+                "label": "Avalon"
+              }
+            }
+          },
+          "diverse1": {
+            "wert": 0,
+            "mod": 0,
+            "label": "Diverse Talente I",
+            "skills": {}
+          },
+          "diverse2": {
+            "wert": 0,
+            "mod": 0,
+            "label": "Diverse Talente II",
+            "skills": {}
+          }
+        },
+        "attribute": {
+          "koerper": {
+            "psyche": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Psyche"
+            },
+            "regeneration": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Regeneration"
+            },
+            "adrenalin": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Adrenalin"
+            },
+            "hyperarmor": {
+              "wert": 0,
+              "min": 0,
+              "max": 20,
+              "label": "Hyperarmor"
+            },
+            "physis": {
+              "wert": 10,
+              "min": 0,
+              "max": 20,
+              "label": "Physis"
+            },
+            "reflex": {
+              "wert": 0,
+              "max": 0,
+              "mod": 0,
+              "label": "Reflex"
+            }
+          },
+          "kampf": {
+            "stich": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Stich"
+            },
+            "schnitt": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Schnitt"
+            },
+            "stumpf": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Stumpf"
+            },
+            "energie": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Energie"
+            }
+          },
+          "resistenzen": {
+            "immunsystem": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Immunsystem"
+            },
+            "elementar": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Elementar"
+            },
+            "charaktestaerke": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Charakterstärke"
+            },
+            "schmerz": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Schmerzen"
+            },
+            "segen": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Segen"
+            }
+          },
+          "bars": {
+            "armor": {
+              "wert": 0,
+              "min": 0,
+              "max": 0,
+              "label": "Rüstung",
+              "cssId": "armor-bar"
+            },
+            "leben": {
+              "wert": 10,
+              "min": 0,
+              "max": 20,
+              "label": "Leben",
+              "cssId": "health-bar"
+            },
+            "mana": {
+              "wert": 0,
+              "max": 20,
+              "mod": 0,
+              "label": "Mana",
+              "cssId": "mana-bar"
+            }
+          }
+        },
+        "details": {
+          "spitzname": {
+            "wert": "",
+            "label": "Spitzname"
+          },
+          "alter": {
+            "wert": "",
+            "label": "Alter"
+          },
+          "konstellation": {
+            "wert": "",
+            "label": "Konstellation"
+          },
+          "geschlecht": {
+            "wert": "",
+            "label": "Geschlecht"
+          },
+          "groesse": {
+            "wert": "",
+            "label": "Größe"
+          },
+          "gewicht": {
+            "wert": "",
+            "label": "Gewicht"
+          },
+          "volk": {
+            "wert": "",
+            "label": "Volk"
+          },
+          "beruf": {
+            "wert": "",
+            "label": "Beruf"
+          },
+          "hobby": {
+            "wert": "",
+            "label": "Hobby"
+          },
+          "nahtoterfharung": {
+            "wert": "",
+            "label": "Nahtoterfahrung"
+          },
+          "inbrunst": {
+            "wert": "",
+            "label": "Inbrunst der Seele"
+          },
+          "familienstand": {
+            "wert": "",
+            "label": "Familienstand"
+          }
+        },
+        "misc": {
+          "advSetting": false,
+          "compact": true,
+          "xp": 0,
+          "rang": 0,
+          "inventar": {
+            "wert": 0,
+            "max": 10,
+            "mod": 0
+          },
+          "notizen": {
+            "wert": "",
+            "label": "Notizen"
+          }
+        }
+      }
+    },
+    "character": {
+      "templates": [
+        "common"
+      ]
+    }
+  },
+  "Item": {
+    "types": [
+      "waffe",
+      "zauber",
+      "gegenstand",
+      "eigenschaft"
+    ],
+    "templates": {
+      "baseItem": {
+        "weight": 0,
+        "description": ""
+      }
+    },
+    "zauber": {
+      "weight": 0,
+      "description": "",
+      "level": {
+        "level0": {
+          "formula": "",
+          "text": "",
+          "mana": 0,
+          "label": "Trick"
+        },
+        "level1": {
+          "formula": "",
+          "text": "",
+          "mana": 0,
+          "label": "Stufe Eins"
+        },
+        "level2": {
+          "formula": "",
+          "text": "",
+          "mana": 0,
+          "label": "Stufe Zwei"
+        },
+        "level3": {
+          "formula": "",
+          "text": "",
+          "mana": 0,
+          "label": "Stufe Drei"
+        },
+        "level4": {
+          "formula": "",
+          "text": "",
+          "mana": 0,
+          "label": "Stufe Vier"
+        },
+        "level5": {
+          "formula": "",
+          "text": "",
+          "mana": 0,
+          "label": "Stufe Fünf"
+        }
+      },
+      "stats": {
+        "talentKey": "",
+        "quality": 2,
+        "tags": [],
+        "level": 0,
+        "skillKey": ""
+      },
+      "compact": true
+    },
+    "gegenstand": {
+      "description": "",
+      "weight": 1,
+      "compact": true
+    },
+    "eigenschaft": {
+      "type": "",
+      "description": "",
+      "ranks": {
+        "rank1": {
+          "text": ""
+        },
+        "rank2": {
+          "text": ""
+        },
+        "rank3": {
+          "text": ""
+        },
+        "rank4": {
+          "text": ""
+        },
+        "rank5": {
+          "text": ""
+        }
+      },
+      "compact": true,
+      "rank": 0
+    },
+    "waffe": {
+      "weight": 1,
+      "stats": {
+        "talentKey": "",
+        "quality": 2,
+        "element": "",
+        "chance": "",
+        "damage": "",
+        "crit": "",
+        "boni": "",
+        "tags": [],
+        "level": 0,
+        "skillKey": ""
+      },
+      "description": "",
+      "compact": true
+    },
+
+
+
+
+
+    "tester": [
+      {
+        "key": "",
+        "value": 0
+      }
+
+    ]
+  }
+}

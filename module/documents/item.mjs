@@ -27,71 +27,6 @@ export class MondsturzItem extends Item {
     return rollData;
   }
 
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async oldRoll() {
-    const item = this;
-
-    // Initialize chat data.
-    const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-    const rollMode = game.settings.get('core', 'rollMode');
-    const label = `[${item.type}] ${item.name}`;
-
-    // If there's no roll data, send a chat message.
-    if (!this.system.formula) {
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: item.system.description ?? ''
-      });
-    }
-    // Otherwise, create a roll and send a chat message from it.
-    else {
-      // Retrieve roll data.
-      const rollData = this.getRollData();
-
-      // Invoke the roll and submit it to chat.
-      const roll = new Roll(rollData.item.formula, rollData);
-      // If you need to store the value first, uncomment the next line.
-      // let result = await roll.roll({async: true});
-      roll.toMessage({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-      });
-      return roll;
-    }
-  }
-
-  async rollOldOld(a) {
-    let context = {};
-    let options = {};
-
-
-    context.type = this.type;
-    context.actor = a;
-    context.item = this;
-    context.talent = a.system.talente[context.item.system.stats.talentKey] ??
-      a.system.magie.kuenste[context.item.system.stats.talentKey];
-
-    context.skill = context.talent.skills?.[context.item.system.stats.skillKey] ??
-      a.system.magie.schulen?.[context.item.system.stats.talentKey] ??
-      { wert: 0, label: "Skill", mod: 0 };
-
-    context.mod = { wert: context.item.system.stats.level };
-
-    if (context.type === "zauber") {
-      context.zauberLevel = 1
-    }
-    let msR = new MsRoll(context)
-    msR.createDialog();
-
-  }
-
   async roll(actor, dataset) {
     if (!actor) {
       return
@@ -105,9 +40,8 @@ export class MondsturzItem extends Item {
       ui.notifications.warn("Kein Talent bei der Waffe angegeben")
       return
     }
-
-    const talent = actor.system?.talente[tKey] ? actor.system.stats.talente[tKey] : actor.system.talente.mysthkuenste.skills[tKey];
-    const skill = talent?.skills ? talent.skills[sKey] : actor.system.talente.magieschulen.skills[sKey];
+    const talent = actor.system.talentGruppen[tKey] || actor.system.talente[tKey];
+    const skill = actor.system.talente[sKey];
 
     dialogData.tValue = talent.wert || 0;
     dialogData.sValue = skill.wert || 0;
