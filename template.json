@@ -1084,7 +1084,8 @@
         "boni": "",
         "tags": [],
         "level": 0,
-        "skillKey": ""
+        "skillKey": "",
+        "ep": 0
       },
       "description": "",
       "compact": true,

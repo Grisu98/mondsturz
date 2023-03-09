@@ -1,21 +1,26 @@
 export class MondsturzCombat extends Combat {
 
-  get combatant() {
-    return null;
-  }
+    async startCombat() {
+        this.setFlag("mondsturz", "phase", 0);
+        super.startCombat();
 
-  async startCombat() {
-    await super.startCombat();
-    this.setFlag("mondsturz", "allSubmited", false);
-  }
+    }
+
+    nextPhase() {
+        if (!this.flags.mondsturz.phase) {
+            this.setFlag("mondsturz", "phase", 1);
+        }
+        else {
+            this.setFlag("mondsturz", "phase", 0);
+            this.nextRound();
+        }
+    }
 
     async nextRound() {
-        await super.nextRound();
-        this.setFlag("mondsturz", "allSubmited", false);  
+        this.setFlag("mondsturz", "phase", 0);
+        super.nextRound;
+
     }
 
-    async submitAll() {
-      this.setFlag("mondsturz", "allSubmited", true); 
-    }
+
 }
-

@@ -8,7 +8,7 @@ import { MondsturzItemSheet } from "./sheets/item-sheet.mjs";
 import { MondsturzCombatTracker } from "./sheets/combat-tracker.mjs";
 // Import helper/utility classes and constants.
 import { MS } from "./helpers/config.mjs";
-import { preloadTemplates, MsCombatHelper, createEffectKeys } from "./helpers/utils.js";
+import { preloadTemplates, createEffectKeys } from "./helpers/utils.js";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -238,8 +238,6 @@ function rollItemMacro(itemUuid) {
 /* -------------------------------------------- */
 /* Hooks                                        */
 /* -------------------------------------------- */
-
-Hooks.on("updateCombatant", ((combatant, update, diff, id) => { MsCombatHelper(combatant, update, diff, id) }))
 
 // add event listener 
 Hooks.on("renderChatMessage", ((_message, html) => {

@@ -617,3 +617,12 @@
   width: 10%;
   border-left: groove;
 }
+
+.combatant-inputs tr {
+  background-color: unset!important;
+  color: white;
+}
+
+.combatant-inputs input[type="text"] {
+  color: white;
+}

@@ -77,7 +77,8 @@
           data-talent="{{talentKey}}" data-type="talent">
           {{talentValue.label}}
           {{#if talentValue.wert}}
-          {{talentValue.wert}}
+          <input class="clear-input" type="number" name="system.talentGruppen.{{talentKey}}.wert" value="{{talentValue.wert}}"
+            data-dtype="Number" />
           {{/if}}
           {{#if talentValue.mod}}+{{talentValue.mod}}{{/if}}
         </div>
@@ -216,7 +217,9 @@
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
               {{/each}}
-              <tr><td style="height: 24px"></td></tr>
+              <tr>
+                <td style="height: 24px"></td>
+              </tr>
             </table>
           </div>
 
