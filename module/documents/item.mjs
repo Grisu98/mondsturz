@@ -33,21 +33,13 @@ export class MondsturzItem extends Item {
     }
 
     let dialogData = {};
-    const tKey = this.system.stats.talentKey;
-    const sKey = this.system.stats.skillKey;
+    const tKey = this.system.stats.skillKey;
 
-    if (!sKey) {
-      ui.notifications.warn("Kein Talent bei der Waffe angegeben")
-      return
-    }
-    const talent = actor.system.talentGruppen[tKey] || actor.system.talente[tKey];
-    const skill = actor.system.talente[sKey];
+    const talent = actor.system.talente[tKey];
 
     dialogData.tValue = talent.wert || 0;
-    dialogData.sValue = skill.wert || 0;
     dialogData.tName = talent.label;
-    dialogData.sName = skill.label;
-    dialogData.mod = talent.mod + skill.mod;
+    dialogData.mod = talent.mod;
 
     switch (this.type) {
       case "zauber":
@@ -70,7 +62,7 @@ export class MondsturzItem extends Item {
     let rd = await dialog.createDialog();
 
     // roll with the input of the dialog
-    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.skill}+${rd.mod}`).evaluate({ async: false });
+    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false });
 
     // create the chat message
     const flavor = await renderTemplate("systems/mondsturz/templates/chat/zauber-message.hbs", { item: this, misc: zauberLevel })
@@ -93,7 +85,7 @@ export class MondsturzItem extends Item {
     let rd = await dialog.createDialog();
 
     // roll with the input of the dialog
-    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.skill}+${rd.mod}`).evaluate({ async: false })
+    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
 
     // create the chat message
     const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", this)

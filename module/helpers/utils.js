@@ -24,12 +24,10 @@ export class msRollDialog {
     constructor(options = {}) {
         this.data = {
             tValue: 0,
-            sValue: 0,
             tName: "Talent",
-            sName: "Skill",
             mod: 0,
             create: true,
-            item: false
+            item: null
         };
         Object.assign(this.data, options)
     }
@@ -66,12 +64,11 @@ export class msRollDialog {
     }
 
     async _returnData(html, mode) {
-        let data = {};
-        data.mode = mode;
-        data.talent = (html.find('[id=talent]')[0].value);
-        data.skill = (html.find('[id=skill]')[0].value);
-        data.mod = (html.find('[id=mod]')[0].value);
-        data.options = {};
+        let returnData = {};
+        returnData.mode = mode;
+        returnData.talent = (html.find('[id=talent]')[0].value);
+        returnData.mod = (html.find('[id=mod]')[0].value);
+        returnData.options = {};
         if (this.data.item) {
             data.options.used = html.find('[id=use]')[0]?.checked;
             let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
@@ -79,7 +76,8 @@ export class msRollDialog {
                 data.options[element.id] = element.value;
             })
         }
-        return data;
+        return returnData;
+
     }
 
 }
@@ -327,7 +325,7 @@ export class msUtils {
             console.log(indexes)
 
             indexes.starts.forEach((ele, index) => {
-                
+
             })
         }
     }

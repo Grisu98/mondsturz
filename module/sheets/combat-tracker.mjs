@@ -115,7 +115,8 @@ export class MondsturzCombatTracker extends CombatTracker {
 
         const combatantId = event.currentTarget.closest(".combatant-input").dataset.combatantId;
         const currentCombatant = this.viewed.getEmbeddedDocument("Combatant", combatantId);
-        const inputs = $(event.currentTarget).closest(".combatant-input").find("input")
+        const inputs = $(event.currentTarget).closest(".combatant-input")[0]
+        let answers = inputs.querySelectorAll(".combat-textarea")
         const inputArray = [];
 
         inputs.each(function () {

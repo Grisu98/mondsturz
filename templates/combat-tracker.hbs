@@ -83,33 +83,22 @@
                 <span class="resource">{{this.resource}}</span>
             </div>
             {{/if}}
+            <div class="token-initiative">
+                {{#if this.hasRolled}}
+                <span class="initiative">{{this.initiative}}</span>
+                {{else if this.owner}}
+                <a class="combatant-control roll" data-tooltip="COMBAT.InitiativeRoll"
+                    data-control="rollInitiative"></a>
+                {{/if}}
+            </div>
         </li>
         {{#if @root.started}}
         {{#unless @root.combat.flags.mondsturz.phase}}
         <li class="combatant-input" data-combatant-id="{{this.id}}">
-            <table class="combatant-inputs">
-                <tr>
-                    <td><label for="input1">Input 1:</label></td>
-                    <td><input type="text" id="input1"></td>
-                </tr>
-                <tr>
-                    <td><label for="input2">Input 2:</label></td>
-                    <td><input type="text" id="input2"></td>
-                </tr>
-                <tr>
-                    <td><label for="input3">Input 3:</label></td>
-                    <td><input type="text" id="input3"></td>
-                </tr>
-                <tr>
-                    <td><label for="input4">Input 4:</label></td>
-                    <td><input type="text" id="input4"></td>
-                </tr>
-                <tr>
-                    <td>
-                        <button class="combatant-submit">Bestätigen</button>
-                    </td>
-                </tr>
-            </table>
+            <div>
+                <textarea class="combat-textarea" cols="30" rows="7" style="color:white"></textarea>
+            </div>
+            <button class="combatant-submit">Bestätigen</button>
 
         </li>
         {{else}}
