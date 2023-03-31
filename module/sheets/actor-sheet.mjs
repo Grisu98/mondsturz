@@ -302,7 +302,7 @@ export class MondsturzActorSheet extends ActorSheet {
     html.find('.clear-input').click(async function (event) {
       await event.stopPropagation();
     });
-    
+
     // Rollable items,
     html.find('.rollable-item').click(this._onRollItem.bind(this));
 
@@ -310,15 +310,19 @@ export class MondsturzActorSheet extends ActorSheet {
     html.find('.accordion-header').click(async (ev) => {
       let allHeaders = document.getElementsByClassName("accordion-header");
       let allContents = document.getElementsByClassName("accordion-content");
+      let currentStatus = ev.currentTarget.classList.contains("active");
+      let curr = ev.currentTarget;
+
       for (let i = 0; i < allHeaders.length; i++) {
         allHeaders[i].classList.remove("active");
       }
       for (let i = 0; i < allContents.length; i++) {
         allContents[i].classList.remove("active");
       }
-      let curr = ev.currentTarget;
-      curr.classList.toggle("active");
-      curr.nextElementSibling.classList.toggle("active")
+      if (!currentStatus) {
+        curr.classList.toggle("active");
+        curr.nextElementSibling.classList.toggle("active")
+      }
       await this.actor.setFlag("mondsturz", "activeId", curr.id)
     })
 

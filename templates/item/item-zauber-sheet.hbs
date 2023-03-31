@@ -19,7 +19,7 @@
         <div class="tab allgemein" data-group="primary" data-tab="allgemein">
             <div class="grid grid-2col">
                 <div>
-                    <label for="system.stats.talentKey">Talent wählen:</label>
+                    <label for="system.stats.talentKey">Kunst:</label>
                     <select name="system.stats.talentKey" data-dtype="String">
                         {{#select system.stats.talentKey}}
                         {{#each config.kuenste as |talLabel talKey|}}
@@ -30,7 +30,7 @@
                 </div>
                 {{#unless (isSame system.stats.talentKey "katalysator")}}
                 <div>
-                    <label for="system.stats.skillKey">Skill wählen:</label>
+                    <label for="system.stats.skillKey">Schule:</label>
                     <select name="system.stats.skillKey" data-dtype="String">
                         {{#select system.stats.skillKey}}
                         {{#each config.schulen as |skiLabel skiKey|}}

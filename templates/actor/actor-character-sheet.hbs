@@ -71,26 +71,20 @@
 
       {{!-- Skill accordion --}}
       <div class="col-1">
-        {{#each talentGruppen as |talentValue talentKey|}}
-        <div id="{{talentKey}}"
-          class="accordion-header rollable {{#if (isSame talentKey @root.flags.mondsturz.activeId)}}rollabe-prop{{/if}}"
-          data-talent="{{talentKey}}" data-type="talent">
-          {{talentValue.label}}
-          {{#if talentValue.wert}}
-          <input class="clear-input" type="number" name="system.talentGruppen.{{talentKey}}.wert" value="{{talentValue.wert}}"
-            data-dtype="Number" />
-          {{/if}}
-          {{#if talentValue.mod}}+{{talentValue.mod}}{{/if}}
+        {{#each talentGruppen as |gValue gKey|}}
+        <div id="{{gKey}}"
+          class="accordion-header {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}">
+          {{gValue.label}} {{gValue.wert}}
         </div>
-        <div class="accordion-content  {{#if (eq talentKey @root.flags.mondsturz.activeId)}}active{{/if}}"
+        <div class="accordion-content  {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}"
           id="accordion-content-{{i}}">
           <table>
-            {{#each talente as |skillValue skillKey|}}
-            <tr class="roll-div rollabe-prop rollable" data-talent="{{talentKey}}" data-skill="{{skillKey}}"
-              data-type="skill">
-              <td>{{skillValue.label}}</td>
-              <td><input class="clear-input" type="number" name="system.talente.{{skillKey}}.wert"
-                  value="{{skillValue.wert}}" data-dtype="Number" />{{#if skillValue.mod}}+{{skillValue.mod}}{{/if}}
+            {{#each talente as |tValue tKey|}}
+            <tr class="roll-div rollabe-prop rollable" data-talent="{{tKey}}"
+              data-type="talent">
+              <td>{{tValue.label}}</td>
+              <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert"
+                  value="{{tValue.wert}}" data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
               </td>
             </tr>
             {{/each}}
