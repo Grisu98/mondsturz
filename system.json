@@ -2,7 +2,7 @@
   "id": "mondsturz",
   "title": "Mondsturz",
   "description": "Mondsturz System für FoundryVTT",
-  "version": "1.2",
+  "version": "1.2.1",
   "compatibility": {
     "minimum": 10,
     "verified": "10.291",
@@ -34,6 +34,6 @@
   "gridUnits": "m",
   "url": "",
   "manifest": "https://raw.githubusercontent.com/Grisu98/mondsturz/main/system.json",
-  "download": "https://github.com/Grisu98/mondsturz/archive/refs/tags/V1.2.zip",
+  "download": "https://github.com/Grisu98/mondsturz/archive/refs/tags/V1.2.1.zip",
   "changelog": "CHANGELOG.md"
 }
