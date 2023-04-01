@@ -56,8 +56,9 @@
                 <h4>{{this.name}}</h4>
                 <div class="combatant-controls flexrow">
                     {{#if ../user.isGM}}
-                    <a class="combatant-control {{#if this.hidden}}active{{/if}}" data-tooltip="COMBAT.ToggleVis"
-                        data-control="toggleHidden">
+                    {{log "here is this this " this}}
+                    <a class=" toggle-token {{#if this.tokenHidden}}active{{/if}}"
+                        data-tooltip="COMBAT.ToggleVis">
                         <i class="fas fa-eye-slash"></i>
                     </a>
                     <a class="combatant-control {{#if this.defeated}}active{{/if}}" data-tooltip="COMBAT.ToggleDead"
@@ -103,9 +104,7 @@
         </li>
         {{else}}
         <li>{{log combatant.flags.mondsturz}}
-            {{#each combatant.flags.mondsturz.inputs}}
-            <div>{{this}}</div>
-            {{/each}}
+            <div>{{combatant.flags.mondsturz.inputs}}</div>
         </li>
         {{/unless}}
         {{/if}}

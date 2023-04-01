@@ -72,19 +72,17 @@
       {{!-- Skill accordion --}}
       <div class="col-1">
         {{#each talentGruppen as |gValue gKey|}}
-        <div id="{{gKey}}"
-          class="accordion-header {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}">
+        <div id="{{gKey}}" class="accordion-header {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}">
           {{gValue.label}} {{gValue.wert}}
         </div>
         <div class="accordion-content  {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}"
           id="accordion-content-{{i}}">
           <table>
             {{#each talente as |tValue tKey|}}
-            <tr class="roll-div rollabe-prop rollable" data-talent="{{tKey}}"
-              data-type="talent">
+            <tr class="roll-div rollabe-prop rollable" data-talent="{{tKey}}" data-type="talent">
               <td>{{tValue.label}}</td>
-              <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert"
-                  value="{{tValue.wert}}" data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
+              <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert" value="{{tValue.wert}}"
+                  data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
               </td>
             </tr>
             {{/each}}
@@ -148,7 +146,7 @@
               </tr>
               {{#each items as |item id| }}
               {{#unless (isSame item.type "merkmal")}}
-              <tr class="item" data-item-id="{{item._id}}">
+              <tr class="item drag-item-list" data-item-id="{{item._id}}">
                 <td class="img-td">
                   <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                 </td>
@@ -163,8 +161,10 @@
                     data-prop="system.weight" data-dtype="Number" />
                 </td>
                 <td class="item-controls">
-                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                  <a class="item-equip" title="Gegenstand ausrüsten"><i class={{#if item.system.fasFa}}"fas fa-hand" 
+                    {{else}} "fas fa-hand-fist" {{/if}}></i></a>
+                  <a class="item-edit" title="Gegenstand bearbeiten"><i class="fas fa-edit"></i></a>
+                  <a class="item-delete" title="Gegenstand löschen"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
               {{/unless}}

@@ -5,7 +5,7 @@
     </h2>
     {{#if isOwner}}
     <div >
-        <button class="item-roll-damage message-button">{{system.stats.damage}} <i class="fas fa-sword"></i></button>
+        <button class="item-roll-damage message-button">{{system.stats.damage}}{{#if system.stats.level}} + {{system.stats.level}}  {{/if}} <i class="fas fa-sword"></i></button>
     </div>
     {{/if}}
 </div>
