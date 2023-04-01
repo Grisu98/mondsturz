@@ -7,7 +7,7 @@ import { msRollDialog } from "../helpers/utils.js"
 export class MondsturzActor extends Actor {
   constructor(data, context) {
     super(data, context);
-
+    data.prototypeToken.vision = true;
     this.merkmale = {}
   }
   /** @override */
