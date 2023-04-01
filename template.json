@@ -1064,7 +1064,8 @@
         "skillKey": ""
       },
       "compact": true,
-      "value": 0
+      "value": 0,
+      "tags": ""
     },
     "gegenstand": {
       "description": "",
@@ -1089,7 +1090,8 @@
       },
       "description": "",
       "compact": true,
-      "value": 0
+      "value": 0,
+      "tags": ""
     },
     "merkmal": {
       "type": "eigenschaft",
