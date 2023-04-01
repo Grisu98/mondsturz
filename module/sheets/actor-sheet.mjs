@@ -12,7 +12,8 @@ export class MondsturzActorSheet extends ActorSheet {
       template: "systems/mondsturz/templates/actor/actor-sheet.hbs",
       width: 700,
       height: 860,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "allgemein" }]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "allgemein" }],
+      dragDrop: [{ dropSelector: null, dragSelector: '.drag-item-list' }],
     });
   }
 
@@ -288,6 +289,9 @@ export class MondsturzActorSheet extends ActorSheet {
       };
     });
 
+    html.find(".item-equip").click(ev => this._onEquipItem(ev))
+
+
     // In Sheet value edit of items
     html.find(".edit-item-insheet").change(ev => this._onEditItemValue(ev))
 
@@ -454,4 +458,20 @@ export class MondsturzActorSheet extends ActorSheet {
     new ActorSettings(this).render(true);
   }
 
+  async _onEquipItem(event) {
+    let id = $(event.currentTarget).parents(".item").attr("data-item-id");
+    let item = this.actor.getEmbeddedDocument("Item", id);
+    let effect = item.effects.contents[0];
+
+    this.actor.effects.forEach(async (ele) => {
+
+      let lastDotIndex = ele.origin.lastIndexOf(".");
+      let sourceId = ele.origin.substring(lastDotIndex + 1);
+      if (sourceId === id) {
+        let newValue = !ele.disabled;
+        await ele.update({"disabled": newValue})
+        await item.update({"system.fasFa": newValue})
+      }
+    })
+  }
 }

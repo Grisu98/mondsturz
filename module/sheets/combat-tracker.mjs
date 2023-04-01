@@ -14,6 +14,18 @@ export class MondsturzCombatTracker extends CombatTracker {
         html.find(".submit-combat-input").click(ev => this._onSubmit(ev, html));
         html.find(".combatant-submit").click(ev => this.onCombatantSubmit(ev, html))
         html.find(".next-phase").click(_ev => this.viewed.nextPhase())
+        html.find(".toggle-token").click(ev =>this.toggleToken(ev))
+        
+    }
+
+    async toggleToken(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const combatantId = event.currentTarget.closest(".combatant").dataset.combatantId;
+        const currentCombatant = this.viewed.getEmbeddedDocument("Combatant", combatantId);
+        let newValue = !currentCombatant.token.hidden;
+        await currentCombatant.token.update({"hidden": newValue});
+        await currentCombatant.update({"flags.mondsturz.tokenHidden": !newValue})
     }
 
     async getData(options = {}) {
@@ -66,6 +78,7 @@ export class MondsturzCombatTracker extends CombatTracker {
                 owner: combatant.isOwner,
                 defeated: combatant.isDefeated,
                 hidden: combatant.hidden,
+                tokenHidden: combatant.token.hidden,
                 initiative: combatant.initiative,
                 hasRolled: combatant.initiative !== null,
                 hasResource: resource !== null,
@@ -119,18 +132,13 @@ export class MondsturzCombatTracker extends CombatTracker {
         let answers = inputs.querySelectorAll(".combat-textarea")
         const inputArray = [];
 
-        inputs.each(function () {
-            inputArray.push($(this).val());
-        })
+        let inputString = answers[0].value
 
-        const inputObj = inputArray.reduce((acc, curr, index) => {
-            acc[index] = curr;
-            return acc
-        }, {})
+
 
         //cant use setFlag as options not working
         // await currentCombatant.setFlag("mondsturz", "inputs", inputObj, false)
-        await currentCombatant.update({"flags.mondsturz.inputs": inputObj}, {render:false})
+        await currentCombatant.update({"flags.mondsturz.inputs": inputString}, {render:false})
     }
 
     async _onCombatantMouseDown(event) {

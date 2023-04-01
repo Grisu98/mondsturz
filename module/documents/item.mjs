@@ -78,8 +78,7 @@ export class MondsturzItem extends Item {
   }
 
   async _rollWaffe(dialogData, actor, dataset) {
-
-
+    dialogData.mod += this.system.stats.level;
     // handle roll Dialog
     let dialog = new msRollDialog(dialogData);
     let rd = await dialog.createDialog();
@@ -107,6 +106,7 @@ export class MondsturzItem extends Item {
     let rollFormula;
     if (this.type === "waffe") {
       rollFormula = this.system.stats.damage;
+      rollFormula += `+${this.system.stats.level}`
     }
     else {
       rollFormula = this.system.level[key].formula;
@@ -127,4 +127,5 @@ export class MondsturzItem extends Item {
     ui.notifications.warn("Schaden über Chatnachricht zufügen ist noch nicht möglich")
     return
   }
+
 }

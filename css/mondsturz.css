@@ -626,3 +626,12 @@
 .combatant-inputs textarea {
   color: white;
 }
+
+.toggle-token {
+  flex:0 0 25px;
+  color: var(--color-text-dark-5)
+}
+
+.toggle-token.active {
+  color: var(--color-text-light-1)
+}
