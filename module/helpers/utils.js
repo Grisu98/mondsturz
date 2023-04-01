@@ -2,10 +2,10 @@ export const preloadTemplates = async function () {
     return loadTemplates([
 
         // Actor partials.
-        "systems/mondsturz/templates/actor/parts/actor-features.hbs",
-        "systems/mondsturz/templates/actor/parts/actor-items.hbs",
-        "systems/mondsturz/templates/actor/parts/actor-spells.hbs",
-        "systems/mondsturz/templates/actor/parts/actor-effects.hbs",
+        "systems/mondsturz/templates/actor/actor-character-sheet.hbs",
+        "systems/mondsturz/templates/dialog/skill-dialog.hbs",
+        "systems/mondsturz/templates/item/item-waffe-sheet.hbs",
+        "systems/mondsturz/templates/item/item-zauber-sheet.hbs",
     ]);
 };
 

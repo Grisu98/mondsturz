@@ -45,7 +45,8 @@ MS.weaponSkills = {
     "bogenwaffen": "Bogenwaffen",
     "kurzwaffen": "Kurzwaffen",
     "langwaffen": "Langwaffen",
-    "schweres": "Schweres Gerät"
+    "schweres": "Schweres Gerät",
+    "wurfwaffen": "Wurfwaffen"
   }
 };
 
