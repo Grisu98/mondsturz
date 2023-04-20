@@ -91,8 +91,13 @@
           <td><input type="text" name="system.stats.boni" value="{{system.stats.boni}}" /></td>
         </tr>
         <tr>
-          <td><label for="system.tags">Tags: </label></td>
-          <td><input type="text" name="system.tags" value="{{system.tags}}" /></td>
+          <div>
+            {{#each system.tags as |value key|}} <div>{{value.label}}</div> {{/each}}
+          </div>
+          <div>
+            <td><label for="system.tags">Tag eingeben: </label></td>
+            <td><input class="add-weapon-tag" type="text"/></td>
+          </div>
         </tr>
         <tr>
 

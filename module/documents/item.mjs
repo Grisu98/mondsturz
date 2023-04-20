@@ -11,6 +11,20 @@ export class MondsturzItem extends Item {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData();
+
+  }
+
+
+  _onUpdate(data, options, userId) {
+
+    super._onUpdate(data, options, userId);
+
+    if (this.type === "waffe" && this.actor) {
+      this.giveComputedDmg();
+    }
+
+
+
   }
 
   /**
@@ -27,6 +41,21 @@ export class MondsturzItem extends Item {
     return rollData;
   }
 
+  giveComputedDmg() {
+
+    const dmgMod = this.actor.system.talente[this.system.stats.skillKey]?.dmgMod;
+    const lvlMod = this.system.stats?.level;
+    const dmgWpn = this.system.stats?.damage;
+
+    let compDmgMod = dmgMod ? `+${dmgMod}` : "";
+    let compLvlMod = lvlMod ? `+${lvlMod}` : "";
+    let compDmgWpn = dmgWpn ? `${dmgWpn}` : "";
+    const computedDmg = compDmgWpn + compLvlMod + compDmgMod;
+
+    this.setFlag("mondsturz", "computedDmg", computedDmg)
+    return computedDmg
+  }
+
   async roll(actor, dataset) {
     if (!actor) {
       return
@@ -37,9 +66,9 @@ export class MondsturzItem extends Item {
 
     const talent = actor.system.talente[tKey];
 
-    dialogData.tValue = talent.wert || 0;
-    dialogData.tName = talent.label;
-    dialogData.mod = talent.mod;
+    dialogData.tValue = talent?.wert || 0;
+    dialogData.tName = talent?.label || "Talent";
+    dialogData.mod = talent?.mod || 0;
 
     switch (this.type) {
       case "zauber":
@@ -85,16 +114,21 @@ export class MondsturzItem extends Item {
 
     // roll with the input of the dialog
     let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-
     // create the chat message
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", this)
+
+    let computedDmg = this.giveComputedDmg();
+
+    let htmlData = { itm: this, dmg: computedDmg }
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
 
     let message = await new ChatMessage({
       rolls: [r],
       flavor: flavor,
       content: r.total,
       type: 5,
-      speaker: ChatMessage.getSpeaker({ actor })
+      speaker: ChatMessage.getSpeaker({ actor }),
+      flags: { mondsturz: { type: "attackMessage", value: this.system.stats.damage } },
+
 
     });
     ChatMessage.create(message)
@@ -105,8 +139,9 @@ export class MondsturzItem extends Item {
     const flavor = await renderTemplate("systems/mondsturz/templates/chat/damage-message.hbs", this);
     let rollFormula;
     if (this.type === "waffe") {
-      rollFormula = this.system.stats.damage;
-      rollFormula += `+${this.system.stats.level}`
+      let dmgMod = this.parent.system.talente[this.system.stats.skillKey].dmgMod || 0;
+      let lvlMod = this.system.stats.level || 0;
+      rollFormula = this.system.stats.damage + "+" + lvlMod + "+" + dmgMod
     }
     else {
       rollFormula = this.system.level[key].formula;
@@ -118,9 +153,10 @@ export class MondsturzItem extends Item {
       content: r.total,
       flavor: flavor,
       type: 5,
-      speaker: ChatMessage.getSpeaker(this.actor)
+      speaker: ChatMessage.getSpeaker(this.actor),
     });
-    ChatMessage.create(message)
+    ChatMessage.create(message);
+
   }
 
   async applyDamage() {

@@ -55,25 +55,32 @@ export class MondsturzItemSheet extends ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.effect-edit').click(ev => {
       const li = $(ev.currentTarget).closest(".effect");
       const effect = this.actor.items.get(li.data("effect-id"));
       effect.sheet.render(true);
     });
 
-    // -------------------------------------------------------------
-    // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
-    html.find(".add-change").click( ev => this.item.createNewChange(ev));
-
+    html.find(".add-change").click(ev => this.item.createNewChange(ev));
 
     html.find(".add-effect-part").click(ev => this.addEffectPart(ev, this.object.effects.contents[0], this.item));
 
     html.find(".change-effect-part").change(ev => this.changeEffectPart(ev, this.object.effects.contents[0]))
 
     html.find(".delete-effect-part").click(ev => this.deleteEffectPart(ev, this.object.effects.contents[0]))
+
+    html.find(".add-weapon-tag").keypress((ev) => this.addTag(ev));
+
+
+  }
+
+  addTag(ev) {
+    if (ev.which === 13) {
+      let tagName = ev.currentTarget.value;
+      
+    }
   }
 
   async _updateObject(_event, formData) {
@@ -93,7 +100,7 @@ export class MondsturzItemSheet extends ItemSheet {
         icon: "",
         origin: item.uuid,
         "duration.rounds": undefined,
-        changes: [{ value: 0, mode: 2 , key: "" }]
+        changes: [{ value: 0, mode: 2, key: "" }]
       }])
     }
     else {

@@ -2,7 +2,8 @@
   "Actor": {
     "types": [
       "character",
-      "npc"
+      "npc",
+      "shop"
     ],
     "templates": {
       "common": {
@@ -27,6 +28,13 @@
             "invested": 0,
             "maxTalent": 0,
             "label": "Wildnisleben"
+          },
+          "kunst": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Kunst"
           },
           "naturwissenschaften": {
             "wert": 1,
@@ -497,7 +505,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Exoten"
+            "label": "Exoten",
+            "dmgMod": 0
           },
           "faustkampf": {
             "wert": 0,
@@ -505,7 +514,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Faustkampf"
+            "label": "Faustkampf",
+            "dmgMod": 0
           },
           "klingenwaffen": {
             "wert": 0,
@@ -513,7 +523,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Klingenwaffen"
+            "label": "Klingenwaffen",
+            "dmgMod": 0
           },
           "schildkunst": {
             "wert": 0,
@@ -521,7 +532,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Schildkunst"
+            "label": "Schildkunst",
+            "dmgMod": 0
           },
           "stangenwaffen": {
             "wert": 0,
@@ -529,7 +541,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Stangenwaffen"
+            "label": "Stangenwaffen",
+            "dmgMod": 0
           },
           "wuchtwaffen": {
             "wert": 0,
@@ -537,7 +550,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Wuchtwaffen"
+            "label": "Wuchtwaffen",
+            "dmgMod": 0
           },
           "bogenwaffen": {
             "wert": 0,
@@ -545,7 +559,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Bogenwaffen"
+            "label": "Bogenwaffen",
+            "dmgMod": 0
           },
           "fernexoten": {
             "wert": 0,
@@ -553,7 +568,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Exoten"
+            "label": "Exoten",
+            "dmgMod": 0
           },
           "kurzwaffen": {
             "wert": 0,
@@ -561,7 +577,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Kurzwaffen"
+            "label": "Kurzwaffen",
+            "dmgMod": 0
           },
           "langwaffen": {
             "wert": 0,
@@ -569,7 +586,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Langwaffen"
+            "label": "Langwaffen",
+            "dmgMod": 0
           },
           "schweres": {
             "wert": 0,
@@ -577,7 +595,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Schweres Gerät"
+            "label": "Schweres Gerät",
+            "dmgMod": 0
           },
           "wurfwaffen": {
             "wert": 0,
@@ -585,7 +604,8 @@
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Wurfwaffen"
+            "label": "Wurfwaffen",
+            "dmgMod": 0
           },
           "ausruf": {
             "wert": 0,
@@ -690,6 +710,54 @@
             "istHobby": false,
             "istBeruf": false,
             "label": "Avalon"
+          },
+          "bildende": {
+            "wert": 0,
+            "talentKey": "kunst",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "Bildende Künste"
+          },
+          "singen": {
+            "wert": 0,
+            "talentKey": "kunst",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "Singen"
+          },
+          "instrumente": {
+            "wert": 0,
+            "talentKey": "kunst",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "Instrumente"
+          },
+          "literatur": {
+            "wert": 0,
+            "talentKey": "kunst",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "Literatur"
+          },
+          "darstellende": {
+            "wert": 0,
+            "talentKey": "kunst",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "darstellende Künste"
+          },
+          "verkleiden": {
+            "wert": 0,
+            "talentKey": "kunst",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "Verkleiden"
           }
         },
         "attribute": {
@@ -942,7 +1010,8 @@
             "wert": "",
             "label": "Notizen"
           },
-          "adrenalin": {}
+          "adrenalin": {},
+          "gold": 0
         },
         "details": {
           "spitzname": {
@@ -997,6 +1066,11 @@
       }
     },
     "character": {
+      "templates": [
+        "common"
+      ]
+    },
+    "shop": {
       "templates": [
         "common"
       ]
@@ -1071,7 +1145,8 @@
       "description": "",
       "weight": 1,
       "compact": true,
-      "value": 0
+      "value": 0,
+      "quantity": 1
     },
     "waffe": {
       "weight": 1,
@@ -1091,17 +1166,18 @@
       "description": "",
       "compact": true,
       "value": 0,
-      "tags": ""
+      "tags": "",
+      "quantity": 1
     },
     "merkmal": {
       "type": "eigenschaft",
       "rank": 0,
       "ranks": {
-        "0":"",
-        "1":"",
-        "2":"",
-        "3":"",
-        "4":""
+        "0": "",
+        "1": "",
+        "2": "",
+        "3": "",
+        "4": ""
       },
       "description": ""
     }

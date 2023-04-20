@@ -9,6 +9,7 @@ import { MondsturzCombatTracker } from "./sheets/combat-tracker.mjs";
 // Import helper/utility classes and constants.
 import { MS } from "./helpers/config.mjs";
 import { preloadTemplates, createEffectKeys } from "./helpers/utils.js";
+import { registerItemPiles } from "./helpers/itemPilesAPI.mjs"
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -47,7 +48,7 @@ Hooks.once('init', async function () {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("mondsturz", MondsturzItemSheet, { makeDefault: true });
 
-  return  preloadTemplates();
+  return preloadTemplates();
 });
 
 // using this hook as early the journalEntry object is not inizialised 
@@ -72,6 +73,7 @@ Hooks.once("canvasInit", async function () {
 
 })
 
+registerItemPiles()
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
@@ -240,7 +242,16 @@ function rollItemMacro(itemUuid) {
 /* -------------------------------------------- */
 
 // add event listener 
-Hooks.on("renderChatMessage", ((_message, html) => {
+Hooks.on("renderChatMessage", (message, html, info) => {
+
+  if (info.author.id === game.user.id) {
+    let dmgButton = html[0].querySelector(".item-roll-damage");
+    if (dmgButton) {
+      dmgButton.classList.remove("ms-hidden")
+    }
+  }
+
+
   html.on("click", ".item-roll-damage", async (event, html) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
     const key = event.currentTarget.closest(".item-message").dataset.key;
@@ -248,9 +259,10 @@ Hooks.on("renderChatMessage", ((_message, html) => {
     item.rollDamage(key);
   })
 
+  // unused
   html.on("click", ".damage-target", async (event) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
     const item = await fromUuid(uuid);
     item.applyDamage();
   })
-}))
+})

@@ -1,73 +1,75 @@
 {{log "adrenalin root" @root}}
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}} mondsturz" autocomplete="off">
 
-    <table>
-        <tr>
-            <th style="width: 5%;"></th>
-            <th style="text-align: left; padding-left: 5px">Aktion</th>
-            <th>Effekt</th>
-            <th style="text-align: right; padding-right: 5px">Kosten</th>
-        </tr>
-        {{#each adrenalin as |pValue pKey|}}
-        <tr>
-            <td colspan="4">
-                <div class="table">
+    <nav class="sheet-tabs tabs" data-group="adrin">
+        <a class="" data-tab="settings">Einstellungen</a>
+        <a class="" data-tab="adrenalin">Adrenalin</a>
+    </nav>
 
-                    {{#each pValue as |cValue cKey|}}
+    <section class="sheet-body">
 
-                    <div class="row">
-                        <div class="cell"><input type="checkbox" name="system.misc.adrenalin.{{pKey}}.{{cKey}}"
-                                {{checked (dumb pKey cKey @root.system.misc.adrenalin)}} ></div>
-                                {{!-- didnt get the checked to work otherwise and cant be so handlebar helper... --}}
-                        <div class="cell">{{cValue.label}}</div>
-                        <div class="cell">{{cValue.effekt}}</div>
-                        <div class="cell">{{cValue.kosten}}</div>
-                    </div>
+        <div class="tab" data-group="adrin" data-tab="settings">
+            <div>
+                <h3>Diverse Skills hinzufügen:</h3>
 
+                <table class="m-table">
+                    <tr>
+                        <th style="text-align: left;" >Name</th>
+                        <th>
+                            <a class="talent-create" title="Neues erstellen" data-type="talent"><i
+                                    class="fas fa-plus"></i></a>
+                        </th>
+                    </tr>
+
+                    {{#each object.system.talente as |value key|}}
+                    {{#if (isSame value.talentKey "diverse1")}}
+                    <tr class="item item-header" data-item-id="{{this._id}}">
+                        <td>
+                            <input class="talent-input" value="{{value.label}}" name="system.talente.{{key}}.label" />
+                        </td>
+                        <td class="talent-controls" data-div-key="{{key}}">
+                            <a class="item-delete" title="Delete Item"><i class="fas fa-trash" ></i></a>
+                        </td>
+                    </tr>
+                    {{/if}}
                     {{/each}}
+                </table>
+            </div>
+        </div>
 
-                </div>
-            </td>
-        </tr>
-        {{/each}}
-    </table>
+        <div class="tab" data-group="adrin" data-tab="adrenalin">
+            <table>
+                <tr>
+                    <th style="width: 5%;"></th>
+                    <th style="text-align: left; padding-left: 5px">Aktion</th>
+                    <th>Effekt</th>
+                    <th style="text-align: right; padding-right: 5px">Kosten</th>
+                </tr>
+                {{#each adrenalin as |pValue pKey|}}
+                <tr>
+                    <td colspan="4">
+                        <div class="table">
 
+                            {{#each pValue as |cValue cKey|}}
+
+                            <div class="row">
+                                <div class="cell"><input type="checkbox" name="system.misc.adrenalin.{{pKey}}.{{cKey}}"
+                                        {{checked (dumb pKey cKey @root.system.misc.adrenalin)}}></div>
+                                {{!-- didnt get the checked to work otherwise and cant bothered be so handlebar helper... --}}
+                                <div class="cell">{{cValue.label}}</div>
+                                <div class="cell">{{cValue.effekt}}</div>
+                                <div class="cell">{{cValue.kosten}}</div>
+                            </div>
+
+                            {{/each}}
+
+                        </div>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+
+
+    </section>
 </form>
-
-    {{!-- <tr>
-        <td colspan="4">
-            <div class="table">
-                <div class="row">
-                    <div class="cell"><input type="radio" name="level-1-radio"></div>
-                    <div class="cell">DMG UP</div>
-                    <div class="cell">Füge deinem nächsten DMG +2 hinzu</div>
-                    <div class="cell">1 (+1)</div>
-                </div>
-                <div class="row">
-                    <div class="cell"><input type="radio" name="level-1-radio"></div>
-                    <div class="cell">Bewegung</div>
-                    <div class="cell">Füge deiner Bewegung ein Feld hinzu</div>
-                    <div class="cell">1 (+2)</div>
-                </div>
-                <div class="row">
-                    <div class="cell"><input type="radio" name="level-1-radio"></div>
-                    <div class="cell">Regeneration</div>
-                    <div class="cell">Im Kampf die Regeneration nutzen</div>
-                    <div class="cell">1 (+3)</div>
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="4">
-            <div class="table">
-                <div class="row">
-                    <div class="cell"><input type="radio" name="level-2-radio"></div>
-                    <div class="cell">Neuwurf 1</div>
-                    <div class="cell">Wiederhole eine nicht kritische Probe</div>
-                    <div class="cell">2</div>
-
-                </div>
-            </div>
-        </td>
-    </tr> --}}

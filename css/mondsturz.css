@@ -199,12 +199,17 @@
 }
 
 
-.header-info :nth-child(n) {
-  display: inline-block;
+.header-info {
+  display: flex;
+  justify-content: space-between;
 }
 
-.header-info :nth-child(2) {
-  float: right;
+.header-info div:last-child {
+  display: contents;
+}
+
+.header-info .misc-info * {
+  min-width: 45px;
 }
 
 .zauber-text {
@@ -634,4 +639,13 @@
 
 .toggle-token.active {
   color: var(--color-text-light-1)
+}
+
+.ms-hidden {
+  display: none;
+}
+
+.ist-hobby {
+  color: #3ca561;
+  text-decoration: underline;
 }
