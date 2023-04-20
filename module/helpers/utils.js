@@ -12,9 +12,12 @@ export const preloadTemplates = async function () {
 export function createEffectKeys() {
 
     const allKeys = Object.keys(foundry.utils.flattenObject(game.system.model.Actor.character));
-    // let filteredKeys = allKeys.filter(str => {
-    //     !str.includes("wert") &&  !str.includes("label")
-    // });
+    return allKeys
+}
+
+export function createTagKeys() {
+
+    const allKeys = Object.keys(foundry.utils.flattenObject(game.system.model.Actor.character));
     return allKeys
 }
 

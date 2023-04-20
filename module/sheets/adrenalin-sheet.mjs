@@ -10,12 +10,14 @@ export class AdrenalinSheet extends FormApplication {
             width: 500,
             height: 800,
             submitOnClose: true,
-            submitOnChange: false
+            submitOnChange: true,
+            sheetConfig: true,
+            tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "settings" }],
         });
-    
+
     }
 
-    
+
     /* -------------------------------------------- */
     /**
      * Add the Entity name into the window title
@@ -48,6 +50,27 @@ export class AdrenalinSheet extends FormApplication {
         return context;
     }
 
+    activateListeners(html) {
+        html.find(".talent-create").click(async (ev) => {
+            await this.object.createDivTalent(ev)
+            await this.render(true)
+        })
+
+        html.find(".talent-controls").click( async (ev) => {
+            let tKey = ev.currentTarget.dataset.divKey;
+            let update = {};
+            let updatePath = `system.talente.-=${tKey}`;
+            update[updatePath] = "";
+            await this.object.update(update)
+            await this.render(true)
+        })
+
+       let tester = html.find(".talent-input");
+       tester.change( ev => {
+        console.log("WE CHANGED SOMETHGING", ev);
+        this.submit({preventClose: true})
+       })
+    }
 
     async _updateObject(_event, formData) {
         if (!this.object.id) return;

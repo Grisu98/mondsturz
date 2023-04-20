@@ -8,9 +8,20 @@
     <div class="col-2">
       <div class="header-info">
         <h1><input class="clear-input" type="text" name="name" value="{{actor.name}}" /></h1>
-        <h4>XP: <input class="clear-input" type="number" name="system.misc.xp" value="{{actor.system.misc.xp}}" /> LVL:
-          {{actor.system.misc.rang}}
-        </h4>
+        <div class="misc-info">
+          <div>
+            Gold:
+            <input class="clear-input" type="number" name="system.misc.gold" value="{{actor.system.misc.gold}}" />
+          </div>
+          <div>
+            XP:
+            <input class="clear-input" type="number" name="system.misc.xp" value="{{actor.system.misc.xp}}" />
+          </div>
+          <div>
+            LVL:
+            {{actor.system.misc.rang}}
+          </div>
+        </div>
       </div>
       <div class="row-4-6">
         <div class="col-1">
@@ -79,7 +90,8 @@
           id="accordion-content-{{i}}">
           <table>
             {{#each talente as |tValue tKey|}}
-            <tr class="roll-div rollabe-prop rollable" data-talent="{{tKey}}" data-type="talent">
+            <tr class="roll-div rollabe-prop rollable talent-context {{#if tValue.istHobby}}ist-hobby{{/if}}"
+              data-talent="{{tKey}}" data-type="talent">
               <td>{{tValue.label}}</td>
               <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert" value="{{tValue.wert}}"
                   data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
@@ -161,8 +173,8 @@
                     data-prop="system.weight" data-dtype="Number" />
                 </td>
                 <td class="item-controls">
-                  <a class="item-equip" title="Gegenstand ausrüsten"><i class={{#if item.system.fasFa}}"fas fa-hand" 
-                    {{else}} "fas fa-hand-fist" {{/if}}></i></a>
+                  <a class="item-equip" title="Gegenstand ausrüsten"><i class={{#if item.system.fasFa}}"fas fa-hand"
+                      {{else}} "fas fa-hand-fist" {{/if}}></i></a>
                   <a class="item-edit" title="Gegenstand bearbeiten"><i class="fas fa-edit"></i></a>
                   <a class="item-delete" title="Gegenstand löschen"><i class="fas fa-trash"></i></a>
                 </td>
@@ -242,18 +254,19 @@
             <table class="m-table grey-bg">
               <tr>
                 <th colspan="2">Name</th>
-                <th>Gewicht</th>
+                <th>Schaden</th>
                 <th>
                   <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
                 </th>
               </tr>
               {{#each waffen as |item id|}}
-              <tr class="item rollable-item " data-item-id="{{item._id}}">
-                <td class="img-td">
+              {{log item}}
+              <tr class="item" data-item-id="{{item._id}}">
+                <td class="img-td rollable-item">
                   <img class="rollable" src="{{item.img}}" width="24" height="24" />
                 </td>
                 <td>{{item.name}}</td>
-                <td>{{item.system.weight}}</td>
+                <td class="wpn-dmg">{{item.flags.mondsturz.computedDmg}}</td>
                 <td class="item-controls">
                   <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                   <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>

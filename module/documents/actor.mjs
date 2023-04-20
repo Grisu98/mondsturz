@@ -87,10 +87,12 @@ export class MondsturzActor extends Actor {
       }
     })
 
-    systemData.attributeBars = {"leben": {
-      value: systemData.attribute.koerper.leben.wert,
-      max: systemData.attribute.koerper.leben.max
-    }};
+    systemData.attributeBars = {
+      "leben": {
+        value: systemData.attribute.koerper.leben.wert,
+        max: systemData.attribute.koerper.leben.max
+      }
+    };
 
 
   }
@@ -144,9 +146,13 @@ export class MondsturzActor extends Actor {
     }
     let dialog = new msRollDialog(data);
     let rd = await dialog.createDialog();
-
-    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-
+    let r
+    if (rd.mode) {
+      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    }
+    else {
+      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    }
     let flavor = `<h3>${data.tName} Wurf</h3>`
 
     let message = await new ChatMessage({
@@ -169,5 +175,40 @@ export class MondsturzActor extends Actor {
     let update = {};
     update[updateKey] = newValue;
     this.update(update);
+  }
+
+  async createDivTalent(ev) {
+
+    // create array of all div taletnte
+    let divArray = [];
+    let talenteData = this.system.talente;
+    let divAccu = 0;
+    Object.keys(talenteData).forEach(key => {
+      let value = talenteData[key];
+      if (value.talentKey === "diverse1") {
+        divArray.push(key)
+      }
+    })
+
+    // find lowest not used number 
+    const nums = divArray.map(str => parseInt(str.replace('divTalent', '')));
+    let lowestNum = 1;
+    while (nums.includes(lowestNum)) {
+      lowestNum++;
+    }
+
+    let update = {};
+    let updatePath = `system.talente.divTalent${lowestNum}`;
+    update[updatePath] = {
+      label: "",
+      wert: 0,
+      mod: 0,
+      talentKey: "diverse1",
+      istBeruf: false,
+      istHobby: false,
+    }
+
+    await this.update(update)
+    return lowestNum
   }
 }

@@ -52,6 +52,10 @@ export class MondsturzActorSheet extends ActorSheet {
       this._prepareItems(context);
     }
 
+    if (actorData.type == 'shop') {
+      this._prepareItems(context);
+    }
+
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
 
@@ -108,7 +112,7 @@ export class MondsturzActorSheet extends ActorSheet {
     for (let key in context.bars) {
       let bar = context.bars[key];
       let newVal = (100 * bar.wert) / bar.max
-      if (Number.isInteger(newVal)) {
+      if (isFinite(newVal) && 0< newVal) {
         bar.percentage = newVal;
       }
       else {
@@ -231,7 +235,7 @@ export class MondsturzActorSheet extends ActorSheet {
     const canConfigure = game.user.isGM || (this.actor.isOwner && game.user.can("TOKEN_CONFIGURE"));
     if (this.options.editable && canConfigure) {
       buttons.splice(1, 0, {
-        label: "Adrenalin",
+        label: "MS-Einstellungen",
         class: "configure-actor",
         icon: "fas fa-syringe",
         onclick: ev => {
@@ -262,6 +266,20 @@ export class MondsturzActorSheet extends ActorSheet {
     // Add Inventory Item
     html.find('.item-create').click(this._onItemCreate.bind(this));
 
+    html.find(".wpn-dmg").click(async (ev) => {
+
+
+
+      let id = $(ev.currentTarget).parents(".item").attr("data-item-id");
+      let actorId = this.actor.uuid;
+      const uuid = actorId + ".Item." + id
+      const  item = await fromUuid(uuid);
+      let dmg = await item.giveComputedDmg();
+      let r = await new Roll(dmg).evaluate({async:true});
+      r.toMessage()
+
+    })
+
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       ev.stopPropagation();
@@ -289,11 +307,22 @@ export class MondsturzActorSheet extends ActorSheet {
       };
     });
 
-    html.find(".item-equip").click(ev => this._onEquipItem(ev))
+   html.find(".item-equip").click(ev => {this._onEquipItem(ev)});
 
 
     // In Sheet value edit of items
     html.find(".edit-item-insheet").change(ev => this._onEditItemValue(ev))
+
+
+    html.find(".talent-context").contextmenu( async (ev) => {
+      let currT = ev.currentTarget;
+      let talentKey = currT.dataset.talent;
+      let dataUpdate = {};
+      const talentPath = `system.talente.${talentKey}.istHobby`;
+      let currValue = this.actor.system.talente[talentKey].istHobby;
+      dataUpdate[talentPath] = !currValue
+      await this.actor.update(dataUpdate)
+    })
 
     // Rollable abilities.
     //html.find('.rollable-skill').click(this._onRoll.bind(this));
@@ -447,7 +476,7 @@ export class MondsturzActorSheet extends ActorSheet {
 
   async _onRollItem(event) {
     event.preventDefault();
-    const id = $(event.currentTarget)[0].dataset.itemId;
+    const id = $(event.currentTarget).closest(".item")[0].dataset.itemId;
     const dataset = $(event.currentTarget)[0].dataset;
     const item = this.actor.items.get(id);
     await item.roll(this.actor, dataset);
@@ -469,9 +498,28 @@ export class MondsturzActorSheet extends ActorSheet {
       let sourceId = ele.origin.substring(lastDotIndex + 1);
       if (sourceId === id) {
         let newValue = !ele.disabled;
-        await ele.update({"disabled": newValue})
-        await item.update({"system.fasFa": newValue})
+        await ele.update({ "disabled": newValue })
+        await item.update({ "system.fasFa": newValue })
+        return
       }
     })
+    let newValue = !item.system.fasFa;
+    await item.update({ "system.fasFa": newValue })
   }
+
+  _onDragStart(event) { 
+    super._onDragStart(event)
+    console.log("this is drag start", event)
+  }
+
+  _onDragDrop(event) { 
+    super._onDragDrop(event)
+    console.log("this is drag drop", event)
+  }
+
+  _onDrop(event, test, testnew) { 
+    super._onDrop(event)
+    console.log("this is drop", event, test, testnew)
+  }
+
 }
