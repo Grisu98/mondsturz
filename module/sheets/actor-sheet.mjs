@@ -45,15 +45,10 @@ export class MondsturzActorSheet extends ActorSheet {
       this._prepareCharacterData(context);
     }
 
-
-
     // Prepare NPC data and items.
     if (actorData.type == 'npc') {
       this._prepareItems(context);
-    }
-
-    if (actorData.type == 'shop') {
-      this._prepareItems(context);
+      this._prepareNpcData(context);
     }
 
     // Add roll data for TinyMCE editors.
@@ -112,14 +107,13 @@ export class MondsturzActorSheet extends ActorSheet {
     for (let key in context.bars) {
       let bar = context.bars[key];
       let newVal = (100 * bar.wert) / bar.max
-      if (isFinite(newVal) && 0< newVal) {
+      if (isFinite(newVal) && 0 < newVal) {
         bar.percentage = newVal;
       }
       else {
         bar.percentage = 0;
       }
     }
-
 
     // handle other koerper attributes
     context.koerper = {};
@@ -147,6 +141,43 @@ export class MondsturzActorSheet extends ActorSheet {
 
   }
 
+  _prepareNpcData(context) {
+
+
+    context.talentGruppen = context.system.talentGruppen
+
+    // handle the mana/life bar
+    const koerper = context.system.attribute.koerper;
+    context.bars = {
+      leben: { ...koerper.leben, css: "leben-bar" },
+      mana: { ...koerper.mana, css: "mana-bar" },
+      ruestwert: { ...koerper.ruestwert, css: "ruestwert-bar" }
+    }
+
+    for (let key in context.bars) {
+      let bar = context.bars[key];
+      let newVal = (100 * bar.wert) / bar.max
+      if (isFinite(newVal) && 0 < newVal) {
+        bar.percentage = newVal;
+      }
+      else {
+        bar.percentage = 0;
+      }
+    }
+
+    // handle other koerper attributes
+    context.koerper = {};
+
+    for (let key in context.system.attribute.koerper) {
+      if (key === "mana" || key === "ruestwert" || key === "leben") {
+      }
+      else {
+        let attr = context.system.attribute.koerper[key];
+        context.koerper[key] = attr;
+      }
+    }
+
+  }
   /**
    * Organize and classify Items for Character sheets.
    *
@@ -263,6 +294,10 @@ export class MondsturzActorSheet extends ActorSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
+
+    // also add maybe so all this only is active if owner of actor
+
+
     // Add Inventory Item
     html.find('.item-create').click(this._onItemCreate.bind(this));
 
@@ -273,9 +308,9 @@ export class MondsturzActorSheet extends ActorSheet {
       let id = $(ev.currentTarget).parents(".item").attr("data-item-id");
       let actorId = this.actor.uuid;
       const uuid = actorId + ".Item." + id
-      const  item = await fromUuid(uuid);
+      const item = await fromUuid(uuid);
       let dmg = await item.giveComputedDmg();
-      let r = await new Roll(dmg).evaluate({async:true});
+      let r = await new Roll(dmg).evaluate({ async: true });
       r.toMessage()
 
     })
@@ -307,14 +342,14 @@ export class MondsturzActorSheet extends ActorSheet {
       };
     });
 
-   html.find(".item-equip").click(ev => {this._onEquipItem(ev)});
+    html.find(".item-equip").click(ev => { this._onEquipItem(ev) });
 
 
     // In Sheet value edit of items
     html.find(".edit-item-insheet").change(ev => this._onEditItemValue(ev))
 
 
-    html.find(".talent-context").contextmenu( async (ev) => {
+    html.find(".talent-context").contextmenu(async (ev) => {
       let currT = ev.currentTarget;
       let talentKey = currT.dataset.talent;
       let dataUpdate = {};
@@ -458,6 +493,7 @@ export class MondsturzActorSheet extends ActorSheet {
 
   _onEditItemValue(event) {
 
+    // add so it only continues if 
     let id = $(event.currentTarget).parents(".item").attr("data-item-id");
     let item = duplicate(this.actor.getEmbeddedDocument("Item", id));
     let propKey = event.target.dataset.prop;
@@ -507,17 +543,17 @@ export class MondsturzActorSheet extends ActorSheet {
     await item.update({ "system.fasFa": newValue })
   }
 
-  _onDragStart(event) { 
+  _onDragStart(event) {
     super._onDragStart(event)
     console.log("this is drag start", event)
   }
 
-  _onDragDrop(event) { 
+  _onDragDrop(event) {
     super._onDragDrop(event)
     console.log("this is drag drop", event)
   }
 
-  _onDrop(event, test, testnew) { 
+  _onDrop(event, test, testnew) {
     super._onDrop(event)
     console.log("this is drop", event, test, testnew)
   }

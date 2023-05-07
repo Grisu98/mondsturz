@@ -4,7 +4,7 @@ export const registerItemPiles = () => {
 
         game.itempiles.API.addSystemIntegration({
 
-            "VERSION": "1.1.0",
+            "VERSION": "1.1.1",
 
             // The actor class type is the type of actor that will be used for the default item pile actor that is created on first item drop.
             "ACTOR_CLASS_TYPE": "character",
@@ -23,7 +23,7 @@ export const registerItemPiles = () => {
                 }
             ],
 
-            "UNSTACKABLE_ITEM_TYPES": ["waffe"],
+            "UNSTACKABLE_ITEM_TYPES": ["waffe", "gegenstand", "zauber", "merkmal"],
 
             // Item similarities determines how item piles detect similarities and differences in the system
             "ITEM_SIMILARITIES": ["name","type"],

@@ -164,6 +164,15 @@ Handlebars.registerHelper('dumb', function (pKey, cKey, obj) {
     return obj[pKey][cKey]
   }
 });
+
+Handlebars.registerHelper('tagHandling', function (tagKey) {
+  const tag = CONFIG.ms.waffenTags[tagKey];
+  const name = Handlebars.Utils.escapeExpression(tag.name);
+  const description = Handlebars.Utils.escapeExpression(tag.description);
+  let tagElement = `<div title="${description}">${name}</div>`;
+  return new Handlebars.SafeString(tagElement)
+});
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */

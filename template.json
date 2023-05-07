@@ -2,8 +2,7 @@
   "Actor": {
     "types": [
       "character",
-      "npc",
-      "shop"
+      "npc"
     ],
     "templates": {
       "common": {
@@ -795,50 +794,50 @@
           },
           "koerper": {
             "psyche": {
-              "wert": 0,
-              "max": 20,
+              "wert": 1,
+              "max": 1,
               "mod": 0,
               "label": "Psyche"
             },
             "regeneration": {
-              "wert": 0,
-              "max": 20,
+              "wert": 1,
+              "max": 1,
               "mod": 0,
               "label": "Regeneration"
             },
             "adrenalin": {
-              "wert": 0,
-              "max": 20,
+              "wert": 1,
+              "max": 1,
               "mod": 0,
               "label": "Adrenalin"
             },
             "hyperarmor": {
               "wert": 0,
               "min": 0,
-              "max": 20,
+              "max": 0,
               "label": "Hyperarmor"
             },
             "physis": {
-              "wert": 10,
+              "wert": 1,
               "min": 0,
-              "max": 20,
+              "max": 1,
               "label": "Physis"
             },
             "reflex": {
-              "wert": 0,
+              "wert": 7,
               "max": 0,
               "mod": 0,
               "label": "Reflex"
             },
             "leben": {
-              "wert": 0,
+              "wert": 5,
               "min": 0,
-              "max": 10,
+              "max": 5,
               "label": "Leben"
             },
             "mana": {
-              "wert": 0,
-              "max": 10,
+              "wert": 3,
+              "max": 3,
               "mod": 0,
               "label": "Mana"
             },
@@ -1063,6 +1062,231 @@
             "label": "Familienstand"
           }
         }
+      },
+      "tGruppen": {
+        "talentGruppen": {
+          "handwerk": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Handwerk"
+          },
+          "wissen": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Wissen"
+          },
+          "wildnisleben": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Wildnisleben"
+          },
+          "kunst": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Kunst"
+          },
+          "naturwissenschaften": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Naturwissenschaften"
+          },
+          "soziale": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Soziale Künste"
+          },
+          "zwielichtiges": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Zwielichtiges"
+          },
+          "koerper": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Körper"
+          },
+          "fortbewegung": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Fortbewegung"
+          },
+          "nahkampf": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Nahkampf"
+          },
+          "fernkampf": {
+            "wert": 1,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Fernkampf"
+          },
+          "mysthkuenste": {
+            "wert": 0,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Mysthkünste"
+          },
+          "magieschulen": {
+            "wert": 0,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Magieschulen"
+          },
+          "diverse1": {
+            "wert": 0,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Diverse Talente I"
+          },
+          "diverse2": {
+            "wert": 0,
+            "mod": 0,
+            "invested": 0,
+            "maxTalent": 0,
+            "label": "Diverse Talente II"
+          }
+        }
+      },
+      "attr": {
+        "resistenzen": {
+          "immunsystem": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Immunsystem"
+          },
+          "elementar": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Elementar"
+          },
+          "charaktestaerke": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Charakterstärke"
+          },
+          "schmerz": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Schmerzen"
+          },
+          "segen": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Segen"
+          }
+        },
+        "koerper": {
+          "psyche": {
+            "wert": 1,
+            "max": 1,
+            "mod": 0,
+            "label": "Psyche"
+          },
+          "regeneration": {
+            "wert": 1,
+            "max": 1,
+            "mod": 0,
+            "label": "Regeneration"
+          },
+          "adrenalin": {
+            "wert": 1,
+            "max": 1,
+            "mod": 0,
+            "label": "Adrenalin"
+          },
+          "hyperarmor": {
+            "wert": 0,
+            "min": 0,
+            "max": 0,
+            "label": "Hyperarmor"
+          },
+          "physis": {
+            "wert": 1,
+            "min": 0,
+            "max": 1,
+            "label": "Physis"
+          },
+          "reflex": {
+            "wert": 7,
+            "max": 0,
+            "mod": 0,
+            "label": "Reflex"
+          },
+          "leben": {
+            "wert": 5,
+            "min": 0,
+            "max": 5,
+            "label": "Leben"
+          },
+          "mana": {
+            "wert": 3,
+            "max": 3,
+            "mod": 0,
+            "label": "Mana"
+          },
+          "ruestwert": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Rüstwert"
+          }
+        },
+        "ruestwert": {
+          "stich": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Stich"
+          },
+          "schnitt": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Schnitt"
+          },
+          "stumpf": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Stumpf"
+          },
+          "energie": {
+            "wert": 0,
+            "max": 0,
+            "mod": 0,
+            "label": "Energie"
+          }
+        }
       }
     },
     "character": {
@@ -1070,7 +1294,7 @@
         "common"
       ]
     },
-    "shop": {
+    "npc": {
       "templates": [
         "common"
       ]
@@ -1166,7 +1390,7 @@
       "description": "",
       "compact": true,
       "value": 0,
-      "tags": "",
+      "tags": [],
       "quantity": 1
     },
     "merkmal": {

@@ -19,11 +19,9 @@ export class MondsturzItem extends Item {
 
     super._onUpdate(data, options, userId);
 
-    if (this.type === "waffe" && this.actor) {
+    if (this.type === "waffe" && this.actor && this.permission === 3) {
       this.giveComputedDmg();
     }
-
-
 
   }
 
@@ -43,17 +41,19 @@ export class MondsturzItem extends Item {
 
   giveComputedDmg() {
 
-    const dmgMod = this.actor.system.talente[this.system.stats.skillKey]?.dmgMod;
-    const lvlMod = this.system.stats?.level;
-    const dmgWpn = this.system.stats?.damage;
+    if (this.permission === 3) {
+      const dmgMod = this.actor.system.talente[this.system.stats.skillKey]?.dmgMod;
+      const lvlMod = this.system.stats?.level;
+      const dmgWpn = this.system.stats?.damage;
 
-    let compDmgMod = dmgMod ? `+${dmgMod}` : "";
-    let compLvlMod = lvlMod ? `+${lvlMod}` : "";
-    let compDmgWpn = dmgWpn ? `${dmgWpn}` : "";
-    const computedDmg = compDmgWpn + compLvlMod + compDmgMod;
+      let compDmgMod = dmgMod ? `+${dmgMod}` : "";
+      let compLvlMod = lvlMod ? `+${lvlMod}` : "";
+      let compDmgWpn = dmgWpn ? `${dmgWpn}` : "";
+      const computedDmg = compDmgWpn + compLvlMod + compDmgMod;
 
-    this.setFlag("mondsturz", "computedDmg", computedDmg)
-    return computedDmg
+      this.setFlag("mondsturz", "computedDmg", computedDmg)
+      return computedDmg
+    }
   }
 
   async roll(actor, dataset) {
@@ -111,9 +111,15 @@ export class MondsturzItem extends Item {
     // handle roll Dialog
     let dialog = new msRollDialog(dialogData);
     let rd = await dialog.createDialog();
-
+    let r;
     // roll with the input of the dialog
-    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    if (rd.mode) {
+      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    }
+    else {
+      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+
+    }
     // create the chat message
 
     let computedDmg = this.giveComputedDmg();
