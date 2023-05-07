@@ -1,6 +1,6 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
   {{!-- Sheet Header --}}
-  {{log "actor-sheet-root" @root}}
+  {{log "npc-sheet-root" @root}}
   <header class="row-2-8">
     <div class="col-1">
       <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
@@ -83,22 +83,8 @@
       {{!-- Skill accordion --}}
       <div class="col-1">
         {{#each talentGruppen as |gValue gKey|}}
-        <div id="{{gKey}}" class="accordion-header {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}">
+        <div id="{{gKey}}" class="accordion-header">
           {{gValue.label}} {{gValue.wert}}
-        </div>
-        <div class="accordion-content  {{#if (eq gKey @root.flags.mondsturz.activeId)}}active{{/if}}"
-          id="accordion-content-{{i}}">
-          <table>
-            {{#each talente as |tValue tKey|}}
-            <tr class="roll-div rollabe-prop rollable talent-context {{#if tValue.istHobby}}ist-hobby{{/if}}"
-              data-talent="{{tKey}}" data-type="talent">
-              <td>{{tValue.label}}</td>
-              <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert" value="{{tValue.wert}}"
-                  data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
-              </td>
-            </tr>
-            {{/each}}
-          </table>
         </div>
         {{/each}}
       </div>

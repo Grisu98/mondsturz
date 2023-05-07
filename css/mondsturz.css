@@ -649,3 +649,29 @@
   color: #3ca561;
   text-decoration: underline;
 }
+
+.item-weapon-tags >div{
+ display: inline-block;
+}
+
+.item-weapon-tags .tag-box {
+  position: relative;
+  display: inline-block;
+  background: #c4c4c4;
+  padding: 5px;
+  margin: 1px;
+  border: 1px solid #7a7971;
+  border-radius: 10px;
+}
+
+.weapon-tag-delete {
+  display: none;
+}
+
+.adjust span.tag-delete {
+  color: red;
+}
+
+.tag-box:hover .adjust {
+  opacity: 1 !important;
+}

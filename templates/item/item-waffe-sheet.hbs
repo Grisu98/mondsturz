@@ -1,3 +1,4 @@
+{{log @root }}
 <form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
@@ -92,15 +93,27 @@
         </tr>
         <tr>
           <div>
-            {{#each system.tags as |value key|}} <div>{{value.label}}</div> {{/each}}
+            <datalist id="weapon-tags-list">
+              {{#each config.waffenTags as |prop key|}}
+              <option value="{{this.name}}" label="{{this.description}}" data-key="{{key}}">
+                {{/each}}
+            </datalist>
           </div>
-          <div>
-            <td><label for="system.tags">Tag eingeben: </label></td>
-            <td><input class="add-weapon-tag" type="text"/></td>
-          </div>
+          <td><label for="">Tag eingeben: </label></td>
+          <td><input class="weapon-tags-dropdown" type="text" list="weapon-tags-list" id="tag-search" name="tag-search"></td>
         </tr>
         <tr>
+          <td class="item-weapon-tags" colspan="2">
+            {{#each system.tags as |tagKey|}}
+            <div class="tag-box">
+              {{tagHandling tagKey}}
+              <div class="adjust">
+                <span class="tag-delete" data-tag-index="{{@index}}"><i class="fas fa-x"></i></span>
+              </div>
+            </div>
+            {{/each}}
 
+          </td>
         </tr>
       </table>
     </div>

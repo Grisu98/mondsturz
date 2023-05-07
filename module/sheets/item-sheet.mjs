@@ -71,16 +71,29 @@ export class MondsturzItemSheet extends ItemSheet {
 
     html.find(".delete-effect-part").click(ev => this.deleteEffectPart(ev, this.object.effects.contents[0]))
 
-    html.find(".add-weapon-tag").keypress((ev) => this.addTag(ev));
+    html.find(".weapon-tags-dropdown").change((ev) => this.addTag(ev, html[0]));
 
+    html.find(".tag-delete").click(ev => {this.removeTag(ev, html[0])});
 
   }
 
-  addTag(ev) {
-    if (ev.which === 13) {
-      let tagName = ev.currentTarget.value;
-      
+  async removeTag(event) {
+    let tagIndex = parseInt(event.currentTarget.dataset.tagIndex);
+    let newTagArr = this.item.system.tags.filter((_curr, index)=> index !== tagIndex);
+
+    await this.item.update({"system.tags": newTagArr})
+  }
+
+
+  async addTag(ev, html) {
+    const shownVal = ev.currentTarget.value;
+    const tagKey = html.querySelector("#weapon-tags-list option[value='" + shownVal + "']").dataset.key;
+    let allTags = this.item.system.tags;
+    if (typeof allTags === "string") {
+      allTags = []
     }
+    allTags.push(tagKey);
+    await this.item.update({"system.tags": allTags});
   }
 
   async _updateObject(_event, formData) {

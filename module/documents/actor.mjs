@@ -24,7 +24,31 @@ export class MondsturzActor extends Actor {
   prepareDerivedData() {
     const actorData = this;
     const systemData = actorData.system;
+    this._prepareCharacterData(actorData, systemData);
+    this._prepareNpcData(actorData, systemData);
+  }
+
+
+  _prepareCharacterData(actorData, systemData) {
+    if (actorData.type !== 'character') return;
+
+    // Make modifications to data here. For example:
+
     const flags = actorData.flags.mondsturz || {};
+
+    const items = actorData.items.contents;
+    items.forEach((element) => {
+      if (element.system.weight) {
+        systemData.misc.inventar.wert += element.system.weight;
+      }
+    })
+
+    systemData.attributeBars = {
+      "leben": {
+        value: systemData.attribute.koerper.leben.wert,
+        max: systemData.attribute.koerper.leben.max
+      }
+    };
 
 
     for (let talentKey in systemData.talente) {
@@ -69,40 +93,15 @@ export class MondsturzActor extends Actor {
     systemData.talentGruppen.mysthkuenste.wert = 0;
     systemData.talentGruppen.mysthkuenste.maxTalent = 12;
 
-    this._prepareCharacterData(actorData);
-    this._prepareNpcData(actorData);
   }
 
 
-  _prepareCharacterData(actorData) {
-    if (actorData.type !== 'character') return;
-
-    // Make modifications to data here. For example:
-    const systemData = actorData.system;
-
-    const items = actorData.items.contents;
-    items.forEach((element) => {
-      if (element.system.weight) {
-        systemData.misc.inventar.wert += element.system.weight;
-      }
-    })
-
-    systemData.attributeBars = {
-      "leben": {
-        value: systemData.attribute.koerper.leben.wert,
-        max: systemData.attribute.koerper.leben.max
-      }
-    };
-
-
-  }
-
-
-  _prepareNpcData(actorData) {
+  _prepareNpcData(actorData, systemData) {
     if (actorData.type !== 'npc') return;
 
-    // Make modifications to data here. For example:
-    const systemData = actorData.system;
+
+    
+
   }
 
   /**
@@ -151,7 +150,7 @@ export class MondsturzActor extends Actor {
       r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
     }
     else {
-      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+      r = await new Roll(`3d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
     }
     let flavor = `<h3>${data.tName} Wurf</h3>`
 

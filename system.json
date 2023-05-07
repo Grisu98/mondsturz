@@ -2,18 +2,24 @@
   "id": "mondsturz",
   "title": "Mondsturz",
   "description": "Mondsturz System für FoundryVTT",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "compatibility": {
     "minimum": 10,
     "verified": "10.291",
     "maximum": 10
   },
-  "authors": [{
-    "name": "Grisu",
-    "dicscord": "Grisu#9889"
-  }],
-  "esmodules": ["module/mondsturz.mjs"],
-  "styles": ["css/mondsturz.css"],
+  "authors": [
+    {
+      "name": "Grisu",
+      "dicscord": "Grisu#9889"
+    }
+  ],
+  "esmodules": [
+    "module/mondsturz.mjs"
+  ],
+  "styles": [
+    "css/mondsturz.css"
+  ],
   "packs": [
     {
       "label": "MS RollTables",
@@ -28,12 +34,19 @@
       "name": "ms-merkmale",
       "path": "packs/ms-merkmale.db",
       "system": "mondsturz"
+    },
+    {
+      "label": "MS Regelwerk",
+      "type": "JournalEntry",
+      "name": "ms-regelwerk",
+      "path": "packs/ms-regelwerk.db",
+      "system": "mondsturz"
     }
   ],
   "gridDistance": 1,
   "gridUnits": "m",
   "url": "",
   "manifest": "https://raw.githubusercontent.com/Grisu98/mondsturz/main/system.json",
-  "download": "https://github.com/Grisu98/mondsturz/archive/refs/tags/V1.3.1.zip",
+  "download": "https://github.com/Grisu98/mondsturz/archive/refs/tags/V1.3.2.zip",
   "changelog": "CHANGELOG.md"
 }
