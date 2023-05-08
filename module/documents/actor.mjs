@@ -150,7 +150,7 @@ export class MondsturzActor extends Actor {
       r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
     }
     else {
-      r = await new Roll(`3d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
     }
     let flavor = `<h3>${data.tName} Wurf</h3>`
 
