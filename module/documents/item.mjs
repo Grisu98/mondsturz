@@ -56,26 +56,14 @@ export class MondsturzItem extends Item {
     }
   }
 
-  async roll(actor, dataset) {
-    if (!actor) {
-      return
-    }
-
-    let dialogData = {};
-    const tKey = this.system.stats.skillKey;
-
-    const talent = actor.system.talente[tKey];
-
-    dialogData.tValue = talent?.wert || 0;
-    dialogData.tName = talent?.label || "Talent";
-    dialogData.mod = talent?.mod || 0;
+  async roll(dataset) {
 
     switch (this.type) {
       case "zauber":
-        await this._rollZauber(dialogData, actor, dataset);
+        await this._rollZauber(dataset);
         break;
       case "waffe":
-        await this._rollWaffe(dialogData, actor, dataset);
+        await this._rollWaffe(dataset);
         break;
       default:
 
@@ -83,6 +71,49 @@ export class MondsturzItem extends Item {
     }
   }
 
+  async _rollWaffe(context) {
+
+    const tKey = this.system.stats.skillKey;
+    const talent = this.actor.system.talente[tKey];
+
+    let dialogData = {
+      tValue: talent?.wert || 0,
+      tName: talent?.label || "Talent",
+      mod: talent?.mod || 0
+    }
+
+    dialogData.mod += this.system.stats.level;
+
+    if (context?.map) {
+      dialogData.mod -= 3
+    }
+
+    let dialog = new msRollDialog(dialogData);
+    let rd = await dialog.createDialog();
+    let r;
+
+    if (rd.mode) {
+      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    }
+    else {
+      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+
+    }
+
+    let finalDmg = `${this.system.stats.damage} + ${this.system.stats.level} + ${talent.dmgMod}`;
+    let htmlData = { itm: this, dmg: finalDmg }
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
+    let message = await new ChatMessage({
+      rolls: [r],
+      flavor: flavor,
+      content: r.total,
+      type: 5,
+      speaker: ChatMessage.getSpeaker({actor: this.actor}),
+      flags: { mondsturz: { type: "attackMessage", value: this.system.stats.damage } },
+
+    });
+    ChatMessage.create(message)
+  }
 
   async _rollZauber(dialogData, actor, dataset) {
     const zauberLevel = this.system.level[dataset.zauberLevel];
@@ -106,7 +137,7 @@ export class MondsturzItem extends Item {
     ChatMessage.create(message)
   }
 
-  async _rollWaffe(dialogData, actor, dataset) {
+  async _rollWaffeOld(dialogData, actor, dataset) {
     dialogData.mod += this.system.stats.level;
     // handle roll Dialog
     let dialog = new msRollDialog(dialogData);

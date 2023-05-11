@@ -11,15 +11,18 @@
         <div class="misc-info">
           <div>
             Gold:
-            <input class="clear-input" type="number" name="system.misc.gold" value="{{actor.system.misc.gold}}" />
+            <input class="clear-input clear-small" type="number" name="system.misc.gold"
+              value="{{actor.system.misc.gold}}" />
           </div>
           <div>
             XP:
-            <input class="clear-input" type="number" name="system.misc.xp" value="{{actor.system.misc.xp}}" />
+            <input class="clear-input clear-small" type="number" name="system.misc.xp"
+              value="{{actor.system.misc.xp}}" />
           </div>
           <div>
             Rang:
-            <input class="clear-input" type="number" name="system.misc.rang" value="{{actor.system.misc.rang}}" />
+            <input class="clear-input clear-small" type="number" name="system.misc.rang"
+              value="{{actor.system.misc.rang}}" />
           </div>
         </div>
       </div>
@@ -27,7 +30,7 @@
         <div class="col-1">
           <div class="bars">
             {{#each bars as |value key|}}
-            <div class="health-bar bar-graph" data-bar-type="{{key}}">
+            <div class="sheet-bar bar-graph" data-bar-type="{{key}}">
               <div class="bar" id="{{value.css}}" style="width: {{percentage}}%;">
               </div>
               <div class="bar-text">{{value.label}}<input class="clear-input" type="number"
@@ -53,11 +56,11 @@
               <div class="trape-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
               <div class="trape-control" data-control-type="add"><i class="fas fa-plus"></i></div>
               {{#if value.max}}
-              <div class="right">/<input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.max"
-                  value="{{value.max}}" data-dtype="Number" /></div>
+              <div class="right">/<input class="clear-input clear-tiny" type="number"
+                  name="system.attribute.koerper.{{key}}.max" value="{{value.max}}" data-dtype="Number" /></div>
               {{/if}}
-              <div class="right"><input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.wert"
-                  value="{{value.wert}}" data-dtype="Number" /></div>
+              <div class="right"><input class="clear-input clear-tiny" type="number"
+                  name="system.attribute.koerper.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /></div>
             </div>
             {{/each}}
           </div>
@@ -90,11 +93,11 @@
           id="accordion-content-{{i}}">
           <table>
             {{#each talente as |tValue tKey|}}
-            <tr class="roll-div rollabe-prop rollable talent-context {{#if tValue.istHobby}}ist-hobby{{/if}}"
+            <tr class="roll-hover rollabe-prop talent-context {{#if tValue.istHobby}}ist-hobby{{/if}}"
               data-talent="{{tKey}}" data-type="talent">
               <td>{{tValue.label}}</td>
-              <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert" value="{{tValue.wert}}"
-                  data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
+              <td><input class="clear-input clear-tiny" type="number" name="system.talente.{{tKey}}.wert"
+                  value="{{tValue.wert}}" data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
               </td>
             </tr>
             {{/each}}
@@ -107,7 +110,7 @@
       <div class="col-2">
         <div class="row-container">
           <div class="row-1 eig-container grey-bg">
-            <table class="m-table">
+            <table>
               <tr>
                 <th colspan="2">Merkmale</th>
                 <th>
@@ -142,40 +145,38 @@
 
           {{!-- allgemeines Inventar --}}
           <div class="row-2">
-            <h3 class="grey-bg ms-header">{{usedInv.used}} / <input class="clear-input" type="number"
+            <h3 class="grey-bg ms-header">{{usedInv.used}} / <input class="clear-input clear-small" type="number"
                 name="system.misc.inventar.max" value="{{system.misc.inventar.max}}" data-dtype="Number" /> Inventar
               Slots
             </h3>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
-
                 <th colspan="2">Name</th>
                 <th>Art</th>
-                <th>Gewicht</th>
+                <th><a><i class="fa-solid fa-weight-hanging"></i></a></th>
                 <th>
                   <a class="item-create" title="Create item" data-type="gegenstand"><i class="fas fa-plus"></i></a>
                 </th>
               </tr>
               {{#each items as |item id| }}
               {{#unless (isSame item.type "merkmal")}}
-              <tr class="item drag-item-list" data-item-id="{{item._id}}">
+              <tr class="item drag-item-list tr-flex" data-item-id="{{item._id}}">
                 <td class="img-td">
-                  <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+                  <img class="item-edit" src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                 </td>
                 <td>
-                  <input class="edit-item-insheet clear-input" value="{{item.name}}" data-prop="name" />
+                  <input class="edit-item-insheet clear-input clear-medium" value="{{item.name}}" data-prop="name" />
                 </td>
                 <td class="type-td">
                   {{item.type}}
                 </td>
                 <td class="weight-td">
-                  <input class="edit-item-insheet clear-input" type="Number" value={{item.system.weight}}
+                  <input class="edit-item-insheet clear-input clear-tiny" type="Number" value={{item.system.weight}}
                     data-prop="system.weight" data-dtype="Number" />
                 </td>
                 <td class="item-controls">
                   <a class="item-equip" title="Gegenstand ausrüsten"><i class={{#if item.system.fasFa}}"fas fa-hand"
                       {{else}} "fas fa-hand-fist" {{/if}}></i></a>
-                  <a class="item-edit" title="Gegenstand bearbeiten"><i class="fas fa-edit"></i></a>
                   <a class="item-delete" title="Gegenstand löschen"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
@@ -196,7 +197,7 @@
         <div class="grid-3col">
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="3">Adrenalin</th>
               </tr>
@@ -211,14 +212,14 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="2">Rüstwerte</th>
               </tr>
               {{#each system.attribute.ruestwert as |value key|}}
               <tr class="" data-talent="{{key}}">
                 <td>{{value.label}}</td>
-                <td class="ruestwerte-td"><input class="clear-input" type="number"
+                <td class="ruestwerte-td"><input class="clear-input clear-tiny" type="number"
                     name="system.attribute.ruestwert.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
@@ -230,14 +231,14 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="2">Resistenzen</th>
               </tr>
               {{#each system.attribute.resistenzen as |value key|}}
-              <tr class="rollabe-prop rollable" data-talent="{{key}}">
+              <tr class="rollabe-prop " data-talent="{{key}}">
                 <td>{{value.label}}</td>
-                <td class="ruestwerte-td"><input class="clear-input" type="number"
+                <td class="ruestwerte-td"><input class="clear-input clear-tiny" type="number"
                     name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
@@ -251,9 +252,10 @@
         <div class="grid-2col">
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="2">Name</th>
+                <th>Angriff</th>
                 <th>Schaden</th>
                 <th>
                   <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
@@ -262,13 +264,23 @@
               {{#each waffen as |item id|}}
               {{log item}}
               <tr class="item drag-item-list" data-item-id="{{item._id}}">
-                <td class="img-td rollable-item">
-                  <img class="rollable" src="{{item.img}}" width="24" height="24" />
+                <td class="img-td item-edit">
+                  <img src="{{item.img}}" width="24" height="24" />
                 </td>
-                <td>{{item.name}}</td>
-                <td class="wpn-dmg">{{item.flags.mondsturz.computedDmg}}</td>
+                <td>
+                  <input class="edit-item-insheet clear-input clear-medium" value="{{item.name}}" data-prop="name" />
+                </td>
+                <td>
+                  <a class="roll-item" title="Erster Angriff"><i class="fa-solid fa-sword"></i></a>
+                  <a class="roll-item" style="display:inline-flex" data-map="1" title="Zweiter Angriff"><i class="fa-solid fa-swords"></i></a>
+                </td>
+                <td class="wpn-dmg">
+                  <input class="edit-item-insheet clear-input clear-small" value="{{item.system.stats.damage}}"
+                    data-prop="name" />
+                  + {{item.system.stats.level}}
+
+                </td>
                 <td class="item-controls">
-                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
                   <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
@@ -277,7 +289,7 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="8">Name</th>
                 <th>
@@ -287,7 +299,7 @@
               {{#each zauber as |item id|}}
               <tr class="item" data-item-id="{{item._id}}">
                 <td class="img-td">
-                  <img class="rollable" src="{{item.img}}" width="24" height="24" />
+                  <img src="{{item.img}}" width="24" height="24" />
                 </td>
                 <td class="" data-item-id="{{item._id}}">{{item.name}}</td>
                 <td class="zauber-level" data-target="zauber0-{{@index}}">0</td>
@@ -324,7 +336,7 @@
     <div class="tab" data-group="primary" data-tab="info">
 
       <div>
-        <table class="m-table grey-bg info-table">
+        <table class=" grey-bg info-table">
           <tr>
             <th colspan="4">Allgemeines</th>
           </tr>

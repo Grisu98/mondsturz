@@ -119,7 +119,6 @@
   padding-right: 10px;
 }
 
-
 .row-container {
   display: flex;
   flex-direction: column;
@@ -165,30 +164,16 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-
-.ms-table th {
-  background-color: #eee !important;
-  padding: 5px;
-  width: 100%;
-  text-align: center;
-  border-style: groove;
-}
-
-.ms-table tr {
-  background-color: #f1f1f1;
-}
-
-
 .grey-bg {
   background-color: #f1f1f1;
 }
 
 .img-td {
-  width: 10px;
+  width: 30px;
 }
 
 .img-td img {
-  border: none;
+  border: 1px, full, grey;
 }
 
 
@@ -204,12 +189,14 @@
   justify-content: space-between;
 }
 
-.header-info div:last-child {
-  display: contents;
+.misc-info {
+  display: flex;
+  justify-content: space-between;
 }
 
-.header-info .misc-info * {
-  min-width: 45px;
+.misc-info div {
+  width: 70px;
+  text-align: center;
 }
 
 .zauber-text {
@@ -228,63 +215,6 @@
   cursor: pointer;
 }
 
-/* 
-.bar-graph {
-  position: relative;
-  width: auto;
-  height: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  margin-bottom: 5px;
-}
-
-.bar-graph :nth-child(1) {
-  display: inline-flex;
-  position: relative;
-  padding-left: 10px;
-  position: absolute;
-  width: inherit;
-  text-align: center;
-  color: white;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-}
-
-#current-leben {
-  height: 100%;
-  background-color: rgba(0, 128, 0, 0.473);
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-}
-
-#current-ruestung {
-  height: 100%;
-  background-color: rgba(75, 75, 75, 0.5);
-  border-radius: 10px;
-}
-
-#current-mana {
-  height: 100%;
-  background-color: rgba(5, 2, 206, 0.5);
-  border-radius: 10px;
-} */
-
-/* .bar-graph .hp-control {
-  padding-top: 2px;
-  display: none;
-} */
-/* 
-.bar-graph .hp-control:nth-of-type(2) {
-  margin-left: 120px;
-}
-
-.bar-graph .hp-control:nth-of-type(3) {
-  margin-left: 40px;
-} */
-
-/* .bar-graph:hover .hp-control {
-  display: unset;
-} */
 
 
 #leben-bar {
@@ -369,31 +299,6 @@
   vertical-align: sub;
 }
 
-.m-table .img-td {
-  width: 0;
-  padding-right: 5px;
-}
-
-.m-table .weight-td {
-  width: 3em;
-  text-align: center;
-}
-
-.m-table .type-td {
-  width: 3em;
-  text-align: center;
-}
-
-.m-table .item-controls {
-  width: 3em;
-  text-align: center;
-}
-
-.m-table img {
-  max-width: unset;
-  width: 30px;
-  height: 30px;
-}
 
 .window-app .window-content,
 .chat-message {
@@ -403,30 +308,6 @@
 
 .sheet.journal-entry .journal-sidebar {
   color: unset;
-}
-
-
-.combat-table {
-  table-layout: fixed;
-  margin-top: 0.1em;
-  margin-bottom: 0.1em;
-}
-
-.combat-table th {
-  text-align: center;
-  background: rgba(0, 0, 0, 0.15);
-}
-
-.combat-table td {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  border-left: 1px grey solid;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
-.combat-table td:first-child {
-  background: rgba(0, 0, 0, 0.15);
 }
 
 .combat-sidebar li.combatant.hover,
@@ -442,10 +323,36 @@
 .clear-input[type="text"],
 .clear-input[type="number"] {
   padding: unset;
-  border-width: 0;
+  border-width: 1px;
+  border-radius: 8px;
   background-color: unset;
   height: unset;
+  text-align: center;
   width: unset;
+}
+
+.clear-input.clear-tiny {
+  width: 20px;
+}
+
+.clear-input.clear-small {
+  width: 30px;
+}
+
+.clear-input.clear-medium {
+  width: 150px;
+}
+
+
+.roll-hover:hover{
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M274.9 34.3c-28.1-28.1-73.7-28.1-101.8 0L34.3 173.1c-28.1 28.1-28.1 73.7 0 101.8L173.1 413.7c28.1 28.1 73.7 28.1 101.8 0L413.7 274.9c28.1-28.1 28.1-73.7 0-101.8L274.9 34.3zM200 224a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM96 200a24 24 0 1 1 0 48 24 24 0 1 1 0-48zM224 376a24 24 0 1 1 0-48 24 24 0 1 1 0 48zM352 200a24 24 0 1 1 0 48 24 24 0 1 1 0-48zM224 120a24 24 0 1 1 0-48 24 24 0 1 1 0 48zm96 328c0 35.3 28.7 64 64 64H576c35.3 0 64-28.7 64-64V256c0-35.3-28.7-64-64-64H461.7c11.6 36 3.1 77-25.4 105.5L320 413.8V448zM480 328a24 24 0 1 1 0 48 24 24 0 1 1 0-48z"/></svg>') 16 16, auto;
+  text-shadow: 0 0 8px var(--color-shadow-primary);
+}
+
+.edit-hover:hover {
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"/></svg>')0 0, pointer;
+  width: 3px;
+  height: 3px;
 }
 
 .clear-input[type="text"]:focus,
@@ -453,11 +360,7 @@
   box-shadow: unset;
 }
 
-.clear-input[type="number"] {
-  width: 10px;
-}
-
-.health-bar {
+.sheet-bar {
   position: relative;
   height: 20px;
   margin: 5px 0;
@@ -480,7 +383,6 @@
 
 #armor-bar {
   background-color: #9b9b9b;
-
 }
 
 .bar-text {
@@ -539,11 +441,6 @@
   width: auto;
 }
 
-.rollable:hover {
-  text-shadow: 0 0 8px var(--color-shadow-primary);
-  cursor: pointer;
-}
-
 .ruestwerte-td {
   text-align: right;
   padding-right: 10px;
@@ -562,7 +459,6 @@
   order: 1;
 }
 
-
 .info-table td:nth-child(3) {
   border-left: groove;
   padding-left: 5px;
@@ -570,26 +466,6 @@
 
 .info-table td:nth-child(2) {
   padding-right: 5px;
-}
-
-
-.journal-page-content h1 {
-  color: #2c3e50;
-  font-size: 36px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 50px;
-}
-.journal-page-content h2 {
-  color: #3498db;
-  font-size: 24px;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-.journal-page-content p {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 20px;
 }
 
 .adrenalin-sheet .table {
@@ -623,23 +499,6 @@
   border-left: groove;
 }
 
-.combatant-inputs tr {
-  background-color: unset!important;
-  color: white;
-}
-
-.combatant-inputs textarea {
-  color: white;
-}
-
-.toggle-token {
-  flex:0 0 25px;
-  color: var(--color-text-dark-5)
-}
-
-.toggle-token.active {
-  color: var(--color-text-light-1)
-}
 
 .ms-hidden {
   display: none;

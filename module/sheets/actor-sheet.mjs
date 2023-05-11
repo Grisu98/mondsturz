@@ -372,7 +372,7 @@ export class MondsturzActorSheet extends ActorSheet {
     });
 
     // Rollable items,
-    html.find('.rollable-item').click(this._onRollItem.bind(this));
+    html.find('.roll-item').click(this._onRollItem.bind(this));
 
 
     html.find('.accordion-header').click(async (ev) => {
@@ -513,9 +513,9 @@ export class MondsturzActorSheet extends ActorSheet {
   async _onRollItem(event) {
     event.preventDefault();
     const id = $(event.currentTarget).closest(".item")[0].dataset.itemId;
-    const dataset = $(event.currentTarget)[0].dataset;
+    const dataset = event.currentTarget.dataset;
     const item = this.actor.items.get(id);
-    await item.roll(this.actor, dataset);
+    await item.roll(dataset);
   }
 
   async _onConfigureActor(event) {
