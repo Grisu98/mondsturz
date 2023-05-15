@@ -369,8 +369,8 @@
           <tr>
             {{/if}}
             <td>{{value.label}}</td>
-            <td class="">
-              <input type="text" name="system.details.{{key}}.wert" value="{{value.wert}}" />
+            <td >
+              <input class="ms-aling-left" type="text" name="system.details.{{key}}.wert" value="{{value.wert}}" />
             </td>
             {{#if (eq (math @index "%" 2) 1)}}
           </tr>

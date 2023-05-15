@@ -638,3 +638,7 @@ text-align: left;
   text-align: end;
   padding-right: 4px;
 }
+
+.ms-aling-left {
+  text-align: left!important;
+}
