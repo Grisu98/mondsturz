@@ -21,7 +21,7 @@ export class MondsturzItem extends Item {
     // But overrides is always correct
     // Maybe the effect thing i did in items is bugged 
     if (this.actor && this.type === "waffe" && this.system.stats?.skillKey) {
-      const tKey = this.system?.stats?.skillKey8;
+      const tKey = this.system?.stats?.skillKey;
       const overrides = this.actor.overrides;
       let dmgMod = 0;
       if (overrides?.system?.talente && tKey) {
