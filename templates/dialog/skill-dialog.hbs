@@ -2,7 +2,7 @@
     <table>
         <tr>
             <th>{{tName}}</th>
-            <th>Mod</th>
+            <th>Modifiers</th>
         </tr>
         <tr>
             <td>
@@ -13,7 +13,7 @@
             </td>
         </tr>
     </table>
-{{log @root}}
+{{log "skill dialog root" @root}}
     {{#if (eq item.type "waffe")}}
     <div id="other-options" style="text-align: center;">
         <label for="res"> Munition verbrauchen?</label>
@@ -26,8 +26,8 @@
     <div id="other-options" style="text-align: center;">
 
         <div style="display:inline-block">
-            <label for="res">Mana:</label>
-            <input style="width:2em" type="text" id="res" value="{{lvl.mana}}" />
+            <label for="mana">Mana:</label>
+            <input style="width:2em" type="number" id="mana" value="{{lvl.mana}}" />
         </div>
 
         <div style="display:inline-block">

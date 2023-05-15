@@ -42,11 +42,19 @@
       "path": "packs/ms-regelwerk.db",
       "system": "mondsturz"
     }
+    ,
+    {
+      "label": "MS Macros",
+      "type": "Macro",
+      "name": "ms-macros",
+      "path": "packs/ms-macros.db",
+      "system": "mondsturz"
+    }
   ],
   "gridDistance": 1,
   "gridUnits": "m",
   "url": "",
   "manifest": "https://raw.githubusercontent.com/Grisu98/mondsturz/main/system.json",
-  "download": "https://github.com/Grisu98/mondsturz/archive/refs/tags/V1.3.4.zip",
+  "download": "https://github.com/Grisu98/mondsturz/archive/refs/tags/V1.3.5.zip",
   "changelog": "CHANGELOG.md"
 }

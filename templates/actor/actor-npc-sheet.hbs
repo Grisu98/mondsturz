@@ -1,6 +1,5 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
   {{!-- Sheet Header --}}
-  {{log "npc-sheet-root" @root}}
   <header class="row-2-8">
     <div class="col-1">
       <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
@@ -221,7 +220,7 @@
                 <th colspan="2">Resistenzen</th>
               </tr>
               {{#each system.attribute.resistenzen as |value key|}}
-              <tr class="rollabe-prop rollable" data-talent="{{key}}">
+              <tr class="rollable-prop rollable" data-talent="{{key}}">
                 <td>{{value.label}}</td>
                 <td class="ruestwerte-td"><input class="clear-input" type="number"
                     name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
@@ -246,7 +245,6 @@
                 </th>
               </tr>
               {{#each waffen as |item id|}}
-              {{log item}}
               <tr class="item drag-item-list" data-item-id="{{item._id}}">
                 <td class="img-td rollable-item">
                   <img class="rollable" src="{{item.img}}" width="24" height="24" />

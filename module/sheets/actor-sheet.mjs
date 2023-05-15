@@ -309,9 +309,7 @@ export class MondsturzActorSheet extends ActorSheet {
       let actorId = this.actor.uuid;
       const uuid = actorId + ".Item." + id
       const item = await fromUuid(uuid);
-      let dmg = await item.giveComputedDmg();
-      let r = await new Roll(dmg).evaluate({ async: true });
-      r.toMessage()
+      item.rollDamage()
 
     })
 
@@ -351,7 +349,8 @@ export class MondsturzActorSheet extends ActorSheet {
 
     html.find(".talent-context").contextmenu(async (ev) => {
       let currT = ev.currentTarget;
-      let talentKey = currT.dataset.talent;
+      let stringArr = currT.dataset.talentKey.split('.');
+      let talentKey = stringArr[stringArr.length - 1];
       let dataUpdate = {};
       const talentPath = `system.talente.${talentKey}.istHobby`;
       let currValue = this.actor.system.talente[talentKey].istHobby;
@@ -362,9 +361,9 @@ export class MondsturzActorSheet extends ActorSheet {
     // Rollable abilities.
     //html.find('.rollable-skill').click(this._onRoll.bind(this));
 
-    html.find('.rollabe-prop').click((event) => {
-      let dataset = event.currentTarget.dataset;
-      this.actor.rollProp(dataset)
+    html.find('.rollable-prop').click((event) => {
+      let path = event.currentTarget.closest(".actor-prop").dataset.talentKey;
+      this.actor.rollProp(path)
     })
 
     html.find('.clear-input').click(async function (event) {
@@ -459,7 +458,10 @@ export class MondsturzActorSheet extends ActorSheet {
 
     html.find('.item-header').click((ev) => {
       let curr = ev.currentTarget;
-      curr.nextElementSibling.classList.toggle("active")
+      let sibling = curr.nextElementSibling;
+      if (sibling.classList.contains("item-text-container")) {
+        sibling.classList.toggle("active")
+      }
     })
 
   }
@@ -491,17 +493,19 @@ export class MondsturzActorSheet extends ActorSheet {
     return await Item.create(itemData, { parent: this.actor });
   }
 
-  _onEditItemValue(event) {
+  async _onEditItemValue(event) {
 
     // add so it only continues if 
     let id = $(event.currentTarget).parents(".item").attr("data-item-id");
-    let item = duplicate(this.actor.getEmbeddedDocument("Item", id));
+    let itemOld = duplicate(this.actor.getEmbeddedDocument("Item", id));
     let propKey = event.target.dataset.prop;
     let propValue = event.target.value;
     if (event.target.dataset.dtype === "Number") { propValue = parseInt(propValue) }
     if (Number.isNaN(propValue)) { return }
-    let update = { _id: id, [propKey]: propValue };
-    this.actor.updateEmbeddedDocuments("Item", [update]);
+    let update = { [propKey]: propValue };
+    const uuid = this.actor.uuid + ".Item." + id
+    let item = await fromUuid(uuid);
+    await item.update(update);
   }
 
   _onRollTalent(event) {
@@ -512,8 +516,25 @@ export class MondsturzActorSheet extends ActorSheet {
 
   async _onRollItem(event) {
     event.preventDefault();
-    const id = $(event.currentTarget).closest(".item")[0].dataset.itemId;
-    const dataset = event.currentTarget.dataset;
+    const itemDataSet = event.currentTarget.closest(".item")?.dataset;
+    const specificDataSet = event.currentTarget.dataset;
+    let dataset = {};
+    if (itemDataSet) {
+      for (let key in itemDataSet) {
+        if (itemDataSet.hasOwnProperty(key)) {
+          dataset[key] = itemDataSet[key];
+        }
+      }
+    }
+    if (specificDataSet) {
+      for (let key in specificDataSet) {
+        if (specificDataSet.hasOwnProperty(key)) {
+          dataset[key] = specificDataSet[key];
+        }
+      }
+    }
+    const id = dataset.itemId;
+
     const item = this.actor.items.get(id);
     await item.roll(dataset);
   }

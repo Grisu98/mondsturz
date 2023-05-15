@@ -1,10 +1,17 @@
 <div class="item-message" data-item-id="{{itm.uuid}}">
-    {{log "this is chatmessage" @root}}
+    {{log "root waffe message" @root}}
     <h2
         title="Level: {{itm.system.stats.level}}&#10;Qualität: {{itm.system.stats.quality}}&#10;Talent: {{itm.system.stats.talentKey}}&#10;Skill: {{itm.system.stats.skillKey}}">
         {{itm.name}} Wurf
     </h2>
-    <div >
-        <button class="item-roll-damage message-button ms-hidden"> {{dmg}} <i class="fas fa-sword"></i></button>
+    <div>
+        {{#each itm.system.tags as |tagKey|}}
+        <div class="tag-box">
+            {{tagHandling tagKey}}
+        </div>
+        {{/each}}
+    </div>
+    <div>
+        <button class="item-roll-damage ms-button ms-hidden"> {{dmg}} <i class="fas fa-sword"></i></button>
     </div>
 </div>

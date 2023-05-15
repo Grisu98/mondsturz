@@ -8,7 +8,6 @@ export class MondsturzActor extends Actor {
   constructor(data, context) {
     super(data, context);
     data.prototypeToken.vision = true;
-    this.merkmale = {}
   }
   /** @override */
   prepareData(data) {
@@ -93,14 +92,46 @@ export class MondsturzActor extends Actor {
     systemData.talentGruppen.mysthkuenste.wert = 0;
     systemData.talentGruppen.mysthkuenste.maxTalent = 12;
 
+    this._calcualteSpendPointsInfo(actorData, systemData)
+
   }
 
+
+  _calcualteSpendPointsInfo(actorData, systemData) {
+
+    // alle Talente
+    let talentP = 0;
+    const talente = systemData.talente;
+    for (let key in talente) {
+      talentP += talente[key].wert
+    }
+
+    // alle Attribute (kein reflex, ruestwert[ruestzustand], hyperarmor)
+    let attriP = 0;
+    const attribute = systemData.attribute;
+
+    for (const [key, value] of Object.entries(attribute.koerper)) {
+      if (key === "hyperarmor" || key === "ruestwert" || key === "reflex") {
+        continue;
+      }
+      attriP += value.wert;
+    }
+
+    // resistenzen noch
+    let resiP = 0;
+    for (const [_key, value] of Object.entries(attribute.resistenzen)) {
+      resiP += value.wert;
+    }
+
+    systemData.misc.talentPunkte = talentP;
+    systemData.misc.attributPunkte = attriP + (resiP / 4);
+  }
 
   _prepareNpcData(actorData, systemData) {
     if (actorData.type !== 'npc') return;
 
 
-    
+
 
   }
 
@@ -125,23 +156,16 @@ export class MondsturzActor extends Actor {
     if (this.type !== 'npc') return;
   }
 
-  async rollProp(dataset) {
-    let talent;
-    switch (dataset.type) {
-      case "talent":
-        talent = this.system.talente[dataset.talent];
-        break;
-      case "properties":
-        break;
-      default:
-        talent = this.system.attribute.resistenzen[dataset.talent];
-        break;
-    }
+  async rollProp(path) {
+
+
+    let prop = this._getPropertyByPath(path)
+
 
     const data = {
-      tValue: talent.wert,
-      tName: talent.label,
-      mod: talent.mod || 0,
+      tValue: prop.wert,
+      tName: prop.label,
+      mod: prop.mod || 0,
     }
     let dialog = new msRollDialog(data);
     let rd = await dialog.createDialog();
@@ -162,6 +186,21 @@ export class MondsturzActor extends Actor {
       speaker: ChatMessage.getSpeaker(this)
     });
     ChatMessage.create(message)
+  }
+
+  _getPropertyByPath(path) {
+    const keys = path.split('.'); // Split the path into individual keys
+    let value = this;
+
+    for (let key of keys) {
+      if (value && value.hasOwnProperty(key)) {
+        value = value[key]; // Move deeper into the object
+      } else {
+        return undefined; // Property not found
+      }
+    }
+
+    return value;
   }
 
   _handleMerkmal(merkmal, add = true) {

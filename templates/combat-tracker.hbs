@@ -1,5 +1,4 @@
 <section class="{{cssClass}} directory flexcol" id="{{cssId}}" data-tab="{{tabName}}">
-    {{log "combat-tracker root" @root}}
     <header class="combat-tracker-header">
         {{#if user.isGM}}
         <nav class="encounters flexrow" aria-label="COMBAT.NavLabel">
@@ -56,7 +55,6 @@
                 <h4>{{this.name}}</h4>
                 <div class="combatant-controls flexrow">
                     {{#if ../user.isGM}}
-                    {{log "here is this this " this}}
                     <a class=" toggle-token {{#if this.tokenHidden}}active{{/if}}"
                         data-tooltip="COMBAT.ToggleVis">
                         <i class="fas fa-eye-slash"></i>
@@ -103,7 +101,7 @@
 
         </li>
         {{else}}
-        <li>{{log combatant.flags.mondsturz}}
+        <li>
             <div>{{combatant.flags.mondsturz.inputs}}</div>
         </li>
         {{/unless}}
