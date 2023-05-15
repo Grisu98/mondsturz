@@ -16,6 +16,7 @@
 
 .mondsturz table {
   margin: unset;
+  border: 0px;
 }
 
 .ms-header {
@@ -32,6 +33,10 @@
   font-size: 2em;
 }
 
+.ms-big-img {
+  width: 129px;
+  height: 129px;
+}
 
 .row-3-7 {
   display: flex;
@@ -82,7 +87,7 @@
   background-color: #eee;
   color: #444;
   cursor: pointer;
-  padding: 5px;
+  padding: 3px;
   width: 100%;
   text-align: right;
   border-style: groove;
@@ -110,7 +115,7 @@
 }
 
 .accordion-content.active tr {
-  height: 42px;
+  height: 30px;
   font-size: 14px;
 }
 
@@ -119,20 +124,10 @@
   padding-right: 10px;
 }
 
-
 .row-container {
   display: flex;
   flex-direction: column;
   height: 100%;
-}
-
-.row-container .row-1 {
-  flex: 0 0 100px;
-  margin-bottom: 10px;
-}
-
-.row-container .row-2 {
-  flex: 1;
 }
 
 .grid,
@@ -165,51 +160,53 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-
-.ms-table th {
-  background-color: #eee !important;
-  padding: 5px;
-  width: 100%;
-  text-align: center;
-  border-style: groove;
-}
-
-.ms-table tr {
-  background-color: #f1f1f1;
-}
-
-
 .grey-bg {
   background-color: #f1f1f1;
 }
 
 .img-td {
-  width: 10px;
+  width: 30px;
 }
 
 .img-td img {
-  border: none;
+  border: 1px, full, grey;
 }
 
 
 .eig-container {
-  min-height: 200px;
-  max-height: 500px;
+  margin-bottom: 10px;
+  height: 200px;
   overflow: scroll;
 }
 
+.item-container {
+  margin-bottom: 10px;
+  height: 350px;
+  overflow: scroll;
+}
+
+.mondsturz.actor.sheet thead {
+  background: rgb(185 185 185);
+  position: sticky;
+  top: 0;
+  color: unset;
+  text-shadow: unset;
+  border:0px;
+}
 
 .header-info {
   display: flex;
   justify-content: space-between;
 }
 
-.header-info div:last-child {
-  display: contents;
+.misc-info {
+  display: flex;
+  justify-content: space-between;
 }
 
-.header-info .misc-info * {
-  min-width: 45px;
+.misc-info div {
+  width: 70px;
+  text-align: center;
 }
 
 .zauber-text {
@@ -217,7 +214,6 @@
 }
 
 .zauber-level {
-  cursor: pointer;
   text-align: center;
   text-decoration: underline;
 }
@@ -228,63 +224,6 @@
   cursor: pointer;
 }
 
-/* 
-.bar-graph {
-  position: relative;
-  width: auto;
-  height: 20px;
-  border: 1px solid black;
-  border-radius: 10px;
-  margin-bottom: 5px;
-}
-
-.bar-graph :nth-child(1) {
-  display: inline-flex;
-  position: relative;
-  padding-left: 10px;
-  position: absolute;
-  width: inherit;
-  text-align: center;
-  color: white;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
-}
-
-#current-leben {
-  height: 100%;
-  background-color: rgba(0, 128, 0, 0.473);
-  border-radius: 10px;
-  color: white;
-  text-align: center;
-}
-
-#current-ruestung {
-  height: 100%;
-  background-color: rgba(75, 75, 75, 0.5);
-  border-radius: 10px;
-}
-
-#current-mana {
-  height: 100%;
-  background-color: rgba(5, 2, 206, 0.5);
-  border-radius: 10px;
-} */
-
-/* .bar-graph .hp-control {
-  padding-top: 2px;
-  display: none;
-} */
-/* 
-.bar-graph .hp-control:nth-of-type(2) {
-  margin-left: 120px;
-}
-
-.bar-graph .hp-control:nth-of-type(3) {
-  margin-left: 40px;
-} */
-
-/* .bar-graph:hover .hp-control {
-  display: unset;
-} */
 
 
 #leben-bar {
@@ -345,13 +284,18 @@
   align-items: end;
 }
 
-.item-content {
+.item-text-container {
   display: none;
   white-space: pre-line;
+  text-align: left;
 }
 
-.item-content.active {
+.item-text-container.active {
   display: contents;
+}
+
+.item-text-container>td {
+text-align: left;
 }
 
 .editable .hobby:before {
@@ -369,31 +313,6 @@
   vertical-align: sub;
 }
 
-.m-table .img-td {
-  width: 0;
-  padding-right: 5px;
-}
-
-.m-table .weight-td {
-  width: 3em;
-  text-align: center;
-}
-
-.m-table .type-td {
-  width: 3em;
-  text-align: center;
-}
-
-.m-table .item-controls {
-  width: 3em;
-  text-align: center;
-}
-
-.m-table img {
-  max-width: unset;
-  width: 30px;
-  height: 30px;
-}
 
 .window-app .window-content,
 .chat-message {
@@ -403,30 +322,6 @@
 
 .sheet.journal-entry .journal-sidebar {
   color: unset;
-}
-
-
-.combat-table {
-  table-layout: fixed;
-  margin-top: 0.1em;
-  margin-bottom: 0.1em;
-}
-
-.combat-table th {
-  text-align: center;
-  background: rgba(0, 0, 0, 0.15);
-}
-
-.combat-table td {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  border-left: 1px grey solid;
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
-.combat-table td:first-child {
-  background: rgba(0, 0, 0, 0.15);
 }
 
 .combat-sidebar li.combatant.hover,
@@ -442,22 +337,38 @@
 .clear-input[type="text"],
 .clear-input[type="number"] {
   padding: unset;
-  border-width: 0;
+  border-width: 1px;
+  border-radius: 8px;
   background-color: unset;
   height: unset;
+  text-align: center;
   width: unset;
 }
+
+.clear-input.clear-tiny {
+  width: 20px;
+}
+
+.clear-input.clear-small {
+  width: 30px;
+}
+
+.clear-input.clear-medium {
+  width: 140px;
+}
+
+.clear-input.clear-large {
+  width: 180px;
+}
+
+
 
 .clear-input[type="text"]:focus,
 .clear-input[type="number"]:focus {
   box-shadow: unset;
 }
 
-.clear-input[type="number"] {
-  width: 10px;
-}
-
-.health-bar {
+.sheet-bar {
   position: relative;
   height: 20px;
   margin: 5px 0;
@@ -480,17 +391,26 @@
 
 #armor-bar {
   background-color: #9b9b9b;
-
 }
 
 .bar-text {
   position: absolute;
+  display: inline-flex;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-66%, -50%);
   color: #fff;
   font-size: 14px;
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.bar-text .clear-input {
+  color: #fff;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.bar-text>div {
+  width: 80px;
 }
 
 .adjust {
@@ -523,12 +443,8 @@
   margin-top: 2px;
 }
 
-.bar-text .clear-input {
-  width: 10px;
-  text-align: right;
-  color: #fff;
-  font-size: 14px;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+.adjust:hover {
+  opacity: 1;
 }
 
 .health-bar:hover .adjust {
@@ -537,11 +453,6 @@
 
 .message-button {
   width: auto;
-}
-
-.rollable:hover {
-  text-shadow: 0 0 8px var(--color-shadow-primary);
-  cursor: pointer;
 }
 
 .ruestwerte-td {
@@ -562,7 +473,6 @@
   order: 1;
 }
 
-
 .info-table td:nth-child(3) {
   border-left: groove;
   padding-left: 5px;
@@ -572,41 +482,23 @@
   padding-right: 5px;
 }
 
-
-.journal-page-content h1 {
-  color: #2c3e50;
-  font-size: 36px;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 50px;
-}
-.journal-page-content h2 {
-  color: #3498db;
-  font-size: 24px;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-.journal-page-content p {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
-
 .adrenalin-sheet .table {
   display: table;
   border-collapse: collapse;
   width: 100%;
 }
+
 .adrenalin-sheet .row {
   display: table-row;
 }
+
 .adrenalin-sheet .cell {
   display: table-cell;
   padding: 4px;
 }
 
 .adrenalin-sheet table {
-  flex: unset!important;
+  flex: unset !important;
 }
 
 .adrenalin-sheet .row .cell:nth-child(1) {
@@ -623,23 +515,6 @@
   border-left: groove;
 }
 
-.combatant-inputs tr {
-  background-color: unset!important;
-  color: white;
-}
-
-.combatant-inputs textarea {
-  color: white;
-}
-
-.toggle-token {
-  flex:0 0 25px;
-  color: var(--color-text-dark-5)
-}
-
-.toggle-token.active {
-  color: var(--color-text-light-1)
-}
 
 .ms-hidden {
   display: none;
@@ -650,11 +525,12 @@
   text-decoration: underline;
 }
 
-.item-weapon-tags >div{
- display: inline-block;
+.item-weapon-tags>div {
+  display: inline-block;
 }
 
-.item-weapon-tags .tag-box {
+.tag-box {
+  font-size: 14px;
   position: relative;
   display: inline-block;
   background: #c4c4c4;
@@ -674,4 +550,95 @@
 
 .tag-box:hover .adjust {
   opacity: 1 !important;
+}
+
+.item-edit {
+  cursor: alias
+}
+
+
+.zauber-td-header {
+  display: inline-flex;
+  width: 200px;
+}
+
+.zauber-td-header>div {
+  width: 30px;
+}
+
+.ms-button {
+  padding: 1px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #cccccc70;
+  border-radius: 5px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.ms-button:hover {
+  text-shadow: 0 0 8px var(--color-shadow-primary);
+
+}
+
+.wpn-rolls {
+  height: 38px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.wpn-rolls>a {
+  display: grid;
+  width: 20px;
+  height: 20px;
+}
+
+.wpn-rolls>a>i {
+  align-self: center;
+}
+
+.wpn-dmg {
+  padding-right: 10px;
+  padding-left: 5px;
+}
+
+.item-controls {
+  width: 25px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-controls>a {
+  display: grid;
+  width: 20px;
+  height: 20px;
+}
+
+.mondsturz.sheet.actor th {
+  text-align: left;
+}
+
+.mondsturz.sheet.actor th:last-child {
+  text-align: end;
+  padding-right: 4px
+}
+
+.item-delete {
+  padding: 2px;
+}
+
+.attribute-table-th thead th {
+  text-align: left!important;
+}
+
+.mondsturz.mondsturz.actor.sheet tr>td:last-child {
+  text-align: end;
+  padding-right: 4px;
+}
+
+.ms-aling-left {
+  text-align: left!important;
 }

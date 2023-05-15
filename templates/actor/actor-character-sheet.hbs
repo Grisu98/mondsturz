@@ -1,6 +1,5 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
   {{!-- Sheet Header --}}
-  {{log "actor-sheet-root" @root}}
   <header class="row-2-8">
     <div class="col-1">
       <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
@@ -11,15 +10,18 @@
         <div class="misc-info">
           <div>
             Gold:
-            <input class="clear-input" type="number" name="system.misc.gold" value="{{actor.system.misc.gold}}" />
+            <input class="clear-input clear-small" type="number" name="system.misc.gold"
+              value="{{actor.system.misc.gold}}" />
           </div>
           <div>
             XP:
-            <input class="clear-input" type="number" name="system.misc.xp" value="{{actor.system.misc.xp}}" />
+            <input class="clear-input clear-small" type="number" name="system.misc.xp"
+              value="{{actor.system.misc.xp}}" />
           </div>
           <div>
             Rang:
-            <input class="clear-input" type="number" name="system.misc.rang" value="{{actor.system.misc.rang}}" />
+            <input class="clear-input clear-small" type="number" name="system.misc.rang"
+              value="{{actor.system.misc.rang}}" />
           </div>
         </div>
       </div>
@@ -27,13 +29,14 @@
         <div class="col-1">
           <div class="bars">
             {{#each bars as |value key|}}
-            <div class="health-bar bar-graph" data-bar-type="{{key}}">
+            <div class="sheet-bar bar-graph" data-bar-type="{{key}}">
               <div class="bar" id="{{value.css}}" style="width: {{percentage}}%;">
               </div>
-              <div class="bar-text">{{value.label}}<input class="clear-input" type="number"
+              <div class="bar-text">
+                <div>{{value.label}}</div><input class="clear-input clear-small" type="number"
                   name="system.attribute.koerper.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /> /<input
-                  class="clear-input" type="number" name="system.attribute.koerper.{{key}}.max" value="{{value.max}}"
-                  data-dtype="Number" />
+                  class="clear-input clear-small" type="number" name="system.attribute.koerper.{{key}}.max"
+                  value="{{value.max}}" data-dtype="Number" />
               </div>
               <div class="adjust">
                 <span class="minus hp-control" data-control-type="subtract"><i class="fas fa-minus"></i></span>
@@ -53,11 +56,11 @@
               <div class="trape-control" data-control-type="subtract"><i class="fas fa-minus"></i></div>
               <div class="trape-control" data-control-type="add"><i class="fas fa-plus"></i></div>
               {{#if value.max}}
-              <div class="right">/<input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.max"
-                  value="{{value.max}}" data-dtype="Number" /></div>
+              <div class="right">/<input class="clear-input clear-tiny" type="number"
+                  name="system.attribute.koerper.{{key}}.max" value="{{value.max}}" data-dtype="Number" /></div>
               {{/if}}
-              <div class="right"><input class="clear-input" type="number" name="system.attribute.koerper.{{key}}.wert"
-                  value="{{value.wert}}" data-dtype="Number" /></div>
+              <div class="right"><input class="clear-input clear-tiny" type="number"
+                  name="system.attribute.koerper.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /></div>
             </div>
             {{/each}}
           </div>
@@ -90,11 +93,13 @@
           id="accordion-content-{{i}}">
           <table>
             {{#each talente as |tValue tKey|}}
-            <tr class="roll-div rollabe-prop rollable talent-context {{#if tValue.istHobby}}ist-hobby{{/if}}"
-              data-talent="{{tKey}}" data-type="talent">
-              <td>{{tValue.label}}</td>
-              <td><input class="clear-input" type="number" name="system.talente.{{tKey}}.wert" value="{{tValue.wert}}"
-                  data-dtype="Number" />{{#if tValue.mod}}+{{tValue.mod}}{{/if}}
+            <tr class="actor-prop talent-context" data-talent-key="system.talente.{{tKey}}" data-type="talent">
+              <td class="rollable-prop">
+                <div class="ms-button {{#if tValue.istHobby}}ist-hobby{{/if}}">{{tValue.label}}</div>
+              </td>
+              <td><input class="clear-input clear-tiny" type="number" name="system.talente.{{tKey}}.wert"
+                  value="{{tValue.wert}}" data-dtype="Number" />
+                {{#if tValue.mod}}<div>+{{tValue.mod}}</div>{{/if}}
               </td>
             </tr>
             {{/each}}
@@ -106,33 +111,33 @@
       {{!-- right of accordion --}}
       <div class="col-2">
         <div class="row-container">
-          <div class="row-1 eig-container grey-bg">
-            <table class="m-table">
-              <tr>
-                <th colspan="2">Merkmale</th>
-                <th>
-                  <a class="item-create" title="Create item" data-type="merkmal"><i class="fas fa-plus"></i></a>
-                </th>
-              </tr>
+          <div class="eig-container grey-bg">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2">Merkmale</th>
+                  <th>
+                    <a class="item-create" title="Create item" data-type="merkmal"><i class="fas fa-plus"></i></a>
+                  </th>
+                </tr>
+              </thead>
               {{#each merkmale}}
               <tr class="item item-header" data-item-id="{{this._id}}">
-                <td class="img-td">
+                <td class="img-td item-edit">
                   <img src="{{this.img}}" width="24" height="24" />
                 </td>
                 <td>
                   {{this.name}}
                 </td>
-                <td class="item-controls">
-                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                <td>
+                  <a class="item-delete ms-button" title="Gegenstand löschen"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
-              <tr class="item-content">
-                <td colspan="3">
+              <tr class="item-text-container">
+                <td colspan="2">
                   {{this.system.description}}
                 </td>
-
-
+                <td></td>
               </tr>
               {{/each}}
             </table>
@@ -140,43 +145,50 @@
 
           </div>
 
-          {{!-- allgemeines Inventar --}}
-          <div class="row-2">
-            <h3 class="grey-bg ms-header">{{usedInv.used}} / <input class="clear-input" type="number"
+          <div>
+            <h3 class="grey-bg ms-header">{{usedInv.used}} / <input class="clear-input clear-small" type="number"
                 name="system.misc.inventar.max" value="{{system.misc.inventar.max}}" data-dtype="Number" /> Inventar
               Slots
             </h3>
-            <table class="m-table grey-bg">
-              <tr>
+          </div>
+          {{!-- allgemeines Inventar --}}
 
-                <th colspan="2">Name</th>
-                <th>Art</th>
-                <th>Gewicht</th>
-                <th>
-                  <a class="item-create" title="Create item" data-type="gegenstand"><i class="fas fa-plus"></i></a>
-                </th>
+
+          <div class="item-container">
+            <table class=" grey-bg">
+              <thead>
+                <tr>
+                  <th colspan="2">Name</th>
+                  <th>Art</th>
+                  <th><i class="fa-solid fa-weight-hanging"></i></th>
+                  <th colspan="2">
+                    <a class="item-create" title="Create item" data-type="gegenstand"><i class="fas fa-plus"></i></a>
+                  </th>
+              </thead>
               </tr>
               {{#each items as |item id| }}
               {{#unless (isSame item.type "merkmal")}}
-              <tr class="item drag-item-list" data-item-id="{{item._id}}">
+              <tr class="item drag-item-list tr-flex" data-item-id="{{item._id}}">
                 <td class="img-td">
-                  <img src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
+                  <img class="item-edit" src="{{item.img}}" title="{{item.name}}" width="24" height="24" />
                 </td>
                 <td>
-                  <input class="edit-item-insheet clear-input" value="{{item.name}}" data-prop="name" />
+                  <input class="edit-item-insheet clear-input clear-medium" value="{{item.name}}" data-prop="name" />
                 </td>
                 <td class="type-td">
                   {{item.type}}
                 </td>
                 <td class="weight-td">
-                  <input class="edit-item-insheet clear-input" type="Number" value={{item.system.weight}}
+                  <input class="edit-item-insheet clear-input clear-tiny" type="Number" value={{item.system.weight}}
                     data-prop="system.weight" data-dtype="Number" />
                 </td>
-                <td class="item-controls">
-                  <a class="item-equip" title="Gegenstand ausrüsten"><i class={{#if item.system.fasFa}}"fas fa-hand"
-                      {{else}} "fas fa-hand-fist" {{/if}}></i></a>
-                  <a class="item-edit" title="Gegenstand bearbeiten"><i class="fas fa-edit"></i></a>
-                  <a class="item-delete" title="Gegenstand löschen"><i class="fas fa-trash"></i></a>
+                <td>
+                  <a class="item-equip ms-button" title="Gegenstand ausrüsten">
+                    <i class={{#if item.system.fasFa}} " fa-regular fa-backpack" {{else}} "fa-solid fa-hand-fist"
+                      {{/if}}></i></a>
+                </td>
+                <td>
+                  <a class="item-delete ms-button" title="Gegenstand löschen"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
               {{/unless}}
@@ -196,10 +208,12 @@
         <div class="grid-3col">
 
           <div>
-            <table class="m-table grey-bg">
-              <tr>
-                <th colspan="3">Adrenalin</th>
-              </tr>
+            <table class=" grey-bg">
+              <thead>
+                <tr>
+                  <th style="text-align:center;" colspan="3">Adrenalin</th>
+                </tr>
+              </thead>
               {{#each adrenalin as |stufe stufeKey|}}
               <tr>
                 <td>{{math @index "+" 1}}</td>
@@ -211,14 +225,16 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
-              <tr>
-                <th colspan="2">Rüstwerte</th>
-              </tr>
+            <table class="grey-bg attribute-table">
+              <thead>
+                <tr>
+                  <th style="text-align:center;" colspan="2">Rüstwerte</th>
+                </tr>
+              </thead>
               {{#each system.attribute.ruestwert as |value key|}}
               <tr class="" data-talent="{{key}}">
                 <td>{{value.label}}</td>
-                <td class="ruestwerte-td"><input class="clear-input" type="number"
+                <td class="ruestwerte-td"><input class="clear-input clear-tiny" type="number"
                     name="system.attribute.ruestwert.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
@@ -230,14 +246,18 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
-              <tr>
-                <th colspan="2">Resistenzen</th>
-              </tr>
+            <table class=" grey-bg">
+              <thead>
+                <tr>
+                  <th style="text-align:center;" colspan="2">Resistenzen</th>
+                </tr>
+              </thead>
               {{#each system.attribute.resistenzen as |value key|}}
-              <tr class="rollabe-prop rollable" data-talent="{{key}}">
-                <td>{{value.label}}</td>
-                <td class="ruestwerte-td"><input class="clear-input" type="number"
+              <tr class="actor-prop" data-talent-key="system.attribute.resistenzen.{{key}}">
+                <td class="rollable-prop">
+                  <div class="ms-button">{{value.label}}</div>
+                </td>
+                <td class="ruestwerte-td"><input class="clear-input clear-tiny" type="number"
                     name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
                   value.mod}}+{{value.mod}}{{/if}}</td>
               </tr>
@@ -251,25 +271,37 @@
         <div class="grid-2col">
 
           <div>
-            <table class="m-table grey-bg">
-              <tr>
-                <th colspan="2">Name</th>
-                <th>Schaden</th>
-                <th>
-                  <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
-                </th>
-              </tr>
+            <table class=" grey-bg">
+              <thead>
+                <tr>
+                  <th colspan="2">Name</th>
+                  <th colspan="2">Angriff</th>
+                  <th>Schaden</th>
+                  <th colspan="2">
+                    <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
+                  </th>
+                </tr>
+              </thead>
               {{#each waffen as |item id|}}
-              {{log item}}
               <tr class="item drag-item-list" data-item-id="{{item._id}}">
-                <td class="img-td rollable-item">
-                  <img class="rollable" src="{{item.img}}" width="24" height="24" />
+                <td class="item-edit">
+                  <img src="{{item.img}}" width="24" height="24" />
                 </td>
-                <td>{{item.name}}</td>
-                <td class="wpn-dmg">{{item.flags.mondsturz.computedDmg}}</td>
-                <td class="item-controls">
-                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+                <td>
+                  <input class="edit-item-insheet clear-input clear-medium" value="{{item.name}}" data-prop="name" />
+                </td>
+                <td>
+                  <a class="roll-item ms-button" title="Erster Angriff"><i class="fa-solid fa-sword"></i></a>
+                </td>
+                <td>
+                  <a class="roll-item ms-button" data-map="1" title="Zweiter Angriff"><i
+                      class="fa-solid fa-swords"></i></a>
+                </td>
+                <td class="wpn-dmg">
+                  <div class="ms-button">{{item.system.stats.finalDmg}}</div>
+                </td>
+                <td>
+                  <i class="fas fa-trash item-delete ms-button" title="Delete Item"></i>
                 </td>
               </tr>
               {{/each}}
@@ -277,29 +309,31 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
-              <tr>
-                <th colspan="8">Name</th>
-                <th>
-                  <a class="item-create" title="Create item" data-type="zauber"><i class="fas fa-plus"></i></a>
-                </th>
-              </tr>
+            <table class=" grey-bg">
+              <thead>
+                <tr>
+                  <th colspan="3">Name</th>
+                  <th>
+                    <a class="item-create" title="Create item" data-type="zauber"><i class="fas fa-plus"></i></a>
+                  </th>
+                </tr>
+              </thead>
               {{#each zauber as |item id|}}
-              <tr class="item" data-item-id="{{item._id}}">
-                <td class="img-td">
-                  <img class="rollable" src="{{item.img}}" width="24" height="24" />
+              <tr class="item drag-item-list" data-item-id="{{item._id}}">
+                <td class="img-td item-edit">
+                  <img src="{{item.img}}" width="24" height="24" />
                 </td>
                 <td class="" data-item-id="{{item._id}}">{{item.name}}</td>
-                <td class="zauber-level" data-target="zauber0-{{@index}}">0</td>
-                <td class="zauber-level" data-target="zauber1-{{@index}}">1</td>
-                <td class="zauber-level" data-target="zauber2-{{@index}}">2</td>
-                <td class="zauber-level" data-target="zauber3-{{@index}}">3</td>
-                <td class="zauber-level" data-target="zauber4-{{@index}}">4</td>
-                <td class="zauber-level" data-target="zauber5-{{@index}}">5</td>
-                <td class="item-controls">
-                  <a class="item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-
-                  <a class="item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
+                <td class="zauber-td-header">
+                  <div class="zauber-level ms-button" data-target="zauber0-{{@index}}">0</div>
+                  <div class="zauber-level ms-button" data-target="zauber1-{{@index}}">1</div>
+                  <div class="zauber-level ms-button" data-target="zauber2-{{@index}}">2</div>
+                  <div class="zauber-level ms-button" data-target="zauber3-{{@index}}">3</div>
+                  <div class="zauber-level ms-button" data-target="zauber4-{{@index}}">4</div>
+                  <div class="zauber-level ms-button" data-target="zauber5-{{@index}}">5</div>
+                </td>
+                <td>
+                  <a class="item-delete ms-button" title="Delete Item"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
               <tr class="zauber-texts" data-item-id="{{item._id}}">
@@ -324,17 +358,19 @@
     <div class="tab" data-group="primary" data-tab="info">
 
       <div>
-        <table class="m-table grey-bg info-table">
-          <tr>
-            <th colspan="4">Allgemeines</th>
-          </tr>
+        <table class=" grey-bg info-table">
+          <thead>
+            <tr>
+              <th style="text-align:center;" colspan="4">Allgemeines</th>
+            </tr>
+          </thead>
           {{#each system.details as |value key|}}
           {{#if (eq (math @index "%" 2) 0)}}
           <tr>
             {{/if}}
             <td>{{value.label}}</td>
-            <td class="">
-              <input type="text" name="system.details.{{key}}.wert" value="{{value.wert}}" />
+            <td >
+              <input class="ms-aling-left" type="text" name="system.details.{{key}}.wert" value="{{value.wert}}" />
             </td>
             {{#if (eq (math @index "%" 2) 1)}}
           </tr>

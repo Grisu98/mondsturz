@@ -8,8 +8,8 @@ import { MondsturzItemSheet } from "./sheets/item-sheet.mjs";
 import { MondsturzCombatTracker } from "./sheets/combat-tracker.mjs";
 // Import helper/utility classes and constants.
 import { MS } from "./helpers/config.mjs";
-import { preloadTemplates, createEffectKeys } from "./helpers/utils.js";
-import { registerItemPiles } from "./helpers/itemPilesAPI.mjs"
+import { preloadTemplates, createEffectKeys, registerSystemSettings } from "./helpers/utils.js";
+import { registerItemPiles } from "./helpers/itemPilesAPI.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -48,30 +48,24 @@ Hooks.once('init', async function () {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("mondsturz", MondsturzItemSheet, { makeDefault: true });
 
+  registerSystemSettings();
+
   return preloadTemplates();
 });
 
-// using this hook as early the journalEntry object is not inizialised 
-Hooks.once("canvasInit", async function () {
+Hooks.once("ready", function () {
 
-  CONFIG.ms.journal = await (async () => {
-    let found = false;
-    for (let [key, journal] of game.journal.entries()) {
-      if (journal.name === 'Kämpfe') {
-        // Parent journal exists
-        found = true;
-        return journal.id;
-      }
-    }
-    if (!found) {
-      const j = await JournalEntry.create({
-        name: "Kämpfe"
-      });
-      return j.id
-    }
-  })()
+// migrate existing actor data
 
-})
+  if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1") {
+    const allActors = game.actors.contents;
+    allActors.forEach(async (element) => {
+      element.update({ "system.attribute.koerper.ruestwert.label": "Rüstzustand" })
+    });
+    game.settings.set("mondsturz", "systemMigrationVersion", "0.1")
+  }
+});
+
 
 registerItemPiles()
 /* -------------------------------------------- */

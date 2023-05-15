@@ -1,0 +1,19 @@
+<div class="dialog-box">
+    {{log "take dmage dialog" @root}}
+    <div>
+        <input class="clear-input" type="number" id="input-damage">
+        <label for="apply-automatic">Automatisch abziehen: </label>
+        <input type="checkbox" id="apply-automatic">
+    </div>
+    <div>
+        <table>
+            <tr>
+
+                <td data-type="{{key}}">
+                    <div>{{value.label}}</div>
+                    {{radioBoxes "rustwert" @root}}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

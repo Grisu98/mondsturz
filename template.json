@@ -845,7 +845,7 @@
               "wert": 0,
               "max": 0,
               "mod": 0,
-              "label": "Rüstwert"
+              "label": "Rüstzustand"
             }
           },
           "ruestwert": {

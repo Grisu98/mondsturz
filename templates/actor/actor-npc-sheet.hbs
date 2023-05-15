@@ -1,6 +1,5 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
   {{!-- Sheet Header --}}
-  {{log "npc-sheet-root" @root}}
   <header class="row-2-8">
     <div class="col-1">
       <img class="ms-big-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150" width="150" />
@@ -93,7 +92,7 @@
       <div class="col-2">
         <div class="row-container">
           <div class="row-1 eig-container grey-bg">
-            <table class="m-table">
+            <table>
               <tr>
                 <th colspan="2">Merkmale</th>
                 <th>
@@ -132,7 +131,7 @@
                 name="system.misc.inventar.max" value="{{system.misc.inventar.max}}" data-dtype="Number" /> Inventar
               Slots
             </h3>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
 
                 <th colspan="2">Name</th>
@@ -182,7 +181,7 @@
         <div class="grid-3col">
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="3">Adrenalin</th>
               </tr>
@@ -197,7 +196,7 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="2">Rüstwerte</th>
               </tr>
@@ -216,12 +215,12 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="2">Resistenzen</th>
               </tr>
               {{#each system.attribute.resistenzen as |value key|}}
-              <tr class="rollabe-prop rollable" data-talent="{{key}}">
+              <tr class="rollable-prop rollable" data-talent="{{key}}">
                 <td>{{value.label}}</td>
                 <td class="ruestwerte-td"><input class="clear-input" type="number"
                     name="system.attribute.resistenzen.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" />{{#if
@@ -237,7 +236,7 @@
         <div class="grid-2col">
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="2">Name</th>
                 <th>Schaden</th>
@@ -246,7 +245,6 @@
                 </th>
               </tr>
               {{#each waffen as |item id|}}
-              {{log item}}
               <tr class="item drag-item-list" data-item-id="{{item._id}}">
                 <td class="img-td rollable-item">
                   <img class="rollable" src="{{item.img}}" width="24" height="24" />
@@ -263,7 +261,7 @@
           </div>
 
           <div>
-            <table class="m-table grey-bg">
+            <table class=" grey-bg">
               <tr>
                 <th colspan="8">Name</th>
                 <th>
@@ -310,7 +308,7 @@
     <div class="tab" data-group="primary" data-tab="info">
 
       <div>
-        <table class="m-table grey-bg info-table">
+        <table class=" grey-bg info-table">
           <tr>
             <th colspan="4">Allgemeines</th>
           </tr>

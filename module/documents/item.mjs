@@ -10,20 +10,28 @@ export class MondsturzItem extends Item {
   prepareData() {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
+
     super.prepareData();
-
   }
 
+  prepareDerivedData() {
 
-  _onUpdate(data, options, userId) {
-
-    super._onUpdate(data, options, userId);
-
-    if (this.type === "waffe" && this.actor && this.permission === 3) {
-      this.giveComputedDmg();
+    // goning the actor.overrides route as prepareData is getting called 3 times? idk why
+    // and for some reason only on the first call the active effects are being applied.
+    // But overrides is always correct
+    // Maybe the effect thing i did in items is bugged 
+    if (this.actor && this.type === "waffe" && this.system.stats?.skillKey) {
+      const tKey = this.system?.stats?.skillKey;
+      const overrides = this.actor.overrides;
+      let dmgMod = 0;
+      if (overrides?.system?.talente && tKey) {
+        dmgMod = overrides.system.talente[tKey]?.dmgMod || 0;
+      }
+      this.system.stats.finalDmg = `${this.system.stats.damage}+${this.system.stats.level}+${dmgMod}`;
     }
-
+    super.prepareDerivedData();
   }
+
 
   /**
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
@@ -39,43 +47,14 @@ export class MondsturzItem extends Item {
     return rollData;
   }
 
-  giveComputedDmg() {
-
-    if (this.permission === 3) {
-      const dmgMod = this.actor.system.talente[this.system.stats.skillKey]?.dmgMod;
-      const lvlMod = this.system.stats?.level;
-      const dmgWpn = this.system.stats?.damage;
-
-      let compDmgMod = dmgMod ? `+${dmgMod}` : "";
-      let compLvlMod = lvlMod ? `+${lvlMod}` : "";
-      let compDmgWpn = dmgWpn ? `${dmgWpn}` : "";
-      const computedDmg = compDmgWpn + compLvlMod + compDmgMod;
-
-      this.setFlag("mondsturz", "computedDmg", computedDmg)
-      return computedDmg
-    }
-  }
-
-  async roll(actor, dataset) {
-    if (!actor) {
-      return
-    }
-
-    let dialogData = {};
-    const tKey = this.system.stats.skillKey;
-
-    const talent = actor.system.talente[tKey];
-
-    dialogData.tValue = talent?.wert || 0;
-    dialogData.tName = talent?.label || "Talent";
-    dialogData.mod = talent?.mod || 0;
+  async roll(dataset) {
 
     switch (this.type) {
       case "zauber":
-        await this._rollZauber(dialogData, actor, dataset);
+        await this._rollZauber(dataset);
         break;
       case "waffe":
-        await this._rollWaffe(dialogData, actor, dataset);
+        await this._rollWaffe(dataset);
         break;
       default:
 
@@ -83,10 +62,59 @@ export class MondsturzItem extends Item {
     }
   }
 
+  async _rollWaffe(context) {
 
-  async _rollZauber(dialogData, actor, dataset) {
+    const tKey = this.system.stats.skillKey;
+    const talent = this.actor.system.talente[tKey];
+
+    let dialogData = {
+      tValue: talent?.wert || 0,
+      tName: talent?.label || "Talent",
+      mod: talent?.mod || 0
+    }
+
+    dialogData.mod += this.system.stats.level;
+
+    if (context?.map) {
+      dialogData.mod -= 3
+    }
+
+    let dialog = new msRollDialog(dialogData);
+    let rd = await dialog.createDialog();
+    let r;
+
+    if (rd.mode) {
+      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    }
+    else {
+      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+
+    }
+
+    let finalDmg = this.system.stats.finalDmg;
+    let htmlData = { itm: this, dmg: finalDmg }
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
+    let message = await new ChatMessage({
+      rolls: [r],
+      flavor: flavor,
+      content: r.total,
+      type: 5,
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flags: { mondsturz: { type: "attackMessage", value: this.system.stats.damage } },
+
+    });
+    ChatMessage.create(message)
+  }
+
+  async _rollZauber(dataset) {
     const zauberLevel = this.system.level[dataset.zauberLevel];
-    zauberLevel.key = dataset.zauberLevel;
+    const zauberSystem = this.system;
+    const actorData = this.actor.system.talente[zauberSystem.stats.talentKey];
+    const dialogData = {
+      tValue: actorData.wert,
+      tName: actorData.label,
+      item: this
+    }
     let dialog = new msRollDialog(dialogData);
     let rd = await dialog.createDialog();
 
@@ -101,58 +129,16 @@ export class MondsturzItem extends Item {
       content: r.total,
       flavor: flavor,
       type: 5,
-      speaker: ChatMessage.getSpeaker({ actor })
+      speaker: ChatMessage.getSpeaker({ speaker: this.actor })
     });
     ChatMessage.create(message)
   }
 
-  async _rollWaffe(dialogData, actor, dataset) {
-    dialogData.mod += this.system.stats.level;
-    // handle roll Dialog
-    let dialog = new msRollDialog(dialogData);
-    let rd = await dialog.createDialog();
-    let r;
-    // roll with the input of the dialog
-    if (rd.mode) {
-      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    }
-    else {
-      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-
-    }
-    // create the chat message
-
-    let computedDmg = this.giveComputedDmg();
-
-    let htmlData = { itm: this, dmg: computedDmg }
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
-
-    let message = await new ChatMessage({
-      rolls: [r],
-      flavor: flavor,
-      content: r.total,
-      type: 5,
-      speaker: ChatMessage.getSpeaker({ actor }),
-      flags: { mondsturz: { type: "attackMessage", value: this.system.stats.damage } },
-
-
-    });
-    ChatMessage.create(message)
-  }
-
-  async rollDamage(key) {
+  async rollDamage() {
 
     const flavor = await renderTemplate("systems/mondsturz/templates/chat/damage-message.hbs", this);
-    let rollFormula;
-    if (this.type === "waffe") {
-      let dmgMod = this.parent.system.talente[this.system.stats.skillKey].dmgMod || 0;
-      let lvlMod = this.system.stats.level || 0;
-      rollFormula = this.system.stats.damage + "+" + lvlMod + "+" + dmgMod
-    }
-    else {
-      rollFormula = this.system.level[key].formula;
-    }
-    let r = await new Roll(rollFormula).evaluate({ async: false })
+
+    let r = await new Roll(this.system.stats.finalDmg).evaluate({ async: false })
 
     let message = await new ChatMessage({
       rolls: [r],

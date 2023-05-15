@@ -66,27 +66,138 @@ export class msRollDialog {
 
     async _returnData(html, mode) {
         let returnData = {};
+        let otherOptions = html.find('[id=use]')[0]?.checked
         returnData.mode = mode;
         returnData.talent = (html.find('[id=talent]')[0].value);
         returnData.mod = (html.find('[id=mod]')[0].value);
         returnData.options = {};
-        if (this.data.item) {
-            data.options.used = html.find('[id=use]')[0]?.checked;
+
+        if (otherOptions) {
+
             let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
             specialOptions.forEach(element => {
-                data.options[element.id] = element.value;
+                returnData.options[element.id] = element.value;
             })
+
         }
+
         return returnData;
 
     }
 
 }
 
+export function registerSystemSettings() {
+    // Internal System Migration Version
+    game.settings.register("mondsturz", "systemMigrationVersion", {
+        name: "System Migration Version",
+        scope: "world",
+        config: false,
+        type: String,
+        default: ""
+    });
+}
+
+
+
 export class msUtils {
     constructor(params) {
 
     }
+
+    async takeDamage(actor) {
+
+        let actorCopy = foundry.utils.deepClone(actor)
+
+        const htmlData = {};
+        Object.keys(actorCopy.system.attribute.ruestwert).forEach(key => {
+            htmlData[key] = actorCopy.system.attribute.ruestwert[key].label;
+        });
+        let damageData = {
+            hyper: actorCopy.system.attribute.koerper.hyperarmor.wert,
+            zustand: actorCopy.system.attribute.koerper.ruestwert.wert,
+            leben: actorCopy.system.attribute.koerper.leben.wert,
+            physis: actorCopy.system.attribute.koerper.physis.wert
+        }
+
+        const content = await renderTemplate("systems/mondsturz/templates/dialog/take-damage-dialog.hbs", htmlData)
+
+        let userInput = await new Promise(resolve => {
+            new Dialog({
+                title: "Schaden angeben",
+                content: content,
+                default: "normal",
+                buttons: {
+                    normal: {
+                        icon: '<i class="fas fa-dice"></i>',
+                        label: "Normal",
+                        callback: html => {
+                            resolve([
+                                html.find('[id=input-damage]')[0].valueAsNumber,
+                                html.find('[name=rustwert]:checked')[0]?.value,
+                                html.find('[id=apply-automatic')[0].checked
+                            ])
+                        }
+                    }
+                },
+                close: () => resolve(null)
+            }).render(true);
+        });
+
+        let [dmg, rust, apply] = userInput;
+        damageData.rust = actorCopy.system.attribute.ruestwert[rust].wert + actorCopy.system.attribute.ruestwert[rust].mod;
+        let derivedDmg = {
+        };
+        // jetzt wird gerechnet
+        if (!rust) {
+            return ui.notifications.warn("Keine Schadensart angegeben.");
+        }
+
+        if (isNaN(dmg)) {
+            return ui.notifications.warn("Angegebener Schaden ist keine Zahl.");
+        }
+        // Rüstwerte abziehen nur falls Rüstzustand noch exisitert
+        if (damageData.zustand) {
+            dmg -= damageData.rust;
+            if (dmg <= 0) {
+                return [derivedDmg, apply]
+            }
+        }
+
+        // Hyperarmor verliert eins und nimmt den ganzen schaden weg
+        if (damageData.hyper) {
+            derivedDmg.hyper = damageData.hyper - 1;
+            return [derivedDmg, apply]
+        }
+
+        // Rüstzustand 
+
+        if (damageData.zustand) {
+            derivedDmg.zustand = damageData.zustand - dmg;
+            dmg -= damageData.zustand;
+        }
+
+        // Leben
+        if (damageData.leben && dmg > 0) {
+            derivedDmg.leben = damageData.leben - dmg;
+            dmg -= damageData.leben;
+            if (derivedDmg.leben < 0) {
+                return [derivedDmg, apply]
+            }
+        }
+
+        // Physis
+        if (damageData.physis && dmg > 0) {
+            let physisDmg = Math.ceil(dmg / 10);
+            derivedDmg.physis = damageData.physis - physisDmg;
+        }
+
+
+        return [derivedDmg, apply]
+
+
+    }
+
 
     async importTable() {
 

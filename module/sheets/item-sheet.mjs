@@ -96,12 +96,7 @@ export class MondsturzItemSheet extends ItemSheet {
     await this.item.update({"system.tags": allTags});
   }
 
-  async _updateObject(_event, formData) {
-    if (!this.object.id) return;
-    await this.object.update(formData);
-    this.render();
-    return;
-  }
+
 
   addEffectPart(event, effect, item) {
     event.preventDefault();
