@@ -1,4 +1,4 @@
-import { msRollDialog } from "../helpers/utils.js"
+import { msRollDialog, msRollDialogHelper } from "../helpers/utils.js"
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -167,25 +167,43 @@ export class MondsturzActor extends Actor {
       tName: prop.label,
       mod: prop.mod || 0,
     }
-    let dialog = new msRollDialog(data);
-    let rd = await dialog.createDialog();
-    let r
-    if (rd.mode) {
-      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    }
-    else {
-      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    }
-    let flavor = `<h3>${data.tName} Wurf</h3>`
 
-    let message = await new ChatMessage({
-      rolls: [r],
-      content: r.total,
-      flavor: flavor,
-      type: 5,
-      speaker: ChatMessage.getSpeaker(this)
-    });
-    ChatMessage.create(message)
+    const context = {
+      modifiers: [
+        { value: prop.wert, label: prop.label },
+      ],
+      options: {
+      }
+    }
+
+    if (prop.mod) {
+      context.modifiers.push({ value: prop.mod, label: `${prop.label} Mod` })
+    }
+
+    let a = new msRollDialogHelper("prop", context);
+    let b = await a.createDialog()
+    console.log("after")
+
+
+    // let dialog = new msRollDialog(data);
+    // let rd = await dialog.createDialog();
+    // let r
+    // if (rd.mode) {
+    //   r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    // }
+    // else {
+    //   r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    // }
+    // let flavor = `<h3>${data.tName} Wurf</h3>`
+
+    // let message = await new ChatMessage({
+    //   rolls: [r],
+    //   content: r.total,
+    //   flavor: flavor,
+    //   type: 5,
+    //   speaker: ChatMessage.getSpeaker(this)
+    // });
+    // ChatMessage.create(message)
   }
 
   _getPropertyByPath(path) {

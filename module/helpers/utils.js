@@ -98,6 +98,183 @@ export function registerSystemSettings() {
     });
 }
 
+export class msRollDialogHelperOldold {
+    constructor(diceTerm, modifiers = {}, options = {}) {
+        this.diceTerm = diceTerm;
+        this.modifiers = {};
+        this.options = {};
+        Object.assign(this.modifiers, modifiers)
+        Object.assign(this.options, options)
+        this.htmlData = this._createHtmlData();
+        this.finalData = {};
+        this.htmlTemplate
+    }
+
+    createDialog() {
+
+        return new Promise(resolve => {
+            new Dialog({
+                title: `${this.data.tName}` + ' Wurf',
+                content: this.htmlTemplate,
+                default: "normal",
+                buttons: {
+                    normal: {
+                        icon: '<i class="fas fa-dice"></i>',
+                        label: "Normal",
+                        callback: html => resolve(this._resolveRoll(html))
+                    }
+                },
+                close: () => resolve(null)
+            }).render(true);
+        });
+
+    }
+
+    _createHtmlData() {
+
+    }
+
+    _resolveRoll(html) {
+
+    }
+}
+
+export class msRollDialogHelper {
+
+    constructor(type, context = {}, item) {
+        this.context = context;
+        this.type = type;
+        this.item = item;
+        this.htmlData = this.prepareHtmlData();
+        this.prepareTypes();
+    }
+
+    prepareTypes() {
+        switch (this.type) {
+            case "prop":
+                Object.assign(this.context, {
+                    rollTerm: "2d6",
+                    options: {
+                        adv: true,
+                    }
+                })
+                break;
+
+            case "waffe":
+                Object.assign(this.context, {
+                    rollTerm: this.item.system.stats.damage,
+                    options: {
+                        useAmmo: true
+                    }
+                })
+                break;
+            case "zauber":
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    createDialog() {
+
+        return new Promise(resolve => {
+            new MsDialog({
+                context: this.context,
+                close: () => resolve(null),
+                callback: (input) => resolve(input)
+            }).render(true);
+        });
+
+    }
+
+
+    prepareHtmlData() {
+
+    }
+
+
+
+}
+
+export class MsDialog extends Application {
+
+    constructor(data, options) {
+        super(options);
+        this.data = data;
+    }
+
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            template: "systems/mondsturz/templates/dialog/roll.hbs",
+            focus: true,
+            classes: ["ms-dialog"],
+            width: 400,
+            height: 400,
+            jQuery: true
+        });
+    }
+
+    get title() {
+        return this.data.context.title || "Ms Dialog";
+    }
+
+    getData(options = {}) {
+        return this.data.context;
+    };
+
+    activateListeners(html) {
+
+        html.find(".add-modifier-button").click(this.addModifier.bind(this));
+
+        html.find(".delete-modifier-button").click(this.deleteModifier.bind(this));
+
+        html.find(".submit-roll-button").click(this._submit.bind(this));
+
+        html.find(".delte-modifier").click(this.deleteModifier.bind(this));
+
+        html.find("form").each((i, el) => el.onsubmit = evt => evt.preventDefault());
+    }
+
+    upadteUserInput(event) {
+        event.preventDefault();
+        let submittedData = { modifiers: [], options: [] }
+        let form = event.currentTarget.closest(".ms-dialog");
+        console.log("tester")
+        let modArr = form.querySelectorAll(".modifier-input");
+        modArr.forEach((curr, index, array) => {
+            curr.children
+            submittedData.modifiers.push({ label: curr.children[0].value, value: curr.children[1].value })
+        })
+        let optionsArray = form.querySelectorAll(".option-input")
+        this.data.context.modifiers = submittedData.modifiers;
+        this.data.context.options = submittedData.options;
+        this.render(true)
+    }
+
+    _submit(event) {
+        event.preventDefault()
+        this.upadteUserInput(event)
+        this.data.callback(this.data.context)
+        this.close({ force: true })
+    }
+
+    addModifier(event) {
+        event.preventDefault()
+        this.upadteUserInput(event)
+        this.data.context.modifiers.push({ label: "", value: 0 })
+    }
+
+    deleteModifier(event) {
+        event.preventDefault()
+        let arrIndex = event.currentTarget.closest(".modifier-input").dataset.arrayIndex
+        this.data.context.modifiers.splice(arrIndex, 1)
+        this.render(true)
+    }
+
+
+}
 
 
 export class msUtils {
@@ -197,7 +374,6 @@ export class msUtils {
 
 
     }
-
 
     async importTable() {
 

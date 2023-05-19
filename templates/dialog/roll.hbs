@@ -1,0 +1,20 @@
+<form class="" autocomplete="off">
+    <div>
+        <h2>{{rollTerm}}</h2>
+    </div>
+    {{log "roll.hbs @root" @root}}
+    {{#each modifiers}}
+    <div class="modifier-input" data-array-index="{{@index}}">
+        <input class="clear-input" type="text" value="{{this.label}}">
+        <input class="clear-input" type="number"  value="{{this.value}}">
+        <div class ="delte-modifier"><i class="fas fa-trash"></i></div>
+    </div>
+    {{/each}}
+
+    <div>
+        <button class="add-modifier-button">add modifier</button>
+    </div>
+    <div>
+        <button class="submit-roll-button">Roll</button>
+    </div>
+</form>
