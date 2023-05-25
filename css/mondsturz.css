@@ -642,3 +642,14 @@ text-align: left;
 .ms-aling-left {
   text-align: left!important;
 }
+
+
+.message-roll-part {
+  text-align: center;
+}
+
+.message-roll-part>button {
+  margin: 5px;
+  width: auto;
+  margin-bottom: 10px;
+}
