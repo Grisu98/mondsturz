@@ -25,7 +25,7 @@ Hooks.once('init', async function () {
     rollItemMacro
   };
 
-
+  // CONFIG.ChatMessage.template = "systems/mondsturz/templates/chat/chat-message.hbs"
 
   // CONFIG.debug.hooks = true
   CONFIG.ms = MS;
@@ -55,7 +55,7 @@ Hooks.once('init', async function () {
 
 Hooks.once("ready", function () {
 
-// migrate existing actor data
+  // migrate existing actor data
 
   if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1") {
     const allActors = game.actors.contents;
@@ -163,7 +163,7 @@ Handlebars.registerHelper('tagHandling', function (tagKey) {
   const tag = CONFIG.ms.waffenTags[tagKey];
   const name = Handlebars.Utils.escapeExpression(tag.name);
   const description = Handlebars.Utils.escapeExpression(tag.description);
-  let tagElement = `<div title="${description}">${name}</div>`;
+  let tagElement = `<div class="tag-box" title="${description}"><div >${name}</div>`;
   return new Handlebars.SafeString(tagElement)
 });
 

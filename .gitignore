@@ -3,3 +3,6 @@ node_modules
 /node_modules
 /old
 /.vscode
+/packs/
+/packs/ms-regelwerk.db
+/packs/ms-macros.db
