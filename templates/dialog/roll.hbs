@@ -1,12 +1,15 @@
 <form class="" autocomplete="off">
+    {{log "roll.hbs root" @root}}
+    <div>
+        <h1>{{title}}</h1>
+    </div>
     <div>
         <h2>{{rollTerm}}</h2>
     </div>
-    {{log "roll.hbs @root" @root}}
     {{#each modifiers}}
     <div class="modifier-input" data-array-index="{{@index}}">
-        <input class="clear-input" type="text" value="{{this.label}}">
-        <input class="clear-input" type="number"  value="{{this.value}}">
+        <input class="clear-input" type="text" value="{{this.[0]}}">
+        <input class="clear-input" type="number"  value="{{this.[1]}}">
         <div class ="delte-modifier"><i class="fas fa-trash"></i></div>
     </div>
     {{/each}}

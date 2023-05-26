@@ -139,7 +139,7 @@ export class msRollDialogHelperOldold {
     }
 }
 
-export class msRollDialogHelper {
+export class msRollDialogHelperV1 {
 
     constructor(type, context = {}, item) {
         this.context = context;
@@ -154,6 +154,7 @@ export class msRollDialogHelper {
             case "prop":
                 Object.assign(this.context, {
                     rollTerm: "2d6",
+                    title: null,
                     options: {
                         adv: true,
                     }
@@ -163,6 +164,7 @@ export class msRollDialogHelper {
             case "waffe":
                 Object.assign(this.context, {
                     rollTerm: this.item.system.stats.damage,
+                    title: this.item.name,
                     options: {
                         useAmmo: true
                     }
@@ -177,11 +179,35 @@ export class msRollDialogHelper {
         }
     }
 
-    createDialog() {
+    async createDialog() {
+
+        let data = await this._createDialog()
+        console.log(data)
+        this.createMessage(data)
+    }
+
+    async createMessage(data) {
+        let term = data.rollTerm;
+        data.modifiers.forEach((value) => { term += `+${value.value}` })
+        this.prepareHtmlData(data);
+        let r = await new Roll(term).evaluate()
+
+        const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", this.htmlData)
+        let message = await new ChatMessage({
+            rolls: [r],
+            flavor: flavor,
+            content: r.total,
+            type: 5
+        });
+        ChatMessage.create(message)
+
+    }
+
+    _createDialog() {
 
         return new Promise(resolve => {
             new MsDialog({
-                context: this.context,
+                context: this.data,
                 close: () => resolve(null),
                 callback: (input) => resolve(input)
             }).render(true);
@@ -189,14 +215,123 @@ export class msRollDialogHelper {
 
     }
 
-
-    prepareHtmlData() {
-
+    prepareHtmlData(data) {
+        this.htmlData = data
     }
 
 
 
 }
+
+export class msRollDialogHelper {
+
+    constructor(talent, context = {}, options = {}) {
+        this.talent = talent;
+        this.options = this.prepareOptions(options)
+        this.data = this.prepareData();
+        this.handleContext(context)
+    }
+
+    handleContext(context) {
+        if (context.modifiers) {
+            context.modifiers.forEach((ele,index) => {this.data.modifiers.push(ele)})
+        }
+    }
+
+    prepareData() {
+        // first property
+        let data = {
+            rollTerm: "2d6",
+            title: this.talent.label,
+            modifiers: [
+                ["Talent", this.talent.wert]
+            ],
+            options: this.options
+        };
+
+        return data;
+
+    }
+
+    prepareOptions(options) {
+        return Object.assign(options, {
+            diceMod: true
+        })
+    }
+
+    prepareTypes() {
+        switch (this.type) {
+            case "prop":
+                Object.assign(this.context, {
+                    rollTerm: "2d6",
+                    title: null,
+                    options: {
+                        adv: true,
+                    }
+                })
+                break;
+
+            case "waffe":
+                Object.assign(this.context, {
+                    rollTerm: this.item.system.stats.damage,
+                    title: this.item.name,
+                    options: {
+                        useAmmo: true
+                    }
+                })
+                break;
+            case "zauber":
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    async createDialog() {
+
+        let data = await this._createDialog()
+        this.createMessage(data)
+    }
+
+    async createMessage(data) {
+        let term = data.rollTerm;
+        data.modifiers.forEach((value) => { term += `+${value[1]}` })
+        this.prepareHtmlData(data);
+        let r = await new Roll(term).evaluate()
+
+        const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", this.htmlData)
+        let message = await new ChatMessage({
+            rolls: [r],
+            flavor: flavor,
+            content: r.total,
+            type: 5
+        });
+        ChatMessage.create(message)
+
+    }
+
+    _createDialog() {
+
+        return new Promise(resolve => {
+            new MsDialog({
+                context: this.data,
+                close: () => resolve(null),
+                callback: (input) => resolve(input)
+            }).render(true);
+        });
+
+    }
+
+    prepareHtmlData(data) {
+        this.htmlData = data
+    }
+
+
+
+}
+
 
 export class MsDialog extends Application {
 
@@ -220,7 +355,7 @@ export class MsDialog extends Application {
         return this.data.context.title || "Ms Dialog";
     }
 
-    getData(options = {}) {
+    getData() {
         return this.data.context;
     };
 
@@ -245,9 +380,9 @@ export class MsDialog extends Application {
         let modArr = form.querySelectorAll(".modifier-input");
         modArr.forEach((curr, index, array) => {
             curr.children
-            submittedData.modifiers.push({ label: curr.children[0].value, value: curr.children[1].value })
+            submittedData.modifiers.push([curr.children[0].value, curr.children[1].value])
         })
-        let optionsArray = form.querySelectorAll(".option-input")
+        let optionsArr = form.querySelectorAll(".option-input")
         this.data.context.modifiers = submittedData.modifiers;
         this.data.context.options = submittedData.options;
         this.render(true)
@@ -263,7 +398,7 @@ export class MsDialog extends Application {
     addModifier(event) {
         event.preventDefault()
         this.upadteUserInput(event)
-        this.data.context.modifiers.push({ label: "", value: 0 })
+        this.data.context.modifiers.push(["", 0])
     }
 
     deleteModifier(event) {

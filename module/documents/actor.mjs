@@ -161,6 +161,15 @@ export class MondsturzActor extends Actor {
 
     let prop = this._getPropertyByPath(path)
 
+    const msDialogData = {
+      title: this.name,
+      modifiers: [["Talent", prop.value]],
+      options: [["checkbox", "vornach"]]
+    }
+
+    if (prop.mod) {
+      msDialogData.modifiers.push(["Talent Mod", prop.mod])
+    }
 
     const data = {
       tValue: prop.wert,
@@ -180,7 +189,7 @@ export class MondsturzActor extends Actor {
       context.modifiers.push({ value: prop.mod, label: `${prop.label} Mod` })
     }
 
-    let a = new msRollDialogHelper("prop", context);
+    let a = new msRollDialogHelper(prop);
     let b = await a.createDialog()
     console.log("after")
 

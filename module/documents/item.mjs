@@ -1,4 +1,4 @@
-import { msRollDialog } from "../helpers/utils.js"
+import { msRollDialog, msRollDialogHelper } from "../helpers/utils.js"
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -78,8 +78,8 @@ export class MondsturzItem extends Item {
     if (context?.map) {
       dialogData.mod -= 3
     }
-
-    let dialog = new msRollDialog(dialogData);
+    let msContext = {item: this, modifiers: [["MAP",-3, false]]}
+    let dialog = new msRollDialogHelper(talent, msContext);
     let rd = await dialog.createDialog();
     let r;
 

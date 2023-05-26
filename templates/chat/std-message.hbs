@@ -1,0 +1,9 @@
+<div>
+    {{log "std-msg @root" @root}}
+    <h3>{{title}}</h3>
+    <div class="message-modifiers">
+        {{#each modifiers}}
+            <div>{{this.[0]}} {{this.[1]}}</div>
+        {{/each}}
+    </div>
+</div>
