@@ -114,7 +114,7 @@ export class msUtils {
         });
         let damageData = {
             hyper: actorCopy.system.attribute.koerper.hyperarmor.wert,
-            zustand: actorCopy.system.attribute.koerper.ruestwert.wert,
+            zustand: actorCopy.system.attribute.koerper.ruestzustand.wert,
             leben: actorCopy.system.attribute.koerper.leben.wert,
             physis: actorCopy.system.attribute.koerper.physis.wert
         }

@@ -516,13 +516,13 @@
             "label": "Faustkampf",
             "dmgMod": 0
           },
-          "klingenwaffen": {
+          "einhandwaffen": {
             "wert": 0,
             "talentKey": "nahkampf",
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Klingenwaffen",
+            "label": "Einhandwaffen",
             "dmgMod": 0
           },
           "schildkunst": {
@@ -543,13 +543,13 @@
             "label": "Stangenwaffen",
             "dmgMod": 0
           },
-          "wuchtwaffen": {
+          "zweihandwaffen": {
             "wert": 0,
             "talentKey": "nahkampf",
             "mod": 0,
             "istHobby": false,
             "istBeruf": false,
-            "label": "Wuchtwaffen",
+            "label": "Zweihandwaffen",
             "dmgMod": 0
           },
           "bogenwaffen": {
@@ -841,7 +841,7 @@
               "mod": 0,
               "label": "Mana"
             },
-            "ruestwert": {
+            "ruestzustand": {
               "wert": 0,
               "max": 0,
               "mod": 0,
