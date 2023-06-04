@@ -101,7 +101,7 @@ export class MondsturzActorSheet extends ActorSheet {
     context.bars = {
       leben: { ...koerper.leben, css: "leben-bar" },
       mana: { ...koerper.mana, css: "mana-bar" },
-      ruestwert: { ...koerper.ruestwert, css: "ruestwert-bar" }
+      ruestzustand: { ...koerper.ruestzustand, css: "ruestwert-bar" }
     }
 
     for (let key in context.bars) {
@@ -119,7 +119,7 @@ export class MondsturzActorSheet extends ActorSheet {
     context.koerper = {};
 
     for (let key in context.system.attribute.koerper) {
-      if (key === "mana" || key === "ruestwert" || key === "leben") {
+      if (key === "mana" || key === "ruestzustand" || key === "leben") {
       }
       else {
         let attr = context.system.attribute.koerper[key];
@@ -151,7 +151,7 @@ export class MondsturzActorSheet extends ActorSheet {
     context.bars = {
       leben: { ...koerper.leben, css: "leben-bar" },
       mana: { ...koerper.mana, css: "mana-bar" },
-      ruestwert: { ...koerper.ruestwert, css: "ruestwert-bar" }
+      ruestzustand: { ...koerper.ruestzustand, css: "ruestwert-bar" }
     }
 
     for (let key in context.bars) {
@@ -169,7 +169,7 @@ export class MondsturzActorSheet extends ActorSheet {
     context.koerper = {};
 
     for (let key in context.system.attribute.koerper) {
-      if (key === "mana" || key === "ruestwert" || key === "leben") {
+      if (key === "mana" || key === "ruestzustand" || key === "leben") {
       }
       else {
         let attr = context.system.attribute.koerper[key];
