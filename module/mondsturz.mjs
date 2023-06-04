@@ -57,7 +57,7 @@ Hooks.once("ready", function () {
 
   // migrate existing actor data
 
-  if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1.5") {
+  if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1.6") {
     const allActors = game.actors.contents;
     allActors.forEach(async (element) => {
       try {
@@ -83,7 +83,7 @@ Hooks.once("ready", function () {
         console.log(error)
       }
     });
-    game.settings.set("mondsturz", "systemMigrationVersion", "0.1.5")
+    game.settings.set("mondsturz", "systemMigrationVersion", "0.1.6")
   }
 });
 
