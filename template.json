@@ -830,14 +830,14 @@
               "label": "Reflex"
             },
             "leben": {
-              "wert": 5,
+              "wert": 3,
               "min": 0,
-              "max": 5,
+              "max": 3,
               "label": "Leben"
             },
             "mana": {
-              "wert": 3,
-              "max": 3,
+              "wert": 2,
+              "max": 2,
               "mod": 0,
               "label": "Mana"
             },

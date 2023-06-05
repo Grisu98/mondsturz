@@ -1,5 +1,5 @@
 <form class="{{cssClass}} {{actor.type}} mondsturz" autocomplete="off">
-
+{{log "adrenalin sheet root" @root}}
     <nav class="sheet-tabs tabs" data-group="adrin">
         <a class="" data-tab="settings">Einstellungen</a>
         <a class="" data-tab="adrenalin">Adrenalin</a>
@@ -40,23 +40,32 @@
                 <h3>Errechnete Werte:</h3>
 
                 <table class="">
+                    {{#each system.misc.spentAttr as |value key|}}
+                    {{#unless (eq key "alle")}}
                     <tr class="item item-header">
                         <td>
-                            Talentepunkte:
+                            {{key}}
                         </td>
                         <td>
-                            {{system.misc.talentPunkte}}
-
+                            {{value}}
                         </td>
                     </tr>
-                    <tr class="item item-header">
+                    {{/unless}}
+                    {{/each}}
+                    <tr class="spent-attr-tr">
                         <td>
-                            Attributpunkte:
+                            Zusammengerechnet:
                         </td>
-                        <td>
-                            {{system.misc.attributPunkte}}
-
+                        <td >
+                            {{system.misc.spentAttr.alle}}
                         </td>
+                    </tr>
+                </table>
+                <br>
+                <table>
+                    <tr>
+                        <td>Talentpunkte</td>
+                        <td>{{system.misc.spentTal}}</td>
                     </tr>
                 </table>
             </div>
