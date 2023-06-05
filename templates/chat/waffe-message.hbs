@@ -6,12 +6,11 @@
     </h2>
     <div>
         {{#each itm.system.tags as |tagKey|}}
-        <div class="tag-box">
             {{tagHandling tagKey}}
         </div>
         {{/each}}
     </div>
-    <div>
+    <div class="message-roll-part">
         <button class="item-roll-damage ms-button ms-hidden"> {{dmg}} <i class="fas fa-sword"></i></button>
     </div>
 </div>

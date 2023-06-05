@@ -643,15 +643,13 @@ text-align: left;
   text-align: left!important;
 }
 
-.modifier-input {
-  display: inline-flex;
-  justify-content: space-around;
+
+.message-roll-part {
+  text-align: center;
 }
 
-.modifier-input input:first-child {
-  flex: 0.7
-}
-
-.modifier-input input:last-child{
-  flex: 0.3
+.message-roll-part>button {
+  margin: 5px;
+  width: auto;
+  margin-bottom: 10px;
 }

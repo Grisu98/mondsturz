@@ -35,10 +35,10 @@ MS.weaponSkills = {
   "Nahkampf": {
     "nahexoten": "Exoten Nahkampf",
     "faustkampf": "Faustkampf",
-    "klingenwaffen": "Klingenwaffen",
+    "einhandwaffen": "Einhandwaffen",
     "schildkunst": "Schildkunst",
     "stangenwaffen": "Stangenwaffen",
-    "wuchtwaffen": "Wuchtwaffen"
+    "zweihandwaffen": "Zweihandwaffen"
   },
   "Fernkampf": {
     "fernexoten": "Exoten Fernkampf",

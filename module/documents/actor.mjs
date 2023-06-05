@@ -111,7 +111,7 @@ export class MondsturzActor extends Actor {
     const attribute = systemData.attribute;
 
     for (const [key, value] of Object.entries(attribute.koerper)) {
-      if (key === "hyperarmor" || key === "ruestwert" || key === "reflex") {
+      if (key === "hyperarmor" || key === "ruestzustand" || key === "reflex") {
         continue;
       }
       attriP += value.wert;

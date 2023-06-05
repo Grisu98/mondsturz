@@ -25,7 +25,7 @@ Hooks.once('init', async function () {
     rollItemMacro
   };
 
-
+  // CONFIG.ChatMessage.template = "systems/mondsturz/templates/chat/chat-message.hbs"
 
   // CONFIG.debug.hooks = true
   CONFIG.ms = MS;
@@ -55,14 +55,35 @@ Hooks.once('init', async function () {
 
 Hooks.once("ready", function () {
 
-// migrate existing actor data
+  // migrate existing actor data
 
-  if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1") {
+  if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1.6") {
     const allActors = game.actors.contents;
     allActors.forEach(async (element) => {
-      element.update({ "system.attribute.koerper.ruestwert.label": "Rüstzustand" })
+      try {
+        let oldrustWert = element.system.attribute.koerper.ruestwert;
+        await element.update({ "system.attribute.koerper.ruestzustand": oldrustWert });
+        await element.update({ "system.attribute.koerper.-=ruestwert": null });
+      } catch (error) {
+        console.log("MS | MIGRATION RUESTWERT FAILED")
+        console.log(error)
+      }
+
+      try {
+        let oldDataKlinge = element.system.talente.klingenwaffen;
+        oldDataKlinge.label = "Einhandwaffen";
+        let oldDataWucht = element.system.talente.wuchtwaffen;
+        oldDataWucht.label = "Zweihandwaffen"
+        await element.update({ "system.talente.einhandwaffen": oldDataKlinge });
+        await element.update({ "system.talente.zweihandwaffen": oldDataWucht });
+        await element.update({ "system.talente.-=wuchtwaffen": null })
+        await element.update({ "system.talente.-=klingenwaffen": null })
+      } catch (error) {
+        console.log("MS | MIGRATION TALENTE FAILED")
+        console.log(error)
+      }
     });
-    game.settings.set("mondsturz", "systemMigrationVersion", "0.1")
+    game.settings.set("mondsturz", "systemMigrationVersion", "0.1.6")
   }
 });
 
@@ -163,7 +184,7 @@ Handlebars.registerHelper('tagHandling', function (tagKey) {
   const tag = CONFIG.ms.waffenTags[tagKey];
   const name = Handlebars.Utils.escapeExpression(tag.name);
   const description = Handlebars.Utils.escapeExpression(tag.description);
-  let tagElement = `<div title="${description}">${name}</div>`;
+  let tagElement = `<div class="tag-box" title="${description}"><div >${name}</div>`;
   return new Handlebars.SafeString(tagElement)
 });
 
