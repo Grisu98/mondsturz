@@ -191,7 +191,7 @@
   top: 0;
   color: unset;
   text-shadow: unset;
-  border:0px;
+  border: 0px;
 }
 
 .header-info {
@@ -295,7 +295,7 @@
 }
 
 .item-text-container>td {
-text-align: left;
+  text-align: left;
 }
 
 .editable .hobby:before {
@@ -530,13 +530,11 @@ text-align: left;
 }
 
 .tag-box {
-  font-size: 14px;
   position: relative;
   display: inline-block;
   background: #c4c4c4;
-  padding: 5px;
+  padding: 3px;
   margin: 1px;
-  border: 1px solid #7a7971;
   border-radius: 10px;
 }
 
@@ -567,7 +565,7 @@ text-align: left;
 }
 
 .ms-button {
-  padding: 1px;
+  padding: 2px;
   text-align: center;
   cursor: pointer;
   background-color: #cccccc70;
@@ -631,7 +629,7 @@ text-align: left;
 }
 
 .attribute-table-th thead th {
-  text-align: left!important;
+  text-align: left !important;
 }
 
 .mondsturz.mondsturz.actor.sheet tr>td:last-child {
@@ -640,7 +638,7 @@ text-align: left;
 }
 
 .ms-aling-left {
-  text-align: left!important;
+  text-align: left !important;
 }
 
 
@@ -655,6 +653,123 @@ text-align: left;
 }
 
 
-.spent-attr-tr{
+.spent-attr-tr {
   font-size: 20px;
+}
+
+.message-modifiers {
+  display: flex;
+}
+
+.message-modifiers>div {
+  margin-right: 5px;
+}
+
+
+.options-input {
+  display: flex;
+}
+
+.options-input>div:first-child {
+  width: 100px;
+}
+
+.modifier-input {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 5px;
+}
+
+.modifier-users {
+  flex: 8;
+  padding-right: 20px;
+}
+
+.modifier-options {
+  flex: 2;
+}
+
+.modifier-input>* {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modifier-input .modifier-name {
+  flex: 8;
+}
+
+.modifier-input .modifier-value {
+  flex: 2;
+}
+
+
+.ms-dialog form>:last-child {
+  padding-top: 40px;
+}
+
+.modifier-adder {
+  padding: 10px;
+}
+
+
+
+
+
+
+
+
+.switch-input {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+}
+
+.switch-input input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-input .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.switch-input .slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 0px;
+  bottom: 1px;
+  background-color: white;
+  transition: .2s;
+}
+
+.switch-input input:checked + .slider {
+  background-color: #2196F3;
+}
+
+.switch-input input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+.switch-input input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.switch-input .slider.round {
+  border-radius: 34px;
+}
+
+.switch-input .slider.round:before {
+  border-radius: 50%;
 }

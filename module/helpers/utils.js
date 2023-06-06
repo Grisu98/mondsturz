@@ -21,72 +21,6 @@ export function createTagKeys() {
     return allKeys
 }
 
-export class msRollDialog {
-    constructor(options = {}) {
-        this.data = {
-            tValue: 0,
-            tName: "Talent",
-            mod: 0,
-            create: true,
-            item: null
-        };
-        Object.assign(this.data, options)
-    }
-
-    async createDialog() {
-
-        const content = await renderTemplate("systems/mondsturz/templates/dialog/skill-dialog.hbs", this.data)
-
-        return new Promise(resolve => {
-            new Dialog({
-                title: `${this.data.tName}` + ' Wurf',
-                content: content,
-                default: "normal",
-                buttons: {
-                    disadvantage: {
-                        icon: '<i class="fas fa-arrow-down"></i>',
-                        label: "Nachteil",
-                        callback: html => resolve(this._returnData(html, "kl"))
-                    },
-                    normal: {
-                        icon: '<i class="fas fa-dice"></i>',
-                        label: "Normal",
-                        callback: html => resolve(this._returnData(html, ""))
-                    },
-                    advantage: {
-                        icon: '<i class="fas fa-arrow-up"></i>',
-                        label: "Vorteil",
-                        callback: html => resolve(this._returnData(html, "kh"))
-                    },
-                },
-                close: () => resolve(null)
-            }).render(true);
-        });
-    }
-
-    async _returnData(html, mode) {
-        let returnData = {};
-        let otherOptions = html.find('[id=use]')[0]?.checked
-        returnData.mode = mode;
-        returnData.talent = (html.find('[id=talent]')[0].value);
-        returnData.mod = (html.find('[id=mod]')[0].value);
-        returnData.options = {};
-
-        if (otherOptions) {
-
-            let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
-            specialOptions.forEach(element => {
-                returnData.options[element.id] = element.value;
-            })
-
-        }
-
-        return returnData;
-
-    }
-
-}
-
 export function registerSystemSettings() {
     // Internal System Migration Version
     game.settings.register("mondsturz", "systemMigrationVersion", {
@@ -98,246 +32,78 @@ export function registerSystemSettings() {
     });
 }
 
-export class msRollDialogHelperOldold {
-    constructor(diceTerm, modifiers = {}, options = {}) {
-        this.diceTerm = diceTerm;
-        this.modifiers = {};
-        this.options = {};
-        Object.assign(this.modifiers, modifiers)
-        Object.assign(this.options, options)
-        this.htmlData = this._createHtmlData();
-        this.finalData = {};
-        this.htmlTemplate
+export class msDialogHelper {
+    constructor(info, modifiers, options) {
+        this.info = Object.assign({}, this.constructor.STANDARD_INFO, info);
+        this.modifiers = this.constructor.STANDARD_MODS.concat(modifiers);
+        this.options = this.constructor.STANDARD_OPTIONS.concat(options);
     }
 
-    createDialog() {
+    static STANDARD_INFO = { name: "Wurf", rollTerm: "2d6", prop: true }
 
-        return new Promise(resolve => {
-            new Dialog({
-                title: `${this.data.tName}` + ' Wurf',
-                content: this.htmlTemplate,
-                default: "normal",
-                buttons: {
-                    normal: {
-                        icon: '<i class="fas fa-dice"></i>',
-                        label: "Normal",
-                        callback: html => resolve(this._resolveRoll(html))
-                    }
-                },
-                close: () => resolve(null)
-            }).render(true);
-        });
+    static STANDARD_MODS = []
 
-    }
-
-    _createHtmlData() {
-
-    }
-
-    _resolveRoll(html) {
-
-    }
-}
-
-export class msRollDialogHelperV1 {
-
-    constructor(type, context = {}, item) {
-        this.context = context;
-        this.type = type;
-        this.item = item;
-        this.htmlData = this.prepareHtmlData();
-        this.prepareTypes();
-    }
-
-    prepareTypes() {
-        switch (this.type) {
-            case "prop":
-                Object.assign(this.context, {
-                    rollTerm: "2d6",
-                    title: null,
-                    options: {
-                        adv: true,
-                    }
-                })
-                break;
-
-            case "waffe":
-                Object.assign(this.context, {
-                    rollTerm: this.item.system.stats.damage,
-                    title: this.item.name,
-                    options: {
-                        useAmmo: true
-                    }
-                })
-                break;
-            case "zauber":
-
-                break;
-
-            default:
-                break;
-        }
-    }
+    static STANDARD_OPTIONS = []
 
     async createDialog() {
-
-        let data = await this._createDialog()
-        console.log(data)
-        this.createMessage(data)
-    }
-
-    async createMessage(data) {
-        let term = data.rollTerm;
-        data.modifiers.forEach((value) => { term += `+${value.value}` })
-        this.prepareHtmlData(data);
-        let r = await new Roll(term).evaluate()
-
-        const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", this.htmlData)
-        let message = await new ChatMessage({
-            rolls: [r],
-            flavor: flavor,
-            content: r.total,
-            type: 5
-        });
-        ChatMessage.create(message)
-
-    }
-
-    _createDialog() {
-
-        return new Promise(resolve => {
-            new MsDialog({
-                context: this.data,
-                close: () => resolve(null),
-                callback: (input) => resolve(input)
-            }).render(true);
-        });
-
-    }
-
-    prepareHtmlData(data) {
-        this.htmlData = data
-    }
-
-
-
-}
-
-export class msRollDialogHelper {
-
-    constructor(talent, context = {}, options = {}) {
-        this.talent = talent;
-        this.options = this.prepareOptions(options)
-        this.data = this.prepareData();
-        this.handleContext(context)
-    }
-
-    handleContext(context) {
-        if (context.modifiers) {
-            context.modifiers.forEach((ele,index) => {this.data.modifiers.push(ele)})
+        let userData = await this._createDialog();
+        if (this.info.prop) {
+            let message = await this.createPropRoll(userData)
+            return [message, userData]
+        }
+        else {
+            return userData
         }
     }
 
-    prepareData() {
-        // first property
-        let data = {
-            rollTerm: "2d6",
-            title: this.talent.label,
-            modifiers: [
-                ["Talent", this.talent.wert]
-            ],
-            options: this.options
-        };
+    async createPropRoll(userData) {
+        if (userData.options[0][1]) {
+            userData.info.rollTerm = "3d6kh2"
+        }
+        else if (userData.options[1][1]) {
+            userData.info.rollTerm = "3d6kl2"
+        }
 
-        return data;
+        let finalTerm = userData.info.rollTerm;
 
-    }
-
-    prepareOptions(options) {
-        return Object.assign(options, {
-            diceMod: true
+        userData.modifiers.forEach((curr, index, array) => {
+            if (curr[2]) {
+                finalTerm += ` + ${curr[1]}`
+            }
         })
-    }
 
-    prepareTypes() {
-        switch (this.type) {
-            case "prop":
-                Object.assign(this.context, {
-                    rollTerm: "2d6",
-                    title: null,
-                    options: {
-                        adv: true,
-                    }
-                })
-                break;
-
-            case "waffe":
-                Object.assign(this.context, {
-                    rollTerm: this.item.system.stats.damage,
-                    title: this.item.name,
-                    options: {
-                        useAmmo: true
-                    }
-                })
-                break;
-            case "zauber":
-
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    async createDialog() {
-
-        let data = await this._createDialog()
-        this.createMessage(data)
-    }
-
-    async createMessage(data) {
-        let term = data.rollTerm;
-        data.modifiers.forEach((value) => { term += `+${value[1]}` })
-        this.prepareHtmlData(data);
-        let r = await new Roll(term).evaluate()
-
-        const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", this.htmlData)
+        let roll = await new Roll(finalTerm).evaluate();
+        const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", userData)
         let message = await new ChatMessage({
-            rolls: [r],
+            rolls: [roll],
+            content: roll.total,
             flavor: flavor,
-            content: r.total,
             type: 5
         });
-        ChatMessage.create(message)
+        return message
+
 
     }
 
-    _createDialog() {
+    async _createDialog() {
+        let data = { modifiers: this.modifiers, info: this.info, options: this.options }
 
         return new Promise(resolve => {
             new MsDialog({
-                context: this.data,
+                data: data,
                 close: () => resolve(null),
                 callback: (input) => resolve(input)
             }).render(true);
         });
-
     }
-
-    prepareHtmlData(data) {
-        this.htmlData = data
-    }
-
-
-
 }
-
 
 export class MsDialog extends Application {
 
-    constructor(data, options) {
+    constructor(context, options) {
         super(options);
-        this.data = data;
+        this.data = context.data;
+        this.callback = context.callback
     }
 
     static get defaultOptions() {
@@ -352,11 +118,11 @@ export class MsDialog extends Application {
     }
 
     get title() {
-        return this.data.context.title || "Ms Dialog";
+        return this.data.info.name;
     }
 
     getData() {
-        return this.data.context;
+        return this.data;
     };
 
     activateListeners(html) {
@@ -372,39 +138,52 @@ export class MsDialog extends Application {
         html.find("form").each((i, el) => el.onsubmit = evt => evt.preventDefault());
     }
 
+
     upadteUserInput(event) {
         event.preventDefault();
         let submittedData = { modifiers: [], options: [] }
         let form = event.currentTarget.closest(".ms-dialog");
-        console.log("tester")
         let modArr = form.querySelectorAll(".modifier-input");
+        let optionsArr = form.querySelectorAll(".options-input")
+
         modArr.forEach((curr, index, array) => {
-            curr.children
-            submittedData.modifiers.push([curr.children[0].value, curr.children[1].value])
+
+            let name = curr.querySelectorAll(".modifier-name")[0].value;
+            let value = curr.querySelectorAll(".modifier-value")[0].value;
+            let checked = curr.querySelectorAll(".modifier-checked")[0].checked;
+
+            submittedData.modifiers.push([name, value, checked])
         })
-        let optionsArr = form.querySelectorAll(".option-input")
-        this.data.context.modifiers = submittedData.modifiers;
-        this.data.context.options = submittedData.options;
+        if (optionsArr.length) {
+            optionsArr.forEach((curr, index, array) => {
+                let name = curr.querySelectorAll(".option-name")[0].textContent;
+                let checked = curr.querySelectorAll(".option-checked")[0].checked;
+                submittedData.options.push([name, checked])
+            })
+        }
+
+        this.data.options = submittedData.options;
+        this.data.modifiers = submittedData.modifiers;
         this.render(true)
     }
 
     _submit(event) {
         event.preventDefault()
         this.upadteUserInput(event)
-        this.data.callback(this.data.context)
+        this.callback(this.data)
         this.close({ force: true })
     }
 
     addModifier(event) {
         event.preventDefault()
         this.upadteUserInput(event)
-        this.data.context.modifiers.push(["", 0])
+        this.data.modifiers.push(["", 0, true])
     }
 
     deleteModifier(event) {
         event.preventDefault()
         let arrIndex = event.currentTarget.closest(".modifier-input").dataset.arrayIndex
-        this.data.context.modifiers.splice(arrIndex, 1)
+        this.data.modifiers.splice(arrIndex, 1)
         this.render(true)
     }
 

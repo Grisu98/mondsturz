@@ -1,4 +1,4 @@
-import { msRollDialog, msRollDialogHelper } from "../helpers/utils.js"
+import { msDialogHelper } from "../helpers/utils.js"
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -107,7 +107,7 @@ export class MondsturzActor extends Actor {
       adrenalin: 0,
       regeneration: 0,
       resistenzen: 0,
-      alle : 0
+      alle: 0
     };
     // alle Talente
     let talentP = 0;
@@ -130,14 +130,15 @@ export class MondsturzActor extends Actor {
       resiP += value.wert;
     }
 
-    for (const [key, value] of Object.entries(spentAttr)) {
-      if (key !== "all")
-      spentAttr.alle += value;
-    }
     spentAttr.resistenzen = resiP / 2;
 
-    // resistenzen noch
+    for (const [key, value] of Object.entries(spentAttr)) {
+      if (key !== "all")
+        spentAttr.alle += value;
+    }
 
+
+    // resistenzen noch
 
     systemData.misc.spentAttr = spentAttr;
     systemData.misc.spentTal = talentP
@@ -174,61 +175,29 @@ export class MondsturzActor extends Actor {
 
   async rollProp(path) {
 
-
     let prop = this._getPropertyByPath(path)
 
-    const msDialogData = {
-      title: this.name,
-      modifiers: [["Talent", prop.value]],
-      options: [["checkbox", "vornach"]]
+    const info = {
+      name: prop.label,
+      rollTerm: "2d6"
     }
 
-    if (prop.mod) {
-      msDialogData.modifiers.push(["Talent Mod", prop.mod])
-    }
+    const modifiers = [
+      ["Talent", prop.wert, true],
+    ]
+    const options = [
+      ["Vorteil", false],
+      ["Nachteil", false]
 
-    const data = {
-      tValue: prop.wert,
-      tName: prop.label,
-      mod: prop.mod || 0,
-    }
+    ]
 
-    const context = {
-      modifiers: [
-        { value: prop.wert, label: prop.label },
-      ],
-      options: {
-      }
-    }
-
-    if (prop.mod) {
-      context.modifiers.push({ value: prop.mod, label: `${prop.label} Mod` })
-    }
-
-    let a = new msRollDialogHelper(prop);
-    let b = await a.createDialog()
-    console.log("after")
+    if (prop.mod) { modifiers.push(["Mod", prop.mod, true]) }
 
 
-    // let dialog = new msRollDialog(data);
-    // let rd = await dialog.createDialog();
-    // let r
-    // if (rd.mode) {
-    //   r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    // }
-    // else {
-    //   r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    // }
-    // let flavor = `<h3>${data.tName} Wurf</h3>`
+    let dialog = new msDialogHelper(info, modifiers, options);
+    let [message, userData] = await dialog.createDialog();
+    ChatMessage.create(message)
 
-    // let message = await new ChatMessage({
-    //   rolls: [r],
-    //   content: r.total,
-    //   flavor: flavor,
-    //   type: 5,
-    //   speaker: ChatMessage.getSpeaker(this)
-    // });
-    // ChatMessage.create(message)
   }
 
   _getPropertyByPath(path) {

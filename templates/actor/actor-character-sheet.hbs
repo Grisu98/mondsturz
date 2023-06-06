@@ -275,7 +275,7 @@
               <thead>
                 <tr>
                   <th colspan="2">Name</th>
-                  <th colspan="2">Angriff</th>
+                  <th colspan="1">Angriff</th>
                   <th>Schaden</th>
                   <th colspan="2">
                     <a class="item-create" title="Create item" data-type="waffe"><i class="fas fa-plus"></i></a>
@@ -293,12 +293,8 @@
                 <td>
                   <a class="roll-item ms-button" title="Erster Angriff"><i class="fa-solid fa-sword"></i></a>
                 </td>
-                <td>
-                  <a class="roll-item ms-button" data-map="1" title="Zweiter Angriff"><i
-                      class="fa-solid fa-swords"></i></a>
-                </td>
                 <td class="wpn-dmg">
-                  <div class="ms-button">{{item.system.stats.finalDmg}}</div>
+                  <div class="ms-button">{{item.system.stats.damage}}</div>
                 </td>
                 <td>
                   <i class="fas fa-trash item-delete ms-button" title="Delete Item"></i>
