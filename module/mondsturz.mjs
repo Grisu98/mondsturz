@@ -275,6 +275,10 @@ Hooks.on("renderChatMessage", (message, html, info) => {
     }
   }
 
+  if(message.isRoll) {
+    let diceToolTip = html[0].querySelector(".dice-tooltip");
+    diceToolTip.classList.add("expanded")
+  }
 
   html.on("click", ".item-roll-damage", async (event, html) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;
