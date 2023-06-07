@@ -534,8 +534,8 @@
   display: inline-block;
   background: #c4c4c4;
   padding: 3px;
-  margin: 1px;
   border-radius: 10px;
+  margin-bottom: 3px;
 }
 
 .weapon-tag-delete {
@@ -711,6 +711,16 @@
   padding: 10px;
 }
 
+.roll-term-div {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+
+.roll-term-input[type="text"] {
+  font-size: 20px;
+  font-weight: bold;
+}
 
 
 

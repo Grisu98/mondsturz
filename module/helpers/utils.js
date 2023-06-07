@@ -141,8 +141,9 @@ export class MsDialog extends Application {
 
     upadteUserInput(event) {
         event.preventDefault();
-        let submittedData = { modifiers: [], options: [] }
+        let submittedData = { modifiers: [], options: [], rollTerm: "" }
         let form = event.currentTarget.closest(".ms-dialog");
+        let userRollTerm = form.querySelectorAll(".roll-term-input");
         let modArr = form.querySelectorAll(".modifier-input");
         let optionsArr = form.querySelectorAll(".options-input")
 
@@ -164,6 +165,7 @@ export class MsDialog extends Application {
 
         this.data.options = submittedData.options;
         this.data.modifiers = submittedData.modifiers;
+        this.data.info.rollTerm = userRollTerm[0].value;
         this.render(true)
     }
 

@@ -1,8 +1,10 @@
 <form class="" autocomplete="off">
     {{log "roll.hbs root" @root}}
     <div>
-        <h1>{{info.name}}</h1>
-        <h2>{{info.rollTerm}}</h2>
+        <div class="roll-term-div">
+            <input style="align-self: center;" type="text" class="roll-term-input clear-input"
+                value="{{info.rollTerm}}">
+        </div>
         {{#each modifiers}}
         <div class="modifier-input" data-array-index="{{@index}}">
             <div class="modifier-users">
