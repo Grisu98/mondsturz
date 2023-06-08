@@ -1,5 +1,4 @@
 <form class="" autocomplete="off">
-    {{log "roll.hbs root" @root}}
     <div>
         <div class="roll-term-div">
             <input style="align-self: center;" type="text" class="roll-term-input clear-input"
@@ -21,7 +20,7 @@
         </div>
         {{/each}}
         <div class="modifier-adder">
-            <button class="add-modifier-button ms-button">add modifier</button>
+            <button class="add-modifier-button ms-button">Modifier hinzufügen</button>
         </div>
         {{#if options}}
         {{#each options}}
@@ -37,6 +36,6 @@
     </div>
 
     <div>
-        <button class="submit-roll-button">Roll</button>
+        <button class="submit-roll-button">Würfeln</button>
     </div>
 </form>

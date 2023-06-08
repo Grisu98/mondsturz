@@ -1,5 +1,4 @@
 <div class="item-message" data-item-id="{{item.uuid}}">
-    {{log "root waffe message" @root}}
     <h2
         title="Level: {{item.system.stats.level}}&#10;Qualität: {{item.system.stats.quality}}&#10;Talent: {{item.system.stats.talentKey}}&#10;Skill: {{item.system.stats.skillKey}}">
         {{userData.info.name}}
@@ -20,7 +19,7 @@
 </div>
 {{#if attack}}
 <div class="item-roll-damage ms-hidden">
-    <button class="ms-button">Schaden würfeln</button>
+    <button  class="ms-button">{{item.system.stats.damage}}</button>
 </div>
 {{/if}}
 </div>
