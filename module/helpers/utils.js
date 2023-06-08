@@ -547,3 +547,4 @@ export class msUtils {
 }
 
 globalThis.MondsturzUtils = new msUtils;
+globalThis.MondSturzDialog = msDialogHelper;
