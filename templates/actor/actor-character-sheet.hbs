@@ -59,8 +59,11 @@
               <div class="right">/<input class="clear-input clear-tiny" type="number"
                   name="system.attribute.koerper.{{key}}.max" value="{{value.max}}" data-dtype="Number" /></div>
               {{/if}}
-              <div class="right"><input class="clear-input clear-tiny" type="number"
-                  name="system.attribute.koerper.{{key}}.wert" value="{{value.wert}}" data-dtype="Number" /></div>
+              <div class="right">
+                <input class="clear-input clear-tiny" type="number" name="system.attribute.koerper.{{key}}.wert"
+                  value="{{value.wert}}" data-dtype="Number" />
+                  {{#if value.mod}}<div style="margin-left:0px">+ {{value.mod}}</div> {{/if}}
+              </div>
             </div>
             {{/each}}
           </div>
@@ -365,7 +368,7 @@
           <tr>
             {{/if}}
             <td>{{value.label}}</td>
-            <td >
+            <td>
               <input class="ms-aling-left" type="text" name="system.details.{{key}}.wert" value="{{value.wert}}" />
             </td>
             {{#if (eq (math @index "%" 2) 1)}}
