@@ -1,0 +1,16 @@
+<div>
+    <h3>{{info.name}}</h3>
+
+    <div class="message-modifiers">
+        {{#each modifiers}}
+        {{#if this.[2]}}
+        <div class="tag-box">{{this.[0]}} {{this.[1]}}</div>
+        {{/if}}
+        {{/each}}
+    </div>
+    {{#if misc}}
+    <div>
+        {{{misc}}}
+    </div>
+    {{/if}}
+</div>

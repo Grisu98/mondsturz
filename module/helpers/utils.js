@@ -21,72 +21,6 @@ export function createTagKeys() {
     return allKeys
 }
 
-export class msRollDialog {
-    constructor(options = {}) {
-        this.data = {
-            tValue: 0,
-            tName: "Talent",
-            mod: 0,
-            create: true,
-            item: null
-        };
-        Object.assign(this.data, options)
-    }
-
-    async createDialog() {
-
-        const content = await renderTemplate("systems/mondsturz/templates/dialog/skill-dialog.hbs", this.data)
-
-        return new Promise(resolve => {
-            new Dialog({
-                title: `${this.data.tName}` + ' Wurf',
-                content: content,
-                default: "normal",
-                buttons: {
-                    disadvantage: {
-                        icon: '<i class="fas fa-arrow-down"></i>',
-                        label: "Nachteil",
-                        callback: html => resolve(this._returnData(html, "kl"))
-                    },
-                    normal: {
-                        icon: '<i class="fas fa-dice"></i>',
-                        label: "Normal",
-                        callback: html => resolve(this._returnData(html, ""))
-                    },
-                    advantage: {
-                        icon: '<i class="fas fa-arrow-up"></i>',
-                        label: "Vorteil",
-                        callback: html => resolve(this._returnData(html, "kh"))
-                    },
-                },
-                close: () => resolve(null)
-            }).render(true);
-        });
-    }
-
-    async _returnData(html, mode) {
-        let returnData = {};
-        let otherOptions = html.find('[id=use]')[0]?.checked
-        returnData.mode = mode;
-        returnData.talent = (html.find('[id=talent]')[0].value);
-        returnData.mod = (html.find('[id=mod]')[0].value);
-        returnData.options = {};
-
-        if (otherOptions) {
-
-            let specialOptions = html.find('[id=other-options')[0].querySelectorAll('input');
-            specialOptions.forEach(element => {
-                returnData.options[element.id] = element.value;
-            })
-
-        }
-
-        return returnData;
-
-    }
-
-}
-
 export function registerSystemSettings() {
     // Internal System Migration Version
     game.settings.register("mondsturz", "systemMigrationVersion", {
@@ -96,6 +30,166 @@ export function registerSystemSettings() {
         type: String,
         default: ""
     });
+}
+
+export class msDialogHelper {
+    constructor(info, modifiers, options) {
+        this.info = Object.assign({}, this.constructor.STANDARD_INFO, info);
+        this.modifiers = this.constructor.STANDARD_MODS.concat(modifiers);
+        this.options = this.constructor.STANDARD_OPTIONS.concat(options);
+    }
+
+    static STANDARD_INFO = { name: "Wurf", rollTerm: "2d6", prop: true }
+
+    static STANDARD_MODS = []
+
+    static STANDARD_OPTIONS = []
+
+    async createDialog() {
+        let userData = await this._createDialog();
+        if (this.info.prop) {
+            let message = await this.createPropRoll(userData)
+            return [message, userData]
+        }
+        else {
+            return userData
+        }
+    }
+
+    async createPropRoll(userData) {
+        if (userData.options[0][1]) {
+            userData.info.rollTerm = "3d6kh2"
+        }
+        else if (userData.options[1][1]) {
+            userData.info.rollTerm = "3d6kl2"
+        }
+
+        let finalTerm = userData.info.rollTerm;
+
+        userData.modifiers.forEach((curr, index, array) => {
+            if (curr[2]) {
+                finalTerm += ` + ${curr[1]}`
+            }
+        })
+
+        let roll = await new Roll(finalTerm).evaluate();
+        const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", userData)
+        let message = await new ChatMessage({
+            rolls: [roll],
+            content: roll.total,
+            flavor: flavor,
+            type: 5
+        });
+        return message
+
+
+    }
+
+    async _createDialog() {
+        let data = { modifiers: this.modifiers, info: this.info, options: this.options }
+
+        return new Promise(resolve => {
+            new MsDialog({
+                data: data,
+                close: () => resolve(null),
+                callback: (input) => resolve(input)
+            }).render(true);
+        });
+    }
+}
+
+export class MsDialog extends Application {
+
+    constructor(context, options) {
+        super(options);
+        this.data = context.data;
+        this.callback = context.callback
+    }
+
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            template: "systems/mondsturz/templates/dialog/roll.hbs",
+            focus: true,
+            classes: ["ms-dialog"],
+            width: 400,
+            height: 400,
+            jQuery: true
+        });
+    }
+
+    get title() {
+        return this.data.info.name;
+    }
+
+    getData() {
+        return this.data;
+    };
+
+    activateListeners(html) {
+
+        html.find(".add-modifier-button").click(this.addModifier.bind(this));
+
+        html.find(".delete-modifier-button").click(this.deleteModifier.bind(this));
+
+        html.find(".submit-roll-button").click(this._submit.bind(this));
+
+        html.find(".delte-modifier").click(this.deleteModifier.bind(this));
+
+        html.find("form").each((i, el) => el.onsubmit = evt => evt.preventDefault());
+    }
+
+
+    upadteUserInput(event) {
+        event.preventDefault();
+        let submittedData = { modifiers: [], options: [], rollTerm: "" }
+        let form = event.currentTarget.closest(".ms-dialog");
+        let userRollTerm = form.querySelectorAll(".roll-term-input");
+        let modArr = form.querySelectorAll(".modifier-input");
+        let optionsArr = form.querySelectorAll(".options-input")
+
+        modArr.forEach((curr, index, array) => {
+
+            let name = curr.querySelectorAll(".modifier-name")[0].value;
+            let value = curr.querySelectorAll(".modifier-value")[0].value;
+            let checked = curr.querySelectorAll(".modifier-checked")[0].checked;
+
+            submittedData.modifiers.push([name, value, checked])
+        })
+        if (optionsArr.length) {
+            optionsArr.forEach((curr, index, array) => {
+                let name = curr.querySelectorAll(".option-name")[0].textContent;
+                let checked = curr.querySelectorAll(".option-checked")[0].checked;
+                submittedData.options.push([name, checked])
+            })
+        }
+
+        this.data.options = submittedData.options;
+        this.data.modifiers = submittedData.modifiers;
+        this.data.info.rollTerm = userRollTerm[0].value;
+        this.render(true)
+    }
+
+    _submit(event) {
+        event.preventDefault()
+        this.upadteUserInput(event)
+        this.callback(this.data)
+        this.close({ force: true })
+    }
+
+    addModifier(event) {
+        event.preventDefault()
+        this.upadteUserInput(event)
+        this.data.modifiers.push(["", 0, true])
+    }
+
+    deleteModifier(event) {
+        event.preventDefault()
+        let arrIndex = event.currentTarget.closest(".modifier-input").dataset.arrayIndex
+        this.data.modifiers.splice(arrIndex, 1)
+        this.render(true)
+    }
+
+
 }
 
 
@@ -196,7 +290,6 @@ export class msUtils {
 
 
     }
-
 
     async importTable() {
 
@@ -454,3 +547,4 @@ export class msUtils {
 }
 
 globalThis.MondsturzUtils = new msUtils;
+globalThis.MondSturzDialog = msDialogHelper;

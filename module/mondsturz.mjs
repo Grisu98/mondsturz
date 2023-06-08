@@ -57,33 +57,30 @@ Hooks.once("ready", function () {
 
   // migrate existing actor data
 
-  if (game.user && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1.6") {
+  if (game.user.iSGM && game.settings.get("mondsturz", "systemMigrationVersion") != "0.1.7") {
     const allActors = game.actors.contents;
     allActors.forEach(async (element) => {
       try {
-        let oldrustWert = element.system.attribute.koerper.ruestwert;
-        await element.update({ "system.attribute.koerper.ruestzustand": oldrustWert });
-        await element.update({ "system.attribute.koerper.-=ruestwert": null });
+        if(element.system.wuchtwaffen) {
+          await element.update({"system.=-wuchtwaffen": null})
+        }
+        await element.update({
+          "system.talente.zweihandwaffen": {
+            "wert": 0,
+            "talentKey": "nahkampf",
+            "mod": 0,
+            "istHobby": false,
+            "istBeruf": false,
+            "label": "Zweihandwaffen",
+            "dmgMod": 0
+          }
+        })
       } catch (error) {
-        console.log("MS | MIGRATION RUESTWERT FAILED")
-        console.log(error)
-      }
-
-      try {
-        let oldDataKlinge = element.system.talente.klingenwaffen;
-        oldDataKlinge.label = "Einhandwaffen";
-        let oldDataWucht = element.system.talente.wuchtwaffen;
-        oldDataWucht.label = "Zweihandwaffen"
-        await element.update({ "system.talente.einhandwaffen": oldDataKlinge });
-        await element.update({ "system.talente.zweihandwaffen": oldDataWucht });
-        await element.update({ "system.talente.-=wuchtwaffen": null })
-        await element.update({ "system.talente.-=klingenwaffen": null })
-      } catch (error) {
-        console.log("MS | MIGRATION TALENTE FAILED")
+        console.log("Momdsturz | MIGRATION FAILED")
         console.log(error)
       }
     });
-    game.settings.set("mondsturz", "systemMigrationVersion", "0.1.6")
+    game.settings.set("mondsturz", "systemMigrationVersion", "0.1.7")
   }
 });
 
@@ -275,6 +272,10 @@ Hooks.on("renderChatMessage", (message, html, info) => {
     }
   }
 
+  if (message.isRoll) {
+    let diceToolTip = html[0].querySelector(".dice-tooltip");
+    diceToolTip.classList.add("expanded")
+  }
 
   html.on("click", ".item-roll-damage", async (event, html) => {
     const uuid = event.currentTarget.closest(".item-message").dataset.itemId;

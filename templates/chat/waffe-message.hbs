@@ -1,16 +1,25 @@
-<div class="item-message" data-item-id="{{itm.uuid}}">
-    {{log "root waffe message" @root}}
+<div class="item-message" data-item-id="{{item.uuid}}">
     <h2
-        title="Level: {{itm.system.stats.level}}&#10;Qualität: {{itm.system.stats.quality}}&#10;Talent: {{itm.system.stats.talentKey}}&#10;Skill: {{itm.system.stats.skillKey}}">
-        {{itm.name}} Wurf
+        title="Level: {{item.system.stats.level}}&#10;Qualität: {{item.system.stats.quality}}&#10;Talent: {{item.system.stats.talentKey}}&#10;Skill: {{item.system.stats.skillKey}}">
+        {{userData.info.name}}
     </h2>
     <div>
-        {{#each itm.system.tags as |tagKey|}}
-            {{tagHandling tagKey}}
-        </div>
-        {{/each}}
+        {{#each item.system.tags as |tagKey|}}
+        {{tagHandling tagKey}}
     </div>
-    <div class="message-roll-part">
-        <button class="item-roll-damage ms-button ms-hidden"> {{dmg}} <i class="fas fa-sword"></i></button>
-    </div>
+    {{/each}}
+</div>
+<br>
+<div class="message-modifiers">
+    {{#each userData.modifiers}}
+    {{#if this.[2]}}
+    <div class="tag-box">{{this.[0]}} {{this.[1]}}</div>
+    {{/if}}
+    {{/each}}
+</div>
+{{#if attack}}
+<div class="item-roll-damage ms-hidden">
+    <button  class="ms-button">{{item.system.stats.damage}}</button>
+</div>
+{{/if}}
 </div>

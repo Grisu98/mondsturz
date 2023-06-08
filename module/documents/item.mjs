@@ -1,4 +1,4 @@
-import { msRollDialog } from "../helpers/utils.js"
+import { msDialogHelper } from "../helpers/utils.js"
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -20,15 +20,15 @@ export class MondsturzItem extends Item {
     // and for some reason only on the first call the active effects are being applied.
     // But overrides is always correct
     // Maybe the effect thing i did in items is bugged 
-    if (this.actor && this.type === "waffe" && this.system.stats?.skillKey) {
-      const tKey = this.system?.stats?.skillKey;
-      const overrides = this.actor.overrides;
-      let dmgMod = 0;
-      if (overrides?.system?.talente && tKey) {
-        dmgMod = overrides.system.talente[tKey]?.dmgMod || 0;
-      }
-      this.system.stats.finalDmg = `${this.system.stats.damage}+${this.system.stats.level}+${dmgMod}`;
-    }
+    // if (this.actor && this.type === "waffe" && this.system.stats?.skillKey) {
+    //   const tKey = this.system?.stats?.skillKey;
+    //   const overrides = this.actor.overrides;
+    //   let dmgMod = 0;
+    //   if (overrides?.system?.talente && tKey) {
+    //     dmgMod = overrides.system.talente[tKey]?.dmgMod || 0;
+    //   }
+    //   this.system.stats.finalDmg = `${this.system.stats.damage}+${this.system.stats.level}+${dmgMod}`;
+    // }
     super.prepareDerivedData();
   }
 
@@ -65,89 +65,152 @@ export class MondsturzItem extends Item {
   async _rollWaffe(context) {
 
     const tKey = this.system.stats.skillKey;
-    const talent = this.actor.system.talente[tKey];
+    const prop = this.actor.system.talente[tKey];
 
-    let dialogData = {
-      tValue: talent?.wert || 0,
-      tName: talent?.label || "Talent",
-      mod: talent?.mod || 0
+    const info = {
+      name: this.name,
+      rollTerm: "2d6",
+      prop: false
     }
 
-    dialogData.mod += this.system.stats.level;
+    const modifiers = [
+      ["Talent", prop.wert, true],
+      ["Multi Angriff", -3, false]
 
-    if (context?.map) {
-      dialogData.mod -= 3
+    ]
+    const options = [
+      ["Vorteil", false],
+      ["Nachteil", false]
+    ]
+
+    if (prop.mod) { modifiers.push(["Mod", prop.mod, true]) }
+    if (this.system.stats.level) { modifiers.splice(1,0,["Waffen Level", this.system.stats.level, true]) }
+
+    let dialog = new msDialogHelper(info, modifiers, options);
+
+    let userData = await dialog.createDialog();
+    if (userData.options[0][1]) {
+      userData.info.rollTerm = "3d6kh2"
+    }
+    else if (userData.options[1][1]) {
+      userData.info.rollTerm = "3d6kl2"
     }
 
-    let dialog = new msRollDialog(dialogData);
-    let rd = await dialog.createDialog();
-    let r;
+    let finalTerm = userData.info.rollTerm;
 
-    if (rd.mode) {
-      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    }
-    else {
-      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
+    userData.modifiers.forEach((curr, index, array) => {
+      if (curr[2]) {
+        finalTerm += ` + ${curr[1]}`
+      }
+    })
 
-    }
-
-    let finalDmg = this.system.stats.finalDmg;
-    let htmlData = { itm: this, dmg: finalDmg }
+    let roll = await new Roll(finalTerm).evaluate();
+    const htmlData = {userData: userData, item: this, attack: true}
     const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
     let message = await new ChatMessage({
-      rolls: [r],
+      rolls: [roll],
+      content: roll.total,
       flavor: flavor,
-      content: r.total,
-      type: 5,
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flags: { mondsturz: { type: "attackMessage", value: this.system.stats.damage } },
-
+      type: 5
     });
     ChatMessage.create(message)
   }
 
+
+
   async _rollZauber(dataset) {
+    const tKey = this.system.stats.talentKey;
+    const prop = this.actor.system.talente[tKey];
     const zauberLevel = this.system.level[dataset.zauberLevel];
-    const zauberSystem = this.system;
-    const actorData = this.actor.system.talente[zauberSystem.stats.talentKey];
-    const dialogData = {
-      tValue: actorData.wert,
-      tName: actorData.label,
-      item: this
+
+    const info = {
+      name: this.name,
+      rollTerm: "2d6",
+      prop: false
     }
-    let dialog = new msRollDialog(dialogData);
-    let rd = await dialog.createDialog();
 
-    // roll with the input of the dialog
-    let r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false });
+    const modifiers = [
+      ["Talent", prop.wert, true],
+    ]
+    const options = [
+      ["Vorteil", false],
+      ["Nachteil", false]
+    ]
 
-    // create the chat message
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/zauber-message.hbs", { item: this, misc: zauberLevel })
+    if (prop.mod) { modifiers.push(["Mod", prop.mod, true]) }
 
+    let dialog = new msDialogHelper(info, modifiers, options);
+
+    let userData = await dialog.createDialog();
+    if (userData.options[0][1]) {
+      userData.info.rollTerm = "3d6kh2"
+    }
+    else if (userData.options[1][1]) {
+      userData.info.rollTerm = "3d6kl2"
+    }
+
+    let finalTerm = userData.info.rollTerm;
+
+    userData.modifiers.forEach((curr, index, array) => {
+      if (curr[2]) {
+        finalTerm += ` + ${curr[1]}`
+      }
+    })
+    userData.misc = zauberLevel.text
+
+    let roll = await new Roll(finalTerm).evaluate();
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", userData)
     let message = await new ChatMessage({
-      rolls: [r],
-      content: r.total,
+      rolls: [roll],
+      content: roll.total,
       flavor: flavor,
-      type: 5,
-      speaker: ChatMessage.getSpeaker({ speaker: this.actor })
+      type: 5
     });
     ChatMessage.create(message)
   }
 
   async rollDamage() {
 
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/damage-message.hbs", this);
+    const tKey = this.system.stats.skillKey;
+    const prop = this.actor.system.talente[tKey];
 
-    let r = await new Roll(this.system.stats.finalDmg).evaluate({ async: false })
+    const info = {
+      name: this.name + " Schaden",
+      rollTerm: this.system.stats.damage,
+      prop: false
+    }
 
+    const modifiers = []
+
+    const options = [
+    ]
+
+    if (this.system.stats.level) { modifiers.push(["Waffen Level", this.system.stats.level, true]) }
+    if (prop.dmgMod) { modifiers.push(["Schaden Mod", prop.dmgMod, true]) }
+
+    let dialog = new msDialogHelper(info, modifiers, options);
+    let userData = await dialog.createDialog();
+    let finalTerm = userData.info.rollTerm;
+
+    userData.modifiers.forEach((curr, index, array) => {
+      if (curr[2]) {
+        finalTerm += ` + ${curr[1]}`
+      }
+    })
+
+    
+
+    let roll = await new Roll(finalTerm).evaluate();
+
+    const htmlData = {userData: userData, item: this}
+    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
     let message = await new ChatMessage({
-      rolls: [r],
-      content: r.total,
+      rolls: [roll],
+      content: roll.total,
       flavor: flavor,
-      type: 5,
-      speaker: ChatMessage.getSpeaker(this.actor),
+      type: 5
     });
-    ChatMessage.create(message);
+    ChatMessage.create(message)
 
   }
 

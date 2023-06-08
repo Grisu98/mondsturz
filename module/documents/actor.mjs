@@ -1,4 +1,4 @@
-import { msRollDialog } from "../helpers/utils.js"
+import { msDialogHelper } from "../helpers/utils.js"
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -99,6 +99,16 @@ export class MondsturzActor extends Actor {
 
   _calcualteSpendPointsInfo(actorData, systemData) {
 
+    let spentAttr = {
+      leben: 0,
+      physis: 0,
+      mana: 0,
+      psyche: 0,
+      adrenalin: 0,
+      regeneration: 0,
+      resistenzen: 0,
+      alle: 0
+    };
     // alle Talente
     let talentP = 0;
     const talente = systemData.talente;
@@ -106,25 +116,32 @@ export class MondsturzActor extends Actor {
       talentP += talente[key].wert
     }
 
-    // alle Attribute (kein reflex, ruestwert[ruestzustand], hyperarmor)
-    let attriP = 0;
-    const attribute = systemData.attribute;
+    // Leben
+    spentAttr.leben = (systemData.attribute.koerper.leben.max - 3) / 3;
+    spentAttr.physis = (systemData.attribute.koerper.physis.max - 1) * 2;
+    spentAttr.mana = (systemData.attribute.koerper.mana.max - 2) / 2;
+    spentAttr.psyche = (systemData.attribute.koerper.psyche.max - 1) * 2;
+    spentAttr.adrenalin = (systemData.attribute.koerper.adrenalin.max - 1) * 2;
+    spentAttr.regeneration = (systemData.attribute.koerper.regeneration.max - 1) * 2;
 
-    for (const [key, value] of Object.entries(attribute.koerper)) {
-      if (key === "hyperarmor" || key === "ruestzustand" || key === "reflex") {
-        continue;
-      }
-      attriP += value.wert;
-    }
 
-    // resistenzen noch
     let resiP = 0;
-    for (const [_key, value] of Object.entries(attribute.resistenzen)) {
+    for (const [_key, value] of Object.entries(systemData.attribute.resistenzen)) {
       resiP += value.wert;
     }
 
-    systemData.misc.talentPunkte = talentP;
-    systemData.misc.attributPunkte = attriP + (resiP / 4);
+    spentAttr.resistenzen = resiP / 2;
+
+    for (const [key, value] of Object.entries(spentAttr)) {
+      if (key !== "all")
+        spentAttr.alle += value;
+    }
+
+
+    // resistenzen noch
+
+    systemData.misc.spentAttr = spentAttr;
+    systemData.misc.spentTal = talentP
   }
 
   _prepareNpcData(actorData, systemData) {
@@ -158,34 +175,29 @@ export class MondsturzActor extends Actor {
 
   async rollProp(path) {
 
-
     let prop = this._getPropertyByPath(path)
 
+    const info = {
+      name: prop.label,
+      rollTerm: "2d6"
+    }
 
-    const data = {
-      tValue: prop.wert,
-      tName: prop.label,
-      mod: prop.mod || 0,
-    }
-    let dialog = new msRollDialog(data);
-    let rd = await dialog.createDialog();
-    let r
-    if (rd.mode) {
-      r = await new Roll(`3d6${rd.mode}2 + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    }
-    else {
-      r = await new Roll(`2d6${rd.mode} + ${rd.talent}+${rd.mod}`).evaluate({ async: false })
-    }
-    let flavor = `<h3>${data.tName} Wurf</h3>`
+    const modifiers = [
+      ["Talent", prop.wert, true],
+    ]
+    const options = [
+      ["Vorteil", false],
+      ["Nachteil", false]
 
-    let message = await new ChatMessage({
-      rolls: [r],
-      content: r.total,
-      flavor: flavor,
-      type: 5,
-      speaker: ChatMessage.getSpeaker(this)
-    });
+    ]
+
+    if (prop.mod) { modifiers.push(["Mod", prop.mod, true]) }
+
+
+    let dialog = new msDialogHelper(info, modifiers, options);
+    let [message, userData] = await dialog.createDialog();
     ChatMessage.create(message)
+
   }
 
   _getPropertyByPath(path) {
