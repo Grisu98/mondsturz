@@ -34,16 +34,28 @@ export function registerSystemSettings() {
 
 export class msDialogHelper {
     constructor(info, modifiers, options) {
-        this.info = Object.assign({}, this.constructor.STANDARD_INFO, info);
-        this.modifiers = this.constructor.STANDARD_MODS.concat(modifiers);
-        this.options = this.constructor.STANDARD_OPTIONS.concat(options);
+        this.info = Object.assign({}, this.STANDARD_INFO, info);
+        this.modifiers = Object.assign({}, this.STANDARD_MODS, modifiers);
+        this.options = Object.assign({}, this.STANDARD_OPTIONS, options);
+        this.HTMLData = this.getHTMLData();
     }
 
-    static STANDARD_INFO = { name: "Wurf", rollTerm: "2d6", prop: true }
+    STANDARD_INFO = {
+        name: "Wurf",
+        rollTerm: "2d6",
+        prop: true,
+        staticMods: [
+            ["Unterstüzung",
+                "0", true],
+            ["Verteidigunsmalus",
+                "0", true
+            ]
+        ]
+    }
 
-    static STANDARD_MODS = []
+    STANDARD_MODS = []
 
-    static STANDARD_OPTIONS = []
+    STANDARD_OPTIONS = []
 
     async createDialog() {
         let userData = await this._createDialog();
@@ -65,12 +77,13 @@ export class msDialogHelper {
         }
 
         let finalTerm = userData.info.rollTerm;
-
+        userData.modifiers.push(...userData.info.staticMods)
         userData.modifiers.forEach((curr, index, array) => {
-            if (curr[2]) {
+            if (curr[2] && curr[1] !== "0") {
                 finalTerm += ` + ${curr[1]}`
             }
         })
+        finalTerm = finalTerm.replace(/\+\s?-/g, "-")
 
         let roll = await new Roll(finalTerm).evaluate();
         const flavor = await renderTemplate("systems/mondsturz/templates/chat/std-message.hbs", userData)
@@ -85,12 +98,22 @@ export class msDialogHelper {
 
     }
 
+    getHTMLData() {
+
+        const HTMLData = {
+            modifiers: this.modifiers,
+            options: this.options,
+            info: this.info
+        }
+
+        return HTMLData
+    }
+
     async _createDialog() {
-        let data = { modifiers: this.modifiers, info: this.info, options: this.options }
 
         return new Promise(resolve => {
             new MsDialog({
-                data: data,
+                data: this.HTMLData,
                 close: () => resolve(null),
                 callback: (input) => resolve(input)
             }).render(true);
@@ -103,7 +126,9 @@ export class MsDialog extends Application {
     constructor(context, options) {
         super(options);
         this.data = context.data;
-        this.callback = context.callback
+        this.callback = context.callback;
+        this.prevSupport = this.data.info.staticMods[0][1];
+        this.prevMalus = this.data.info.staticMods[1][1];
     }
 
     static get defaultOptions() {
@@ -136,10 +161,11 @@ export class MsDialog extends Application {
         html.find(".delte-modifier").click(this.deleteModifier.bind(this));
 
         html.find("form").each((i, el) => el.onsubmit = evt => evt.preventDefault());
+
     }
 
 
-    upadteUserInput(event) {
+    updateUserInput(event) {
         event.preventDefault();
         let submittedData = { modifiers: [], options: [], rollTerm: "" }
         let form = event.currentTarget.closest(".ms-dialog");
@@ -163,6 +189,16 @@ export class MsDialog extends Application {
             })
         }
 
+        // static Modifiers
+
+        let supportRadio = form.querySelector('input[name="Unterstüzung-radio"]:checked')?.value | "0";
+        let malusRadio = form.querySelector('input[name="Verteidigunsmalus-radio"]:checked')?.value | "0";
+
+        this.data.info.staticMods[0][1] = `${supportRadio}`;
+        this.data.info.staticMods[1][1] = `${malusRadio}`;
+
+
+
         this.data.options = submittedData.options;
         this.data.modifiers = submittedData.modifiers;
         this.data.info.rollTerm = userRollTerm[0].value;
@@ -171,14 +207,14 @@ export class MsDialog extends Application {
 
     _submit(event) {
         event.preventDefault()
-        this.upadteUserInput(event)
+        this.updateUserInput(event)
         this.callback(this.data)
         this.close({ force: true })
     }
 
     addModifier(event) {
         event.preventDefault()
-        this.upadteUserInput(event)
+        this.updateUserInput(event)
         this.data.modifiers.push(["", 0, true])
     }
 

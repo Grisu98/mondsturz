@@ -1,38 +1,63 @@
 <form class="" autocomplete="off">
+    {{log "roll @root" @root}}
     <div>
         <div class="roll-term-div">
             <input style="align-self: center;" type="text" class="roll-term-input clear-input"
                 value="{{info.rollTerm}}">
         </div>
-        {{#each modifiers}}
-        <div class="modifier-input" data-array-index="{{@index}}">
-            <div class="modifier-users">
-                <input class="clear-input modifier-name" type="text" value="{{this.[0]}}">
-                <input class="clear-input modifier-value" type="number" value="{{this.[1]}}">
+        {{!-- Static modifers --}}
+        <div>
+            {{#each info.staticMods}}
+
+            <div class="radio-mods">
+                <div>{{this.[0]}}</div>
+                {{#doChecked this.[1]}}
+                <div>
+                    {{#repeat 6}}
+                    <input name="{{this.[0]}}-radio" type="radio" id="{{this.[0]}}{{@index}}" value="{{#if (isSame this.[0] 'Verteidigunsmalus'
+                    )}}-{{/if}}{{@index}}">
+                    <label for="{{this.[0]}}{{@index}}">{{#if (isSame this.[0] 'Verteidigunsmalus'
+                        )}}-{{/if}}{{@index}}</label>
+                    {{/repeat}}
+                </div>
+                {{/doChecked}}
             </div>
-            <div class="modifier-options">
-                <label class="switch-input">
-                    <input class="modifier-checked" type="checkbox" {{#if this.[2]}}checked{{/if}}>
-                    <span class="slider round"></span>
-                </label>
-                <div class="delte-modifier ms-button"><i class="fas fa-trash"></i></div>
-            </div>
+            {{/each}}
         </div>
-        {{/each}}
-        <div class="modifier-adder">
-            <button class="add-modifier-button ms-button">Modifier hinzufügen</button>
+    </div>
+    {{!-- dynamic modifiers --}}
+    <br>
+    {{#each modifiers}}
+    <div class="modifier-input" data-array-index="{{@index}}">
+        <div class="modifier-users">
+            <input class="clear-input modifier-name" type="text" value="{{this.[0]}}">
+            <input class="clear-input modifier-value" type="number" value="{{this.[1]}}">
         </div>
-        {{#if options}}
-        {{#each options}}
-        <div class="options-input" data-array-index="{{@index}}">
-            <div class="option-name">{{this.[0]}}</div>
+        <div class="modifier-options">
             <label class="switch-input">
-                <input class="option-checked" type="checkbox" {{#if this.[1]}}checked{{/if}}>
+                <input class="modifier-checked" type="checkbox" {{#if this.[2]}}checked{{/if}}>
                 <span class="slider round"></span>
             </label>
+            <div class="delte-modifier ms-button"><i class="fas fa-trash"></i></div>
         </div>
-        {{/each}}
-        {{/if}}
+    </div>
+    {{/each}}
+    {{!-- dynamic modifier add button --}}
+    <div class="modifier-adder">
+        <button class="add-modifier-button ms-button">Modifier hinzufügen</button>
+    </div>
+    {{!-- dynamic options --}}
+    {{#if options}}
+    {{#each options}}
+    <div class="options-input" data-array-index="{{@index}}">
+        <div class="option-name">{{this.[0]}}</div>
+        <label class="switch-input">
+            <input class="option-checked" type="checkbox" {{#if this.[1]}}checked{{/if}}>
+            <span class="slider round"></span>
+        </label>
+    </div>
+    {{/each}}
+    {{/if}}
     </div>
 
     <div>

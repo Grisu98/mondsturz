@@ -1,10 +1,14 @@
 <div>
+        {{log "root std msg" @root}}
+
     <h3>{{info.name}}</h3>
 
     <div class="message-modifiers">
         {{#each modifiers}}
         {{#if this.[2]}}
+        {{#if (notEqual this.[1] "0")}}
         <div class="tag-box">{{this.[0]}} {{this.[1]}}</div>
+        {{/if}}
         {{/if}}
         {{/each}}
     </div>
