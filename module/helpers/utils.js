@@ -48,7 +48,7 @@ export class msDialogHelper {
             ["Unterstüzung",
                 "0", true],
             ["Verteidigunsmalus",
-                "0", true
+                "-0", true
             ]
         ]
     }
@@ -137,7 +137,7 @@ export class MsDialog extends Application {
             focus: true,
             classes: ["ms-dialog"],
             width: 400,
-            height: 400,
+            height: 600,
             jQuery: true
         });
     }
@@ -192,7 +192,7 @@ export class MsDialog extends Application {
         // static Modifiers
 
         let supportRadio = form.querySelector('input[name="Unterstüzung-radio"]:checked')?.value | "0";
-        let malusRadio = form.querySelector('input[name="Verteidigunsmalus-radio"]:checked')?.value | "0";
+        let malusRadio = form.querySelector('input[name="Verteidigunsmalus-radio"]:checked')?.value | "-0";
 
         this.data.info.staticMods[0][1] = `${supportRadio}`;
         this.data.info.staticMods[1][1] = `${malusRadio}`;

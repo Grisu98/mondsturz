@@ -811,6 +811,7 @@
 
 .radio-mods div {
   display: inline-flex;
+  align-items: center;
 }
 
 .radio-mods label {
@@ -822,9 +823,11 @@
   border: 1px solid #444;
   margin-right: 10px;
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .radio-mods input[type="radio"]:checked + label{
   background-color: #2196F3;
   color: #fff;
+  transition: all 150ms ease-in;
 }
