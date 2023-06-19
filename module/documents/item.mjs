@@ -69,8 +69,7 @@ export class MondsturzItem extends Item {
 
     const info = {
       name: this.name,
-      rollTerm: "2d6",
-      prop: false
+      rollTerm: "2d6"
     }
 
     const modifiers = [
@@ -84,35 +83,10 @@ export class MondsturzItem extends Item {
     ]
 
     if (prop.mod) { modifiers.push(["Mod", prop.mod, true]) }
-    if (this.system.stats.level) { modifiers.splice(1,0,["Waffen Level", this.system.stats.level, true]) }
+    if (this.system.stats.level) { modifiers.splice(1, 0, ["Waffen Level", this.system.stats.level, true]) }
 
     let dialog = new msDialogHelper(info, modifiers, options);
-
-    let userData = await dialog.createDialog();
-    if (userData.options[0][1]) {
-      userData.info.rollTerm = "3d6kh2"
-    }
-    else if (userData.options[1][1]) {
-      userData.info.rollTerm = "3d6kl2"
-    }
-
-    let finalTerm = userData.info.rollTerm;
-
-    userData.modifiers.forEach((curr, index, array) => {
-      if (curr[2]) {
-        finalTerm += ` + ${curr[1]}`
-      }
-    })
-
-    let roll = await new Roll(finalTerm).evaluate();
-    const htmlData = {userData: userData, item: this, attack: true}
-    const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
-    let message = await new ChatMessage({
-      rolls: [roll],
-      content: roll.total,
-      flavor: flavor,
-      type: 5
-    });
+    let [message, userData] = await dialog.createDialog();
     ChatMessage.create(message)
   }
 
@@ -198,11 +172,11 @@ export class MondsturzItem extends Item {
       }
     })
 
-    
+
 
     let roll = await new Roll(finalTerm).evaluate();
 
-    const htmlData = {userData: userData, item: this}
+    const htmlData = { userData: userData, item: this }
     const flavor = await renderTemplate("systems/mondsturz/templates/chat/waffe-message.hbs", htmlData)
     let message = await new ChatMessage({
       rolls: [roll],
