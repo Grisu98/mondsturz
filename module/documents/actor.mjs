@@ -89,8 +89,7 @@ export class MondsturzActor extends Actor {
     systemData.talentGruppen.magieschulen.wert = 0;
     systemData.talentGruppen.magieschulen.maxTalent = 12;
 
-    systemData.talentGruppen.mysthkuenste.wert = 0;
-    systemData.talentGruppen.mysthkuenste.maxTalent = 12;
+    
 
     this._calcualteSpendPointsInfo(actorData, systemData)
 
