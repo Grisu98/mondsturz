@@ -27,7 +27,6 @@ export class MondsturzActor extends Actor {
     this._prepareNpcData(actorData, systemData);
   }
 
-
   _prepareCharacterData(actorData, systemData) {
     if (actorData.type !== 'character') return;
 
@@ -89,13 +88,24 @@ export class MondsturzActor extends Actor {
     systemData.talentGruppen.magieschulen.wert = 0;
     systemData.talentGruppen.magieschulen.maxTalent = 12;
 
-    systemData.talentGruppen.mysthkuenste.wert = 0;
-    systemData.talentGruppen.mysthkuenste.maxTalent = 12;
+
 
     this._calcualteSpendPointsInfo(actorData, systemData)
+    this._calcXP(actorData, systemData)
 
   }
 
+  _calcXP(actorData, systemData) {
+
+    // 0.16666504*x^2+0.49941621*x+0.23678647
+    let currXP = systemData.misc.xp
+
+    currXP = 220
+
+    let currNormalizedLevel = 0.16666504 * currXP ** 2 + 0.49941621 * currXP + 0.23678647
+
+    console.log("tester hier")
+  }
 
   _calcualteSpendPointsInfo(actorData, systemData) {
 

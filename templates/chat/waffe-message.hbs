@@ -1,4 +1,5 @@
 <div class="item-message" data-item-id="{{item.uuid}}">
+    {{log "root waffemsg" @root}}
     <h2
         title="Level: {{item.system.stats.level}}&#10;Qualität: {{item.system.stats.quality}}&#10;Talent: {{item.system.stats.talentKey}}&#10;Skill: {{item.system.stats.skillKey}}">
         {{userData.info.name}}
@@ -13,7 +14,9 @@
 <div class="message-modifiers">
     {{#each userData.modifiers}}
     {{#if this.[2]}}
+    {{#if (notEqual this.[1] "0")}}
     <div class="tag-box">{{this.[0]}} {{this.[1]}}</div>
+    {{/if}}
     {{/if}}
     {{/each}}
 </div>

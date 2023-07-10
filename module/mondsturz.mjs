@@ -61,8 +61,8 @@ Hooks.once("ready", function () {
     const allActors = game.actors.contents;
     allActors.forEach(async (element) => {
       try {
-        if(element.system.wuchtwaffen) {
-          await element.update({"system.=-wuchtwaffen": null})
+        if (element.system.wuchtwaffen) {
+          await element.update({ "system.=-wuchtwaffen": null })
         }
         await element.update({
           "system.talente.zweihandwaffen": {
@@ -171,6 +171,10 @@ Handlebars.registerHelper('lt', function (val1, val2) {
   return false;
 });
 
+Handlebars.registerHelper("notEqual", function(v1, v2) {
+  return v1 !== v2
+})
+
 Handlebars.registerHelper('dumb', function (pKey, cKey, obj) {
   if (Object.keys(obj).length !== 0) {
     return obj[pKey][cKey]
@@ -184,6 +188,14 @@ Handlebars.registerHelper('tagHandling', function (tagKey) {
   let tagElement = `<div class="tag-box" title="${description}"><div >${name}</div>`;
   return new Handlebars.SafeString(tagElement)
 });
+
+Handlebars.registerHelper("doChecked", function (selected, options) {
+  const escapedValue = RegExp.escape(Handlebars.escapeExpression(selected));
+  const rgx = new RegExp(' value=[\"\']' + escapedValue + '[\"\']');
+  const html = options.fn(this);
+  return html.replace(rgx, "$& checked");
+})
+
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

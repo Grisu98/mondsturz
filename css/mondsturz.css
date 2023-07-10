@@ -795,3 +795,39 @@
 .switch-input .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+
+.radio-mods {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.radio-mods input[type="radio"] {
+  display: none;
+}
+
+.radio-mods div {
+  display: inline-flex;
+  align-items: center;
+}
+
+.radio-mods label {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #444;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.radio-mods input[type="radio"]:checked + label{
+  background-color: #2196F3;
+  color: #fff;
+  transition: all 150ms ease-in;
+}
