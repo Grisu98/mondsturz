@@ -35,7 +35,7 @@ export function registerSystemSettings() {
 export class msDialogHelper {
     constructor(info, modifiers, options) {
         this.info = Object.assign({}, this.STANDARD_INFO, info);
-        this.modifiers = Object.assign({}, this.STANDARD_MODS, modifiers);
+        this.modifiers = modifiers;
         this.options = Object.assign({}, this.STANDARD_OPTIONS, options);
         this.HTMLData = this.getHTMLData();
     }
