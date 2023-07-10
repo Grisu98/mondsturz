@@ -156,8 +156,7 @@ export class MondsturzItem extends Item {
 
     const modifiers = []
 
-    const options = [
-    ]
+    const options = []
 
     if (this.system.stats.level) { modifiers.push(["Waffen Level", this.system.stats.level, true]) }
     if (prop.dmgMod) { modifiers.push(["Schaden Mod", prop.dmgMod, true]) }
@@ -172,8 +171,6 @@ export class MondsturzItem extends Item {
       }
     })
 
-
-
     let roll = await new Roll(finalTerm).evaluate();
 
     const htmlData = { userData: userData, item: this }
@@ -185,7 +182,6 @@ export class MondsturzItem extends Item {
       type: 5
     });
     ChatMessage.create(message)
-
   }
 
   async applyDamage() {

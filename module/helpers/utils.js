@@ -98,6 +98,10 @@ export class msDialogHelper {
 
     }
 
+    async createDamageRoll(userData) {
+        
+    }
+
     getHTMLData() {
 
         const HTMLData = {
