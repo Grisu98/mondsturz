@@ -589,5 +589,65 @@ MS.waffenTags = {
   exot: {
     name: "Exot",
     description: "Waffen dieser Kategorie sind für gewöhnlich so exotisch, dass sie mit eigenen Konditionen kommen."
-  }
+  },
+  rwPistole: {
+    name: "RW Revolver",
+    description : "2-6"
+  },
+  rwPistole: {
+    name: "RW Pistole/MP",
+    description : "4-8"
+  },
+  rwFlinte: {
+    name: "RW Flinte/Sturmgewehr",
+    description : "7-12"
+  },
+  rwBuechsen: {
+    name: "RW Büchsen",
+    description : "10-20"
+  },
+  rwPamrbrust: {
+    name: "RW Pistolenarmbrust",
+    description : "1-6"
+  },
+  rwBogen: {
+    name: "RW Bogen/Bolaschleuder",
+    description : "7-12"
+  },
+  rwGrBogen: {
+    name: "RW Großbogen",
+    description : "10-15"
+  },
+  rwFlussigkeitswerfer: {
+    name: "RW Flüssigkeitswerfer",
+    description : "3-7"
+  },
+  rwObjschleuder: {
+    name: "RW Objektschleuder",
+    description : "6-10"
+  },
+  rwMoerser: {
+    name: "RW Mörser",
+    description : "6-10"
+  },
+  rwSchwer: {
+    name: "RW Schwere Waffen",
+    description : "1-20 jedoch immer nur auf 50%"
+  },
+  rwWurfwaffen: {
+    name: "RW Wurfwaffen",
+    description : "1-5 +  Talentprobe/4"
+  },
+  rwZwille: {
+    name: "RW Zwille",
+    description : "1-5"
+  },
+  rwSchleudern: {
+    name: "RW Schleudern",
+    description : "1-5 + Talentprobe/2"
+  },
+  rwBlasrohr: {
+    name: "RW Blasrohr",
+    description : "Talentprobe/4"
+  },
 }
