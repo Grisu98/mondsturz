@@ -252,218 +252,6 @@ MS.adrenalin = {
   }
 }
 
-MS.attribute = [
-  {
-    label: "Spitz",
-    description: "Die Waffe verursacht ihren Schaden durch Penetration"
-  },
-  {
-    label: "Scharf",
-    description: "Die Waffe verursacht ihren Schaden durch Schnitte"
-  },
-  {
-    label: "Stumpf",
-    description: "Die Waffe verursacht ihren Schaden durch Schläge"
-  },
-  {
-    label: "Energie",
-    description: "Die Waffe verursacht ihren Schaden durch Energie"
-  },
-  {
-    label: "Explosion I",
-    description: "Jeder Würfel kann einmal explodieren"
-  },
-  {
-    label: "Explosion II",
-    description: "Jeder Würfel der explodiert, fügt 50% seines Maximalwerts zusätzlich zu"
-  },
-  {
-    label: "Explosion III",
-    description: "Jeder Würfel kann einmal explodieren"
-  },
-  {
-    label: "Explosion IV",
-    description: "Jeder Würfel der explodiert, fügt 50% seines Maximalwerts zusätzlich zu"
-  },
-  {
-    label: "Krit +1 (2-6)",
-    description: "Krit. einen Pasch früher möglich"
-  },
-  {
-    label: "Superkrit",
-    description: "Startet ohne Krit, dafür Krit x3 statt x2 DMG"
-  },
-  {
-    label: "Zuverlässig",
-    description: "Kritische Fehlschläge sind unmöglich und werden als Wert = 2 behandelt."
-  },
-  {
-    label: "Betäubt",
-    description: "Halber Schaden als Betäubungswert angerechnet"
-  },
-  {
-    label: "Multitreffer",
-    description: "Trifft bis zu zwei Ziele neben dem ersten."
-  },
-  {
-    label: "Rüst Igno 1",
-    description: "Der/die höchste/n Würfel, trifft/treffen direkt, ohne vom Rüstwert gesenkt zu werden."
-  },
-  {
-    label: "Rüst Igno II",
-    description: ""
-  },
-  {
-    label: "Rüst Igno III",
-    description: ""
-  },
-  {
-    label: "Rüst Igno IV",
-    description: ""
-  },
-  {
-    label: "Rüst Igno V",
-    description: ""
-  },
-  {
-    label: "Versteckt",
-    description: "Waffe wird beim Durchsuchen nicht gefunden. Nichtmal durch einen Krit."
-  },
-  {
-    label: "Multiwurf I",
-    description: "Trifft bis zu zwei Ziele neben dem ersten."
-  },
-  {
-    label: "Multiwurf II",
-    description: "Trifft bis zu vier Ziele neben dem ersten."
-  },
-  {
-    label: "Multiwurf III",
-    description: "Alle Granaten (Kette) können gemeinsam geworfen werden."
-  },
-  {
-    label: "Rüst Nicht I",
-    description: "Waffe ignoriert Rüstwert, dafür halber DMG"
-  },
-  {
-    label: "Rüst Nicht II", description: "Waffe behandelt Feind wie ohne Rüstung"
-  },
-  {
-    label: 'Lang', description: 'Die Waffe überragt ein Feld.'
-  },
-  {
-    label: '2Hand L', description: 'Waffe erlangt zweihändig den Tag Lang'
-  },
-  {
-    label: '2Hand S', description: 'Waffe erlangt einhändig den Tag Schwer'
-  },
-  {
-    label: 'Schwer', description: 'Einhändig Schaden = nur Würfel kein Bonus'
-  },
-  {
-    label: 'Folge', description: 'Waffe erlangt zweifach ausgerüstet den Tag Kombo+'
-  },
-  {
-    label: 'Off-Hand', description: 'Waffe für Akimbo/DualWield frei.'
-  },
-  {
-    label: 'RW=X', description: 'Angriffe über/unter dem RW Wert -50%'
-  },
-  {
-    label: 'Kombo+', description: 'Nach einem erfolgreichen Angriff, kann ein weiterer Angriff erfolgen. Dieser kann wieder gekontert werden, gilt jedoch als weiterer Angriff und senkt den Konterwert.'
-  },
-  {
-    label: 'Kombo++', description: 'Nach einem erfolgreichen Angriff, kann ein weiterer Angriff erfolgen. Dieser kann wieder gekontert werden, gilt jedoch als weiterer Angriff und senkt den Konterwert.'
-  },
-  {
-    label: 'Kombo+++', description: 'Nach einem erfolgreichen Angriff, kann ein weiterer Angriff erfolgen. Dieser kann wieder gekontert werden, gilt jedoch als weiterer Angriff und senkt den Konterwert.'
-  },
-  {
-    label: 'Kombo++++', description: 'Nach einem erfolgreichen Angriff, kann ein weiterer Angriff erfolgen. Dieser kann wieder gekontert werden, gilt jedoch als weiterer Angriff und senkt den Konterwert.'
-  },
-  {
-    label: 'Ungeschützt', description: 'Jeder Schadenswürfel, der eine 1 zeigt, verursacht 4 Schaden am Träger'
-  },
-  {
-    label: 'Entwaffnen', description: 'Explodiert mindestens ein Würfel, kann statt Schaden, eine Entwaffnung durchgeführt werden.'
-  },
-  {
-    label: 'Fessel', description: 'Explodiert mindestens ein Würfel, kann statt Schaden, eine Fesselung durchgeführt werden. Fesselung erfordert eine Probe auf Fesseln gegen eine Probe auf Akrobatik.'
-  },
-  {
-    label: 'Rüstbruch I', description: 'Pro explodierende Würfel, sinkt der höchste Rüstwert um einen Punkt.'
-  },
-  {
-    label: 'Rüstbruch II', description: 'Pro explodierende Würfel, sinkt der höchste Rüstwert um zwei Punkte.'
-  },
-  {
-    label: 'Rüstbruch III', description: 'Pro explodierende Würfel, sinkt der höchste Rüstwert um drei Punkte.'
-  },
-  {
-    label: 'Fragil I', description: '25 Chance, dass Waffenqualität nach einem Konter des Feindes sinkt.'
-  },
-  {
-    label: 'Fragil II', description: '50% Chance, dass Waffenqualität nach einem Konter des Feindes sinkt.'
-  },
-  {
-    label: 'Fragil III', description: 'Zeigt ein Schadenswürfel eine 1, sinkt die Waffenqualität'
-  },
-  {
-    label: 'Panzerbrechend', description: 'Trägt der Feind eine Rüstung mit 30+ Punkten Rüstwert, verursacht die Waffe doppelten Schaden.'
-  },
-  {
-    label: 'Gezahnt', description: 'Nach einem erfolgreichen Angriff, kann die Waffe aus dem Feind gezogen werden um nochmals den gleichen Schaden zu verursachen.'
-  },
-  {
-    label: "Konterwaffe I",
-    description: "Wird mit dieser Waffe gekontert, wird zum Kontern ein weiterer D6/2D6/3D6 hinzugefügt"
-  },
-  {
-    label: "Konterwaffe II",
-    description: ""
-  },
-  {
-    label: "Konterwaffe III",
-    description: ""
-  },
-  {
-    label: "Schild",
-    description: "Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x1"
-  },
-  {
-    label: "Großschild",
-    description: "Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x2"
-  },
-  {
-    label: "Turmschild",
-    description: "Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x3"
-  },
-  {
-    label: "Weiches Schild",
-    description: "Die Waffe kann genutzt werden um Angriffe, statt zu kontern, abzufangen. Dabei sinkt das Leben des Schildes um einen Punkt. Bei 0 sinkt die Qualität des Schildes um 1. Weich = 3, Hart = 5 Leben."
-  },
-  {
-    label: "Hartes Schild",
-    description: ""
-  },
-  {
-    label: "Schweres Schild",
-    description: "Senkt den Reflexwert um einen Punkt und das Kontern um sechs Punkte."
-  },
-  {
-    label: "Konterschild",
-    description: "Kontern wird um drei Punkte erleichtert."
-  },
-  {
-    label: "Antischild",
-    description: "Verteidiger kann seine Schildboni nicht nutzen."
-  },
-  {
-    label: "Silber",
-    description: "Wesen die Anfällig auf Silber sind, erleiden  dreifachen Schaden."
-  }
-]
-
 MS.waffenTags = {
   spitz: {
     name: "Spitz",
@@ -481,96 +269,109 @@ MS.waffenTags = {
     name: "Energie",
     description: "Macht energie Schaden"
   },
+  spreng: {
+    name: "spreng",
+    description: "Die Waffe verursacht ihren Schaden durch Sprengstoff. Schaden wird errechnet ohne Rüstwert."
+  },
+  element: {
+    name: "Element",
+    description: "Der Energieschaden der Waffe beruht auf dem Element 'X', fügt eventuell Debuff zu."
+  },
   explosionI: {
     name: "Explosion I",
-    description: "Jeder Würfel kann einmal explodieren"
+    description: "Die Waffe verursacht besonders widerliche Wunden. Jeder Würfel kann einmal neu geworfen werden, sofern er sein Maximum zeigte."
   },
   explosionII: {
     name: "Explosion II",
-    description: "Jeder Würfel der explodiert, fügt 50% seines Maximalwerts zusätzlich zu"
-  },
-  explosionIII: {
-    name: "Explosion III",
-    description: "Jeder Würfel kann einmal explodieren"
-  },
-  explosionIV: {
-    name: "Explosion IV",
-    description: "Jeder Würfel der explodiert, fügt 50% seines Maximalwerts zusätzlich zu"
+    description: "Die Waffe verursacht besonders widerliche Wunden. Jeder Würfel kann einmal neu geworfen werden, sofern er sein Maximum zeigte."
   },
   krit2_6: {
-    name: "Krit +1 (2-6)",
-    description: "Krit. einen Pasch früher möglich"
+    name: "Krit +X",
+    description: "Die Waffe trifft besonders gefährlich. Ein Krit ist bereits X Pasche früher möglich. (Pasche, Päsche???)"
   },
   superkrit: {
     name: "Superkrit",
-    description: "Startet ohne Krit, dafür Krit x3 statt x2 DMG"
+    description: "Wird ein Krit mit einem zweiten Pasch bestätigt, so wird der Feind sofort ausgelöscht. Hat der Feind mehr als 10 Physis oder ist ein Mini/Boss, verliert er nur die Hälfte der Physis. Hat er Hyperarmor, so verliert er sofort alles an Hyperarmor. In beiden Fällen wird das Ziel immun gegen Ultrakrits."
   },
-  zuverlaessig: {
-    name: "Zuverlässig",
-    description: "Kritische Fehlschläge sind unmöglich und werden als Wert = 2 behandelt."
+  extrakrit: {
+    name: "Extrakrit",
+    description: "Die Waffe verliert einen Punkt Krit, dafür wird der Schaden mit 3 statt 2 multipliziert."
   },
   betaubt: {
     name: "Betäubt",
-    description: "Halber Schaden als Betäubungswert angerechnet"
+    description: "Die Waffe kann Feinde betäuben. Halber Schaden, mindestens 1, wird zu Betäubungsschaden."
   },
-  multitreffer: {
-    name: "Multitreffer",
-    description: "Trifft bis zu zwei Ziele neben dem ersten."
+  ziel: {
+    name: "Ziel",
+    description: "Die Waffe verursacht +10 Schaden gegen das gewählte Ziel."
   },
   ruestIgn1: {
     name: "Rüst Igno 1",
-    description: "Der/die höchste/n Würfel, trifft/treffen direkt, ohne vom Rüstwert gesenkt zu werden."
+    description: "Waffe ignoriert Rüstwert, dafür halber DMG"
   },
   ruestIgn2: {
     name: "Rüst Igno 2",
-    description: "Der/die höchste/n Würfel, trifft/treffen direkt, ohne vom Rüstwert gesenkt zu werden."
+    description: "Waffe ignoriert Rüstwert und verursacht vollen Schaden. "
   },
-  ruestIgn3: {
-    name: "Rüst Igno 3",
-    description: "Der/die höchste/n Würfel, trifft/treffen direkt, ohne vom Rüstwert gesenkt zu werden."
-  },
-  ruestIgn4: {
-    name: "Rüst Igno 4",
-    description: "Der/die höchste/n Würfel, trifft/treffen direkt, ohne vom Rüstwert gesenkt zu werden."
-  },
-  ruestIgn5: {
-    name: "Rüst Igno 5",
-    description: "Der/die höchste/n Würfel, trifft/treffen direkt, ohne vom Rüstwert gesenkt zu werden."
-  }, versteckt: {
+  versteckt: {
     name: "Versteckt",
-    description: "Waffe wird beim Durchsuchen nicht gefunden. Nichtmal durch einen Krit."
+    description: "Die Waffe ist klein und gut zu verstecken. Selbst ein Krit findet sie nicht beim Durchsuchen. "
+  },
+  zuverlaessig: {
+    name: "Zuverlässig",
+    description: "Die Waffe wird niemals durch Ungeschick zerstört. Kritische Fehlschläge sind unmöglich, gelten als 2."
+  },
+  fehlbalance: {
+    name: "Fehlbalance",
+    description: "Die Waffe verliert einen D6 bei Angriff und Konter, vom Gesamtwert"
+  },
+  durchschlagend: {
+    name: "Durchschlagend",
+    description: "Die Waffe eignet sich besonders gut, um Rüstung zu durchschlagen. Trägt der Feind eine Rüstung mit 30+ Punkten Rüstwert, verursacht die Waffe doppelten Schaden."
+  },
+  gewalttätig: {
+    name: "Gewalttätig",
+    description: "Die Waffe verursacht an unverletzten Feinden einen Punkt Schaden an der Physis, 2D6."
+  },
+  kraftvoll: {
+    name: "Kraftvoll",
+    description: "Das Ziel kann bei einem explodierenden Angriff ein Feld zurückgeschlagen werden."
+  },
+  brutal: {
+    name: "Brutal",
+    description: "Ziel mit einem Punkt Physis, dann sofortiger Kill, sofern 1 Leben abgezogen."
+  },
+  multitreffer: {
+    name: "Multitreffer",
+    description: "Die Waffe verschießt mehrere Geschosse, es werden bis zu zwei Ziele neben dem ersten Ziel getroffen."
   },
   multiwurf1: {
-    name: "Multiwurf 1",
-    description: "Trifft bis zu zwei Ziele neben dem ersten."
+    name: "Multiwurf I",
+    description: "Ganzes Stack kann gefächert geworfen werden, trifft bis zu zwei Ziele neben dem ersten."
   },
   multiwurf1I: {
-    name: "Multiwurf 1I",
-    description: "Trifft bis zu vier Ziele neben dem ersten."
+    name: "Multiwurf II",
+    description: "Ganzes Stack kann gefächert geworfen werden, trifft bis zu vier Ziele neben dem ersten."
   },
   multiwurf1II: {
-    name: "Multiwurf 1II",
-    description: "Alle Granaten (Kette) können gemeinsam geworfen werden."
+    name: "Multiwurf III",
+    description: "Granatenkette kann gesammelt geworfen werden, Schaden addiert sich, Reichweite + 1 Feld Radius, je 2 weitere Granaten, max. +3"
   },
-  ruestNicht1: {
-    name: "Rüst Nicht 1",
-    description: "Waffe ignoriert Rüstwert, dafür halber DMG"
-  },
-  ruestNicht2: {
-    name: "Rüst Nicht 2",
-    description: "Waffe behandelt Feind wie ohne Rüstung"
-  },
-  ruestNicht3: {
-    name: "Rüst Nicht 3",
-    description: "Waffe verursacht direkten Schaden an Physis"
+  lautlos: {
+    name: "Lautlos",
+    description: "Die Waffe verursacht keinen Lärm, bei Nahkampfwaffen für gewöhnlich immer aktiv."
   },
   lang: {
     name: "Lang",
-    description: "Die Waffe überragt ein Feld."
+    description: "Die Waffe hat doppelte Reichweite"
   },
-  zweiHandLang: {
-    name: "2Hand L",
-    description: "Waffe erlangt zweihändig den Tag Lang"
+  sehrLang: {
+    name: "Sehr Lang",
+    description: "Die Waffe hat dreifache Reichweite"
+  },
+  zweihandwaffe: {
+    name: "Zweihandwaffe",
+    description: "Wird ein Feind erledigt, durchschlägt die Waffe das Ziel und verursacht nochmals Schaden an einem Ziel welches danebensteht und angegriffen werden könnte. Der Schaden beläuft sich auf 50% des max. Schadens, der Angriff muss jedoch gewürfelt werden. Einhändig verliert sie den Tag"
   },
   zweiHandSchwer: {
     name: "2Hand S",
@@ -578,7 +379,7 @@ MS.waffenTags = {
   },
   schwer: {
     name: "Schwer",
-    description: "Einhändig Schaden = nur Würfel kein Bonus"
+    description: "Die Waffe ist schwer und erfordert zu Beginn einer Runde einen Kraftwurf von 8 oder höher."
   },
   folge: {
     name: "Folge",
@@ -586,7 +387,7 @@ MS.waffenTags = {
   },
   offHand: {
     name: "Off-Hand",
-    description: "Waffe für Akimbo/DualWield frei."
+    description: "Waffe eignet sich als Zweitwaffe/Seitenschild, Waffe für Akimbo/DualWield frei. Fraglich"
   },
   rwX: {
     name: "RW=X",
@@ -610,11 +411,11 @@ MS.waffenTags = {
   },
   ungeschuetzt: {
     name: "Ungeschützt",
-    description: "Jeder Schadenswürfel, der eine 1 zeigt, verursacht 4 Schaden am Träger."
+    description: "Die Waffe ist schwer zu kontrollieren und Verletzungen am eigenen Körper sind möglich. Jeder Schadenswürfel, der eine 1 zeigt, verursacht 4 Schaden am Träger"
   },
   entwaffnen: {
     name: "Entwaffnen",
-    description: "Explodiert mindestens ein Würfel, kann statt Schaden, eine Entwaffnung durchgeführt werden."
+    description: "Die Waffe ist geeignet, einen Feind zu entwaffnen. Dabei wird die Waffe des Feindes, ein Feld in eine beliebige Richtung geworfen. Explodiert mindestens ein Würfel, kann statt Schaden, eine Entwaffnung durchgeführt werden."
   },
   fessel: {
     name: "Fessel",
@@ -634,70 +435,159 @@ MS.waffenTags = {
   },
   fragil1: {
     name: "Fragil I",
-    description: "25 Chance, dass Waffenqualität nach einem Konter des Feindes sinkt."
+    description: "Die Waffe kann leicht brechen. Zeigt ein Schadenswürfel eine 1 so sinkt die Waffen­qualität."
   },
   fragil2: {
     name: "Fragil II",
-    description: "50% Chance, dass Waffenqualität nach einem Konter des Feindes sinkt."
+    description: "Die Waffe kann leicht brechen. 25 Chance, dass Waffenqualität nach einem Konter des Feindes sinkt. "
   },
   fragil3: {
     name: "Fragil III",
-    description: "Zeigt ein Schadenswürfel eine 1, sinkt die Waffenqualität."
+    description: "Die Waffe kann leicht brechen. 50% Chance, dass Waffenqualität nach einem Konter des Feindes sinkt. "
   },
-  panzerbrechend: {
+  unhandlich: {
+    name: "Unhandlich",
+    description: "Die Waffe ist sehr unhandlich, Angriff/Konterwurf erlangen nur 50% des Talentes."
+  },
+  panzerbrechendI: {
     name: "Panzerbrechend",
-    description: "Trägt der Feind eine Rüstung mit 30+ Punkten Rüstwert, verursacht die Waffe doppelten Schaden."
+    description: "Waffe eignet sich besonders gut, um Rüstung permanent zu schwächen. Pro explodierende Würfel, sinkt der höchste Rüstwert um einen Punkt."
+  },
+  panzerbrechendII: {
+    name: "Panzerbrechend",
+    description: "Waffe eignet sich besonders gut, um Rüstung permanent zu schwächen. Pro explodierende Würfel, sinkt der höchste Rüstwert um zwei Punkte."
+  },
+  panzerbrechendIII: {
+    name: "Panzerbrechend",
+    description: "Waffe eignet sich besonders gut, um Rüstung permanent zu schwächen. Pro explodierende Würfel, sinkt der höchste Rüstwert um drei Punkte."
   },
   gezahnt: {
     name: "Gezahnt",
-    description: "Nach einem erfolgreichen Angriff, kann die Waffe aus dem Feind gezogen werden um nochmals den gleichen Schaden zu verursachen."
+    description: "Die Waffe ist gezahnt oder mit Wiederhacken besetzt. Nach einem erfolgreichen Angriff, nicht Konter, kann die Waffe aus dem Feind gezogen werden, um nochmals den gleichen Schaden zu verursachen. Dieser Folgeangriff kostet eine Aktion, alternativ kann jedoch auch ein Kombo+ Modifikator genutzt werden. Diesen Angriff kann man nicht Kontern/Blocken."
   },
   konterwaffe1: {
     name: "Konterwaffe I",
-    description: "Wird mit dieser Waffe gekontert, wird zum Kontern ein weiterer D6 hinzugefügt."
+    description: "Bei jedem Konter können 1D6 zusätzlich zum Konterwurf addiert werden."
   },
   konterwaffe2: {
     name: "Konterwaffe II",
-    description: "Wird mit dieser Waffe gekontert, wird zum Kontern ein weiterer 2D6 hinzugefügt."
+    description: "Bei jedem Konter können 2D6 zusätzlich zum Konterwurf addiert werden."
   },
   konterwaffe3: {
     name: "Konterwaffe III",
-    description: "Wird mit dieser Waffe gekontert, wird zum Kontern ein weiterer 3D6 hinzugefügt."
+    description: "Bei jedem Konter können 3D6 zusätzlich zum Konterwurf addiert werden."
   },
   schild: {
     name: "Schild",
-    description: "Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x1."
+    description: "Die Waffe ist ein Schild und von daher gut für die Verteidigung geeignet. Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x1"
   },
   grossschild: {
     name: "Großschild",
-    description: "Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x2."
+    description: "Die Waffe ist ein Schild und von daher gut für die Verteidigung geeignet. Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x2"
   },
   turmschild: {
     name: "Turmschild",
-    description: "Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x3."
+    description: "Die Waffe ist ein Schild und von daher gut für die Verteidigung geeignet. Die Waffe erhöht alle Rüstwerte um seinen eigenen Tierstufenwert x3"
   },
   weichesSchild: {
     name: "Weiches Schild",
-    description: "Die Waffe kann genutzt werden, um Angriffe statt zu kontern, abzufangen. Dabei sinkt das Leben des Schildes um einen Punkt. Bei 0 sinkt die Qualität des Schildes um 1. Weich = 3."
+    description: "Die Waffe kann genutzt werden um Angriffe, statt zu kontern, abzufangen. Dabei sinkt das Leben des Schildes um einen Punkt. Bei 0 sinkt die Qualität des Schildes um 1. Weiche Schilde haben je Qualitätsstufe 3 Leben., Harte Schilde haben 5 Leben."
   },
   hartesSchild: {
     name: "Hartes Schild",
-    description: "Die Waffe kann genutzt werden, um Angriffe statt zu kontern, abzufangen. Dabei sinkt das Leben des Schildes um einen Punkt. Bei 0 sinkt die Qualität des Schildes um 1. Hart = 5 Leben."
+    description: "Die Waffe kann genutzt werden um Angriffe, statt zu kontern, abzufangen. Dabei sinkt das Leben des Schildes um einen Punkt. Bei 0 sinkt die Qualität des Schildes um 1. Weiche Schilde haben je Qualitätsstufe 3 Leben., Harte Schilde haben 5 Leben."
   },
   schweresSchild: {
     name: "Schweres Schild",
-    description: "Senkt den Reflexwert um einen Punkt und das Kontern um sechs Punkte."
+    description: "Das Schild ist besonders schwer. Es erfordert mehr Anstrengung es zu tragen. Senkt den Reflexwert um einen Punkt und das Kontern um sechs Punkte."
   },
   konterschild: {
     name: "Konterschild",
-    description: "Kontern wird um drei Punkte erleichtert."
+    description: "Das Schild ist besonders leicht. Er eignet sich daher sehr gut zum Kontern. Kontern wird um drei Punkte erleichtert."
   },
   antischild: {
     name: "Antischild",
-    description: "Verteidiger kann seine Schildboni nicht nutzen."
+    description: "Die Waffe ist geeignet, um Schilde zu umgehen. Verteidiger kann seine Schildboni nicht nutzen. Bezieht sich auf alle Vorteile, die durch Schildtags entstehen."
   },
   silber: {
     name: "Silber",
     description: "Wesen, die anfällig auf Silber sind, erleiden dreifachen Schaden."
+  },
+  gold: {
+    name: "Gold",
+    description: "Waffe erlangt den Tag Ultrakrit."
+  }
+  ,
+  rueckschlag: {
+    name: "Rückschlag",
+    description: "Nach einem Angriff trifft dich der Rückschlag mit einem DX = Würfel ist DMG-Würfel."
+  },
+  langsam: {
+    name: "Langsam",
+    description: "Die Waffe eignet sich nur für eine Angriffsfolge, zweite Aktion kann nicht für Waffe genutzt werden."
+  },
+  magazin: {
+    name: "Magazin",
+    description: "Die Waffe hat eine Ladung, Batterie, Magazin, ist es leer, kann sie nicht genutzt werden."
+  },
+  setUp: {
+    name: "Set Up",
+    description: "Die Waffe benötigt eine Warmlaufzeit von X Runden oder muss aktiviert werden."
+  },
+  gleve: {
+    name: "Gleve",
+    description: "Bei tot des Ziels, kann ein weiterer Feind angegriffen werden ohne Aktion."
+  },
+  teamFightTactic: {
+    name: "TeamFightTactic",
+    description: "Ist die Waffe zweifach ausgerüstet, kann ein weitere Angriff durchgeführt werden, 50% schaden."
+  },
+  nichtToetlich: {
+    name: "Nicht tödlich",
+    description: "Die Waffe schlägt ein Ziel maximal auf drei Physis runter, woraufhin es sofort als betäubt gilt"
+  },
+  ladehemmung: {
+    name: "Ladehemmung",
+    description: "Die Fernkampfwaffe klemmt manchmal, eine Aktion zum Reparieren, tritt mit 1D4, bei 1 auf. Sowohl beim Start eines Kampfes als auch als fünf Angriffe."
+  },
+  einhandwaffe: {
+    name: "Einhandwaffe",
+    description: "Einhandwaffen eignen sich hervorragend zum Kontern, bei Konter darf ein weiterer D6 addiert werden."
+  },
+  stangenwaffe: {
+    name: "Stangenwaffe",
+    description: "Die Waffe ist länger und kann daher, wenn zweihändig getragen, ein Feld weiter angreifen. Einhändig verliert sie den Tag Lang."
+  },
+  faustwaffe: {
+    name: "Faustwaffe",
+    description: "Die Waffe hat ein Geschwisterchen, werden beide ausgerüstet, ist mit derselben Aktion, ein weiterer Angriff möglich, dieser verursacht 50% Schaden. Allein verliert die Waffe den Tag TeamFightTactic"
+  },
+  exotWaffe: {
+    name: "Exotische Waffe",
+    description: "Waffen dieser Kategorie sind für gewöhnlich so exotisch, dass sie mit eigenen Konditionen kommen. "
+  },
+  kurzwaffe: {
+    name: "Kurzwaffe",
+    description: "Kurzwaffen haben für gewöhnlich eine niedrigere Reichweite."
+  },
+  langwaffe: {
+    name: "Langwaffe",
+    description: "Langwaffen haben für gewöhnlich eine höhere Reichweite."
+  },
+  bogenwaffe: {
+    name: "Bogenwaffe",
+    description: "Bogenwaffen sind leise und verwenden oft Munition, die wiederverwendet werden kann."
+  },
+  schwereWaffe: {
+    name: "Schwere Waffe",
+    description: "Schwere Waffen tragen besondere Konditionen."
+  },
+  wurfwaffe: {
+    name: "Wurfwaffe",
+    description: "Wurfwaffen sind leise und wiederverwendbar oder Granaten, die dafür extremen Schaden verursachen."
+  },
+  exot: {
+    name: "Exot",
+    description: "Waffen dieser Kategorie sind für gewöhnlich so exotisch, dass sie mit eigenen Konditionen kommen."
   }
 }
