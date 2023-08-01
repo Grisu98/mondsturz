@@ -91,20 +91,20 @@ export class MondsturzActor extends Actor {
 
 
     this._calcualteSpendPointsInfo(actorData, systemData)
-    this._calcXP(actorData, systemData)
+
+    // lvl things
+    systemData.misc.calcedLvl = {}
+    let lvlObj = systemData.misc.calcedLvl;
+    lvlObj.lvl = (this._calcLvl(systemData.misc.xp)+1)/3
+    lvlObj.neededXP = Math.floor(lvlObj.lvl) * 3
+    lvlObj.perc = 100 * systemData.misc.xp / lvlObj.neededXP
 
   }
 
-  _calcXP(actorData, systemData) {
-
-    // 0.16666504*x^2+0.49941621*x+0.23678647
-    let currXP = systemData.misc.xp
-
-    currXP = 220
-
-    let currNormalizedLevel = 0.16666504 * currXP ** 2 + 0.49941621 * currXP + 0.23678647
-
-    console.log("tester hier")
+  _calcLvl(xp) {
+    const n = Math.ceil(1 / 6 * (Math.sqrt(24 * xp + 9) - 3))
+    const fn = (1 / n) * xp + (n - 1) * 1.5
+    return fn
   }
 
   _calcualteSpendPointsInfo(actorData, systemData) {

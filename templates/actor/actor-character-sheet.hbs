@@ -1,4 +1,5 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+  {{log @root}}
   {{!-- Sheet Header --}}
   <header class="row-2-8">
     <div class="col-1">
@@ -7,21 +8,32 @@
     <div class="col-2">
       <div class="header-info">
         <h1><input class="clear-input" type="text" name="name" value="{{actor.name}}" /></h1>
-        <div class="misc-info">
+        <div>
           <div>
-            Gold:
-            <input class="clear-input clear-small" type="number" name="system.misc.gold"
-              value="{{actor.system.misc.gold}}" />
+            <div class="sheet-bar bar-graph" data-bar-type="{{key}}">
+              <div class="bar" style="width: {{percentage}}%;">
+              </div>
+              <div class="bar-text">
+                <div>{{value.label}}</div>
+              </div>
+            </div>
           </div>
-          <div>
-            XP:
-            <input class="clear-input clear-small" type="number" name="system.misc.xp"
-              value="{{actor.system.misc.xp}}" />
-          </div>
-          <div>
-            Rang:
-            <input class="clear-input clear-small" type="number" name="system.misc.rang"
-              value="{{actor.system.misc.rang}}" />
+          <div class="misc-info">
+            <div>
+              Gold:
+              <input class="clear-input clear-small" type="number" name="system.misc.gold"
+                value="{{actor.system.misc.gold}}" />
+            </div>
+            <div>
+              XP:
+              <input class="clear-input clear-small" type="number" name="system.misc.xp"
+                value="{{actor.system.misc.xp}}" />
+            </div>
+            <div>
+              Rang:
+              <input class="clear-input clear-small" type="number" name="system.misc.rang"
+                value="{{actor.system.misc.rang}}" />
+            </div>
           </div>
         </div>
       </div>
@@ -62,7 +74,7 @@
               <div class="right">
                 <input class="clear-input clear-tiny" type="number" name="system.attribute.koerper.{{key}}.wert"
                   value="{{value.wert}}" data-dtype="Number" />
-                  {{#if value.mod}}<div style="margin-left:0px">+ {{value.mod}}</div> {{/if}}
+                {{#if value.mod}}<div style="margin-left:0px">+ {{value.mod}}</div> {{/if}}
               </div>
             </div>
             {{/each}}
